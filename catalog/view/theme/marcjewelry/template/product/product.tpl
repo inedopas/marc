@@ -505,7 +505,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
                             <tr class="opt-value">
                                 <td option="14" class="opt-name"></td>
                                 <td option="14" class="opt-weight"></td>
-                                <td option="14" class="opt-quantity"></td>
+                                <td id="tab" option="14" class="opt-quantity"></td>
                                 <td class="opt-price"><span class="opt-newprice"></span><span class="opt-oldprice"></span></td>
                             </tr>
                         </table>
@@ -528,12 +528,11 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 										<div id="win" style="display:none;">
 										   <div class="overlay"></div>
 										      <div class="visible">
-										        <h2 style="text-align:center">Заголовок окна</h2>
+										        <h2 style="text-align:center">Уважаемый покупатель!</h2>
 										          <div class="content">
-										            <p>Содержание</p>
-										            <p>В наличии <span id="qv"></span>  товара</p>
+										            <p></p>Извините у нас в наличии только <span id="qv"></span> штук. Можете связаться с менеджером для заказа большего количество.</p>
 										          </div>
-										        <button type="button" onClick="getElementById('win').style.display='none';">закрыть</button>
+										        <button type="submit"class="button" onClick="getElementById('win').style.display='none';">закрыть</button>
 										    </div>
 										</div>
 
@@ -912,22 +911,20 @@ $('select[name=\'recurring_id\'], input[name="quantity"]').change(function(){
 //--></script>
 <script type="text/javascript"><!--
 $('#button-cart').on('click', function() {
-	var span = document.getElementById('opt-quantity');
-	var tot=(span.innerHTML);
-var num = tot[0] + tot[1]
-var kil= +num;
 var $input = $(this).parent().find('#quantity_wanted');
 var count = parseInt($input.val());
-
+var sht = document.getElementById('tab');
+var tor=(sht.innerHTML);
+var num = tor[0] + tor[1]
+var kil= +num;
 if (count>kil){
 document.getElementById('qv').innerHTML=kil;
 document.getElementById("win").style.display = null;
-}else return;
+return;
+}
 
 
-	});
 
-	/*
 	$.ajax({
 		url: 'index.php?route=checkout/cart/add',
 		type: 'post',
@@ -1014,7 +1011,7 @@ document.getElementById("win").style.display = null;
      	    alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
      	}
 	});
-}); */
+});
 //--></script>
 <script type="text/javascript"><!--
 $('.date').datetimepicker({
