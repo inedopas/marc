@@ -1,7 +1,7 @@
-<?php echo $header; 
+<?php echo $header;
 $theme_options = $registry->get('theme_options');
 $config = $registry->get('config');
-$page_direction = $theme_options->get( 'page_direction' ); 
+$page_direction = $theme_options->get( 'page_direction' );
 $background_status = false;
 $product_page = true;
 include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_directory').'/template/new_elements/wrapper_top.tpl'); ?>
@@ -10,7 +10,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			$('#q_down').click(function () {
 			var $input = $(this).parent().find('#quantity_wanted');
 			var count = parseInt($input.val()) - 1;
-			count = count < 1 ? 1 : count;
+			count = count <span 1 ? 1 : count;
 			$input.val(count);
 			$input.change();
 			return false;
@@ -60,20 +60,20 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
      								zoomWindowHeight: 500
      				    		});
      			    		<?php } ?>
-     			    		
+
      			    		var z_index = 0;
-     			    		
+
      			    		$(document).on('click', '.open-popup-image', function () {
      			    		  $('.popup-gallery').magnificPopup('open', z_index);
      			    		  return false;
      			    		});
-			    		
+
      			    		$('.thumbnails a, .thumbnails-carousel a').click(function() {
      			    			var smallImage = $(this).attr('data-image');
      			    			var largeImage = $(this).attr('data-zoom-image');
-     			    			var ez =   $('#image').data('elevateZoom');	
-     			    			$('#ex1').attr('href', largeImage);  
-     			    			ez.swaptheimage(smallImage, largeImage); 
+     			    			var ez =   $('#image').data('elevateZoom');
+     			    			$('#ex1').attr('href', largeImage);
+     			    			ez.swaptheimage(smallImage, largeImage);
      			    			z_index = $(this).index('.thumbnails a, .thumbnails-carousel a');
      			    			return false;
      			    		});
@@ -86,24 +86,24 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			    	});
 			    </script>
 			    <?php } ?>
-			    <?php $image_grid = 7; $product_center_grid = 5; 
+			    <?php $image_grid = 7; $product_center_grid = 5;
 			    if ($theme_options->get( 'product_image_size' ) == 1) {
 			    	$image_grid = 4; $product_center_grid = 8;
 			    }
-			    
+
 			    if ($theme_options->get( 'product_image_size' ) == 3) {
 			    	$image_grid = 8; $product_center_grid = 4;
 			    }
 			    ?>
 			    <div class="col-sm-<?php echo $image_grid; ?> popup-gallery">
-			      <?php 
+			      <?php
 			      $product_image_top = $modules_old_opencart->getModules('product_image_top');
-			      if( count($product_image_top) ) { 
+			      if( count($product_image_top) ) {
 			      	foreach ($product_image_top as $module) {
 			      		echo $module;
 			      	}
 			      } ?>
-			         
+
 			      <div class="row">
 			      	  <?php if (($images || $theme_options->get( 'product_image_zoom' ) != 2) && $theme_options->get( 'position_image_additional' ) == 2) { ?>
 			      	  <div class="col-sm-2">
@@ -119,7 +119,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 						</div>
 			      	  </div>
 			      	  <?php } ?>
-			      	  
+
 				      <div class="col-sm-<?php if($theme_options->get( 'position_image_additional' ) == 2) { echo 10; } else { echo 12; } ?>">
 				      	<?php if ($thumb) { ?>
 					      <div class="product-image <?php if($theme_options->get( 'product_image_zoom' ) != 2) { if($theme_options->get( 'product_image_zoom' ) == 1) { echo 'inner-cloud-zoom'; } else { echo 'cloud-zoom'; } } ?>">
@@ -139,7 +139,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 					      	 <?php } elseif($theme_options->get( 'display_text_new' ) != '0' && $theme_options->isLatestProduct( $product_id )) { ?>
      					      	 <div class="new"><?php if($theme_options->get( 'new_text', $config->get( 'config_language_id' ) ) != '') { echo $theme_options->get( 'new_text', $config->get( 'config_language_id' ) ); } else { echo 'New'; } ?></div>
 					      	 <?php } ?>
-					      	 
+
 					     	 <a href="<?php echo $popup; ?>" title="<?php echo $heading_title; ?>" id="ex1" <?php if($theme_options->get( 'product_image_zoom' ) == 2) { ?>class="popup-image"<?php } else { echo 'class="open-popup-image"'; } ?>><img src="<?php echo $thumb; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" id="image" itemprop="image" data-zoom-image="<?php echo $popup; ?>" /></a>
 					      </div>
 					  	 <?php } else { ?>
@@ -148,7 +148,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 					  	 </div>
 					  	 <?php } ?>
 				      </div>
-				      
+
 				      <?php if (($images || $theme_options->get( 'product_image_zoom' ) != 2) && $theme_options->get( 'position_image_additional' ) != 2) { ?>
 				      <div class="col-sm-12">
 				           <div class="overflow-thumbnails-carousel clearfix">
@@ -161,7 +161,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
      						     <?php } ?>
      					      </div>
 					      </div>
-					      
+
 					      <script type="text/javascript">
 					           $(document).ready(function() {
 					             $(".thumbnails-carousel").owlCarousel({
@@ -184,10 +184,10 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 				      </div>
 				      <?php } ?>
 			      </div>
-			      
-			      <?php 
+
+			      <?php
 			      $product_image_bottom = $modules_old_opencart->getModules('product_image_bottom');
-			      if( count($product_image_bottom) ) { 
+			      if( count($product_image_bottom) ) {
 			      	foreach ($product_image_bottom as $module) {
 			      		echo $module;
 			      	}
@@ -198,7 +198,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			     <?php if ($price) { ?>
 			      <div class="price">
 			      	<span class="textprice">Цена</span>
-			        <?php if($theme_options->get( 'display_specials_countdown' ) == '1' && $special) { $countdown = rand(0, 5000)*rand(0, 5000); 
+			        <?php if($theme_options->get( 'display_specials_countdown' ) == '1' && $special) { $countdown = rand(0, 5000)*rand(0, 5000);
 			                  $product_detail = $theme_options->getDataProduct( $product_id );
 			                  $date_end = $product_detail['date_end'];
 			                  if($date_end != '0000-00-00' && $date_end) { ?>
@@ -235,14 +235,14 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			        <?php } ?>
 			      </div>
 			      <?php } ?>
-			     
+
 			   	<div id="product">
-				
+
 			      <?php $product_options_center = $modules_old_opencart->getModules('product_options_center'); ?>
 			      <?php if ($options || count($product_options_center)) { ?>
 			      <div class="options2">
 			        <?php foreach ($product_options_center as $module) { echo $module; } ?>
-			        
+
 			        <?php if ($options) { ?>
                     <div class="options">
                          <h2><?php echo $text_option; ?></h2>
@@ -286,16 +286,16 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
                                  <?php if ($option_value['special']) { ?><span id='opt-special' class="opt"><?php echo $special . " ₽"; ?></span><?php } else { ?><span id="opt-price" class="opt" style="background-color:#eeeeee;padding:2px 0px 3px 0px;color:#4e636d;border-radius: 9px;"><?php echo $option_value['price'] . " ₽"; ?></span><?php } ?>
                                  <?php if ($option_value['weight'] > 0) { ?><span id="opt-weight" class="opt"><?php echo $option_value['weight']; ?> гр.</span><?php } ?><span id="opt-quantity" class="opt" style="background-color:#eeeeee;padding:2px 0px 3px 0px;color:#4e636d;border-radius: 9px;"><?php echo $option_value['quantity']; ?> шт.</span>
                                   <?php if ($option_value['image']) { ?>
-                                  <img src="<?php echo $option_value['image']; ?>" alt="<?php echo $option_value['name'] . ($option_value['price'] ? ' ' . $option_value['price_prefix'] . $option_value['price'] : ''); ?>"  style="border-radius: 100px;-webkit-border-radius: 100px;-moz-border-radius: 100px" class="img-thumbnail" /> 
-                                  <?php } ?> 
+                                  <img src="<?php echo $option_value['image']; ?>" alt="<?php echo $option_value['name'] . ($option_value['price'] ? ' ' . $option_value['price_prefix'] . $option_value['price'] : ''); ?>"  style="border-radius: 100px;-webkit-border-radius: 100px;-moz-border-radius: 100px" class="img-thumbnail" />
+                                  <?php } ?>
                                   <span class="hidden"><?php if ($option_value['special']) { ?>(<?php echo $option_value['price_prefix']; ?><?php echo $option_value['special']; ?>)<?php } elseif ($option_value['price']) { ?><!--BOF Related Options-->(<?php echo $option_value['price_prefix']; ?><?php echo $option_value['price']; ?>)<!--EOF Related Options--><?php } ?></span>
                                   <?php if($theme_options->get( 'product_page_radio_style' ) != 1) { ?>
-                                  <?php } ?></span>
+                                  <?php } ?></>
                                   </div>
                                 </label>
                               </div>
                               <?php } ?>
-                              
+
                               <?php if($theme_options->get( 'product_page_radio_style' ) == 1) { ?>
                               <script type="text/javascript">
                                    $(document).ready(function(){
@@ -340,7 +340,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
                                </label>
                              </div>
                              <?php } ?>
-                             
+
                              <?php if($theme_options->get( 'product_page_checkbox_style' ) == 1) { ?>
                              <script type="text/javascript">
                                   $(document).ready(function(){
@@ -387,6 +387,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
                              </script>
                              <?php } ?>
                            </div>
+
                          </div>
                          <?php } ?>
                          <?php if ($option['type'] == 'text') { ?>
@@ -456,7 +457,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			      </div>
 
 			      <?php } ?>
-			      
+
 			      <?php if ($recurrings) { ?>
 			      <div class="options">
 			          <h2><?php echo $text_payment_recurring ?></h2>
@@ -510,11 +511,11 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
                         </table>
                 </div>
 <?php } ?>
-			      <div class="cart">   
+			      <div class="cart">
                         <div class="add-to-cart clearfix">
-			          <?php 
+			          <?php
 			          $product_enquiry = $modules_old_opencart->getModules('product_enquiry');
-			          if( count($product_enquiry) ) { 
+			          if( count($product_enquiry) ) {
 			          	foreach ($product_enquiry as $module) {
 			          		echo $module;
 			          	}
@@ -523,16 +524,32 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
      			          <!-- <p><?php echo $entry_qty; ?></p> -->
 						  <input type="hidden" name="product_id" size="2" value="<?php echo $product_id; ?>" />
      			          <input type="button" value="<?php echo $button_cart; ?>" id="button-cart" rel="<?php echo $product_id; ?>" data-loading-text="<?php echo $text_loading; ?>" class="button" />
+
+										<div id="win" style="display:none;">
+										   <div class="overlay"></div>
+										      <div class="visible">
+										        <h2 style="text-align:center">Заголовок окна</h2>
+										          <div class="content">
+										            <p>Содержание</p>
+										            <p>В наличии <span id="qv"></span>  товара</p>
+										          </div>
+										        <button type="button" onClick="getElementById('win').style.display='none';">закрыть</button>
+										    </div>
+										</div>
+
+
+
+
 						  <div class="quantity">
      			          <span id="q_up"><i class="fa fa-angle-up"></i></span>
      				      <input type="text" name="quantity" id="quantity_wanted" size="2" value="<?php echo $minimum; ?>" />
      				      <span id="q_down"><i class="fa fa-angle-down"></i></span>
      			          </div>
-     			          
-     			          
-     			          <?php 
+
+
+     			          <?php
      			          $product_question = $modules_old_opencart->getModules('product_question');
-     			          if( count($product_question) ) { 
+     			          if( count($product_question) ) {
      			          	foreach ($product_question as $module) {
      			          		echo $module;
      			          	}
@@ -543,8 +560,8 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			        <div class="links clearfix">
 			        	<a onclick="wishlist.add('<?php echo $product_id; ?>');"><?php if($theme_options->get( 'add_to_wishlist_text', $config->get( 'config_language_id' ) ) != '') { echo $theme_options->get( 'add_to_wishlist_text', $config->get( 'config_language_id' ) ); } else { echo 'Add to wishlist'; } ?></a>
 			        	<a onclick="compare.add('<?php echo $product_id; ?>');"><?php if($theme_options->get( 'add_to_compare_text', $config->get( 'config_language_id' ) ) != '') { echo $theme_options->get( 'add_to_compare_text', $config->get( 'config_language_id' ) ); } else { echo 'Add to compare'; } ?></a>
-			        </div>  
-                    
+			        </div>
+
 			        <?php if ($minimum > 1) { ?>
 			        <div class="minimum"><?php echo $text_minimum; ?></div>
 			        <?php } ?>
@@ -553,14 +570,14 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			     </div><!-- End #product -->
 			     <div class="clearfix"></div>
 			     <div itemscope itemtype="http://schema.org/Offer">
-			      <?php 
+			      <?php
 			      $product_options_top = $modules_old_opencart->getModules('product_options_top');
-			      if( count($product_options_top) ) { 
+			      if( count($product_options_top) ) {
 			      	foreach ($product_options_top as $module) {
 			      		echo $module;
 			      	}
 			      } ?>
-			      
+
 			      <?php if ($review_status) { ?>
 			      <div class="review">
 			      	<?php if($rating > 0) { ?>
@@ -585,12 +602,12 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
     h.appendChild(s);
   }})();</script>
 <div class="pluso" data-background="transparent" data-options="small,round,line,horizontal,nocounter,theme=04" data-services="vkontakte,odnoklassniki,facebook,twitter,google,moimir,email,print" data-user="1366104031"></div>
-			        	<!-- AddThis Button END --> 
+			        	<!-- AddThis Button END -->
 			        </div>
 			        <?php } ?>
 			      </div>
 			      <?php } ?>
-			      
+
 			      <div class="description">
 			        <?php if ($manufacturer) { ?>
 			        <span><?php echo $text_manufacturer; ?></span> <a href="<?php echo $manufacturers; ?>"><?php echo $manufacturer; ?></a><br />
@@ -608,12 +625,12 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			      </div>
 
 			     </div>
-			     
 
-			      
-			      <?php 
+
+
+			      <?php
 			      $product_options_bottom = $modules_old_opencart->getModules('product_options_bottom');
-			      if( count($product_options_bottom) ) { 
+			      if( count($product_options_bottom) ) {
 			      	foreach ($product_options_bottom as $module) {
 			      		echo $module;
 			      	}
@@ -621,7 +638,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 		    	</div>
 		    </div>
     	</div>
-    	
+
     	<?php if($theme_options->get( 'custom_block', 'product_page', $config->get( 'config_language_id' ), 'status' ) == 1 || count($product_custom_block)) { ?>
     	<div class="col-md-3 col-sm-12">
     	     <?php if($theme_options->get( 'custom_block', 'product_page', $config->get( 'config_language_id' ), 'status' ) == 1) { ?>
@@ -635,46 +652,46 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
     			</div>
     		</div>
     		<?php } ?>
-    		
+
     		<?php foreach ($product_custom_block as $module) { echo $module; } ?>
     	</div>
     	<?php } ?>
     </div>
   </div>
-  <?php 
+  <?php
   $product_over_tabs = $modules_old_opencart->getModules('product_over_tabs');
-  if( count($product_over_tabs) ) { 
+  if( count($product_over_tabs) ) {
   	foreach ($product_over_tabs as $module) {
   		echo $module;
   	}
   } ?>
-  
-  <?php 
+
+  <?php
   	  $language_id = $config->get( 'config_language_id' );
 	  $tabs = array();
-	  
+
 	  $tabs[] = array(
 	  	'heading' => $tab_description,
 	  	'content' => 'description',
 	  	'sort' => 1
 	  );
-	  
-	  if ($attribute_groups) { 
+
+	  if ($attribute_groups) {
 		  $tabs[] = array(
 		  	'heading' => $tab_attribute,
 		  	'content' => 'attribute',
 		  	'sort' => 3
 		  );
 	  }
-	  
-	  if ($review_status) { 
+
+	  if ($review_status) {
 	  	  $tabs[] = array(
 	  	  	'heading' => $tab_review,
 	  	  	'content' => 'review',
 	  	  	'sort' => 5
 	  	  );
 	  }
-	  	  	  
+
 	  if(is_array($config->get('product_tabs'))) {
 		  foreach($config->get('product_tabs') as $tab) {
 		  	if($tab['status'] == 1 || $tab['product_id'] == $product_id) {
@@ -695,7 +712,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 		  	}
 		  }
 	  }
-	  
+
 	  usort($tabs, "cmp_by_optionNumber");
   ?>
   <div id="tabs" class="htabs">
@@ -716,9 +733,9 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
     <?php if ($review_status) { ?>
   <div id="tab-review" class="tab-content">
 	<form class="form-horizontal" id="form-review">
-	  
+
 				<div id="review">
-				  <?php if ($reviews_first['reviews']) { 
+				  <?php if ($reviews_first['reviews']) {
 				     if ( count($reviews_first['reviews']) > 5 ) {
 					   $reviews_first_page = array_slice($reviews_first['reviews'], 0, 5);
 					 } else { $reviews_first_page = $reviews_first['reviews']; }
@@ -747,7 +764,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 					<p><?php echo $reviews_first['text_no_reviews']; ?></p>
 					<?php } ?>
 				</div>
-				
+
 	  <h2><?php echo $text_write; ?></h2>
 	  <?php if ($review_guest) { ?>
 	  <div class="form-group required">
@@ -759,7 +776,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 	  <div class="form-group required">
 	    <div class="col-sm-12">
 	         <label class="control-label"><?php echo $entry_rating; ?></label>
-	        
+
 	       <div class="rating set-rating">
 	          <i class="fa fa-star" data-value="1"></i>
 	          <i class="fa fa-star" data-value="2"></i>
@@ -781,7 +798,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 	                    }
 	                })
 	            })
-	            
+
 	            $('.set-rating i').mouseleave(function(){
 	                var rate = $('input[name="rating"]:checked').val();
 	                rate = parseInt(rate);
@@ -795,7 +812,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 	                    }
 	                  })
 	            })
-	            
+
 	            $('.set-rating i').click(function(){
 	                $('input[name="rating"]:nth('+ ($(this).data('value')-1) +')').prop('checked', true);
 	            });
@@ -835,7 +852,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 	</form>
   </div>
   <?php } ?>
- 
+
   <?php if ($attribute_groups) { ?>
   <div id="tab-attribute" class="tab-content">
     <table class="attribute" cellspacing="0">
@@ -870,7 +887,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
     <?php } ?>
   </div>
   <?php } ?>
-  
+
 </div>
 
 <script type="text/javascript"><!--
@@ -885,16 +902,32 @@ $('select[name=\'recurring_id\'], input[name="quantity"]').change(function(){
 		},
 		success: function(json) {
 			$('.alert, .text-danger').remove();
-			
+
 			if (json['success']) {
 				$('#recurring-description').html(json['success']);
 			}
 		}
 	});
 });
-//--></script> 
+//--></script>
 <script type="text/javascript"><!--
 $('#button-cart').on('click', function() {
+	var span = document.getElementById('opt-quantity');
+	var tot=(span.innerHTML);
+var num = tot[0] + tot[1]
+var kil= +num;
+var $input = $(this).parent().find('#quantity_wanted');
+var count = parseInt($input.val());
+
+if (count>kil){
+document.getElementById('qv').innerHTML=kil;
+document.getElementById("win").style.display = null;
+}else return;
+
+
+	});
+
+	/*
 	$.ajax({
 		url: 'index.php?route=checkout/cart/add',
 		type: 'post',
@@ -914,7 +947,7 @@ $('#button-cart').on('click', function() {
 				if (json['error']['option']) {
 					for (i in json['error']['option']) {
 						var element = $('#input-option' + i.replace('_', '-'));
-						
+
 						if (element.parent().hasClass('input-group')) {
 							element.parent().after('<div class="text-danger">' + json['error']['option'][i] + '</div>');
 						} else {
@@ -922,15 +955,15 @@ $('#button-cart').on('click', function() {
 						}
 					}
 				}
-				
+
 				if (json['error']['recurring']) {
 					$('select[name=\'recurring_id\']').after('<div class="text-danger">' + json['error']['recurring'] + '</div>');
 				}
-				
+
 				// Highlight any found errors
 				$('.text-danger').parent().addClass('has-error');
 			}
-			
+
 			if (json['success']) {
 				$.notify({
 					message: json['success'],
@@ -969,9 +1002,9 @@ $('#button-cart').on('click', function() {
 							'<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
 						'</div>' +
 						'<a href="{3}" target="{4}" data-notify="url"></a>' +
-					'</div>' 
+					'</div>'
 				});
-				
+
 				$('#cart_block #cart_content').load('index.php?route=common/cart/info #cart_content_ajax');
 				$('#cart_block #total_price_ajax').load('index.php?route=common/cart/info #total_price');
 				$('#cart_block .cart-count').load('index.php?route=common/cart/info #total_count_ajax');
@@ -981,8 +1014,8 @@ $('#button-cart').on('click', function() {
      	    alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
      	}
 	});
-});
-//--></script> 
+}); */
+//--></script>
 <script type="text/javascript"><!--
 $('.date').datetimepicker({
 	pickTime: false
@@ -996,20 +1029,20 @@ $('.datetime').datetimepicker({
 $('.time').datetimepicker({
 	pickDate: false
 });
-		
+
 $('button[id^=\'button-upload\']').on('click', function() {
 	var node = this;
-	
+
 	$('#form-upload').remove();
-	
+
 	$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
-	
+
 	$('#form-upload input[name=\'file\']').trigger('click');
-	
+
 	timer = setInterval(function() {
 		if ($('#form-upload input[name=\'file\']').val() != '') {
 			clearInterval(timer);
-			
+
 			$.ajax({
 				url: 'index.php?route=tool/upload',
 				type: 'post',
@@ -1026,14 +1059,14 @@ $('button[id^=\'button-upload\']').on('click', function() {
 				},
 				success: function(json) {
 					$('.text-danger').remove();
-					
+
 					if (json['error']) {
 						$(node).parent().find('input').after('<div class="text-danger">' + json['error'] + '</div>');
 					}
-					
+
 					if (json['success']) {
 						alert(json['success']);
-						
+
 						$(node).parent().find('input').attr('value', json['code']);
 					}
 				},
@@ -1044,21 +1077,21 @@ $('button[id^=\'button-upload\']').on('click', function() {
 		}
 	}, 500);
 });
-//--></script> 
+//--></script>
 <script type="text/javascript"><!--
 $('#review').delegate('.pagination a', 'click', function(e) {
 	e.preventDefault();
-	
+
     $('#review').fadeOut('slow');
-        
+
     $('#review').load(this.href);
-    
+
     $('#review').fadeIn('slow');
-});         
+});
 
 
 				/*$('#review').load('index.php?route=product/product/review&product_id=<?php echo $product_id; ?>');*/
-				
+
 
 $('#button-review').on('click', function() {
     $.ajax({
@@ -1074,14 +1107,14 @@ $('#button-review').on('click', function() {
         },
         success: function(json) {
 			$('.alert-success, .alert-danger').remove();
-            
+
 			if (json['error']) {
                 $('#review').after('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '</div>');
             }
-            
+
             if (json['success']) {
                 $('#review').after('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + '</div>');
-                                
+
                 $('input[name=\'name\']').val('');
                 $('textarea[name=\'text\']').val('');
                 $('input[name=\'rating\']:checked').prop('checked', false);
@@ -1092,7 +1125,7 @@ $('#button-review').on('click', function() {
 </script>
 
 <script type="text/javascript"><!--
-$(document).ready(function() {     
+$(document).ready(function() {
 	$('.popup-gallery').magnificPopup({
 		delegate: 'a.popup-image',
 		type: 'image',
@@ -1112,7 +1145,7 @@ $(document).ready(function() {
 		}
 	});
 });
-//--></script> 
+//--></script>
 
 <script type="text/javascript">
 var ajax_price = function() {
@@ -1127,7 +1160,7 @@ var ajax_price = function() {
 					change_price('#price-special', json.new_price.special);
 					$('#price-special').show();
 					if ($('td').is('.special')) {
-					    
+
 					} else {
 					    $('.checked-options .opt-price').addClass('opt-oldprice');
 					    $('.checked-options .opt-heading').append('<td class="special">Акция</td>');
@@ -1135,7 +1168,7 @@ var ajax_price = function() {
 					    $('.checked-options .opt-price').text(json.new_price.special + ' р.');
 					}
 				} else {
-					$('#price-special').hide();	
+					$('#price-special').hide();
 					$('#price-special').html('');
 					$('.checked-options .opt-price').removeClass('opt-oldprice');
 					$('.checked-options .opt-heading .special').remove();
@@ -1165,39 +1198,39 @@ $('.product-info input[type=\'text\'], .product-info input[type=\'hidden\'], .pr
 <script type="text/javascript">
 $.fn.tabs = function() {
 	var selector = this;
-	
+
 	this.each(function() {
-		var obj = $(this); 
-		
+		var obj = $(this);
+
 		$(obj.attr('href')).hide();
-		
+
 		$(obj).click(function() {
 			$(selector).removeClass('selected');
-			
+
 			$(selector).each(function(i, element) {
 				$($(element).attr('href')).hide();
 			});
-			
+
 			$(this).addClass('selected');
-			
+
 			$($(this).attr('href')).show();
-			
+
 			return false;
 		});
 	});
 
 	$(this).show();
-	
+
 	$(this).first().click();
 };
 </script>
 
 <script type="text/javascript"><!--
 $('#tabs a').tabs();
-//--></script> 
+//--></script>
 
 
-<?php if($theme_options->get( 'product_image_zoom' ) != 2) { 
+<?php if($theme_options->get( 'product_image_zoom' ) != 2) {
 echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($config->get('config_theme') . '_directory') . '/js/jquery.elevateZoom-3.0.3.min.js"></script>';
 } ?>
 <input type="button" onclick="history.back();" value="Назад" style="    border: none;
@@ -1224,24 +1257,24 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
                         if (t) {
                             var $pr = $(this).parents('.product-thumb').find('.price-new').data('price');
                             var $pr_old = $(this).parents('.product-thumb').find('.price-old').data('price');
-                            
+
                             $(this).parents('.product-thumb').find('.price-new').html( price_format(Number($pr) * $(this).val()) );
                             $(this).parents('.product-thumb').find('.price-old').html( price_format(Number($pr_old) * $(this).val()) );
-                            
-                    
-                    
+
+
+
                         }
-                        
+
                     });
                     */
-                    
+
                         var main_timeout_id = 0;
                         var special_timeout_id = 0;
                         var animate_delay = 20;
-                        
+
                         var regex_price = /[0-9]+[\.]{0,1}[0-9]*/;
                         var regex_replace_price = /([0-9]+[\.]{0,1}[0-9]*)/;
-                        
+
 //                    $('.option[master-option!=0]').hide();
 
                     // SELECT OPTION
@@ -1265,30 +1298,30 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
                     })
                     */
                     $('.option input[type=radio]').bind('change', function(){
-                        
+
                         $(this).each(function(){
                             if ($(this).prop('checked') == false) {
                                 $(this).parents('.form-group').next().find('.radio-type-button2 span').removeClass('active');
                             }
                         })
-                         
+
                         var option_value = $(this).attr('option-value');
                         var $related_options = $(this).parents('.options').find('.option[master-option = ' + $(this).parents('.option').attr('option') + ']');
-                        
+
                         // changing price
                         var num = <?php echo $related_options['price_residue'] ?>;
                         var $price = $(this).parents('.product-info').find('.price-new').data('price');
-                        
+
                         var $price_old = $(this).parents('.product-info').find('.price-old').data('price');
                         var $price_special = $(this).parents('.product-info').find('.price-new').data('price');
                         var $qty = $(this).parents('.product-info').find('input[name=quantity]').val();
-                        
-                        
-                        
-                          
+
+
+
+
                         if ($price_special) {
                             var $special = true;
-                            
+
                           var initial_price = $price_special * $qty;
                           var initial_price_old = $price_old * $qty;
 //                          initial_price = initial_price[0]*1;
@@ -1299,12 +1332,12 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
                             var initial_price = $price * $qty;
 //                          initial_price = initial_price[0]*1;
                         }
-                        
+
                         var initial_price_update = initial_price;
-                        
+
                         var regex_add_price = /([\+\-\=])[^0-9]*([0-9]+[\.]{0,1}[0-9]*)/;
                         additional_price = regex_add_price.exec($(this).parents('.option').find('label[for=' + $(this).attr('id') + '] span.hidden').text().replace('<?php echo $decimal_point; ?>', '.').replace(new RegExp('<?php echo $thousand_point; ?>', 'g'), ''));
-                        
+
                         if (additional_price != null && additional_price != '' && additional_price != undefined) {
                             if (additional_price[1] == '=') {
                                 var initial_price = 0;
@@ -1313,14 +1346,14 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
                                 var initial_price_update = 0;
                             }
                         }
-                        
+
                         if ($('input[name=\'' + $(this).attr('name') + '\']:checked').size() != '') {
                             updateOptionList($related_options, option_value);
                         } else {
 //                            $related_options.slideUp();
                         }
                         clearOption($related_options, $price, $price_old, $special, $(this), initial_price_update, initial_price, initial_price_old, $qty);
-                        
+
                     });
 
                     // CHECKBOX OPTION
@@ -1350,7 +1383,7 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
                         clearOption($related_options);
                     });
                     */
-                    
+
                     $( document ).on( "click", '[class^="opt-reset"]', function() {
                         var id = $(this).attr('class').replace("opt-reset-", "");
                         $('#option-'+ id).find('input[type=\'radio\']').prop('checked', false).trigger('change');
@@ -1367,13 +1400,13 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
                             $(this).wrap("<span>");
                         }
                     });
-                    
+
                     $related_options.find('.img_block[master-option-value!=0]').hide();
                     $related_options.find('input[type=hidden][master-option-value!=0]').prev().prop('disabled', true);
                     if ($related_options.find('[class^="opt-reset"]').length) {
                         $related_options.find('[class^="opt-reset"]').trigger('click');
                     }
-                    
+
                     $related_options.find('input[master-option-value!=0]').hide();
                     $related_options.find('input[master-option-value!=0]').parent('label').parent('div').hide();
                     $related_options.find('input[master-option-value!=0]').next('label').next('br').hide();
@@ -1395,10 +1428,10 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
                                 $(this).unwrap();
                             }
                         });
-                        
+
                         $related_options.find('.img_block[master-option-value=' + option_value[i] + ']').show();
                         $related_options.find('input[type=hidden][master-option-value=' + option_value[i] + ']').prev().prop('disabled', false);
-                        
+
                         $related_options.find('input[master-option-value=' + option_value[i] + ']').show();
                         $related_options.find('input[master-option-value=' + option_value[i] + ']').parent('label').parent('div').show();
                         $related_options.find('input[master-option-value=' + option_value[i] + ']').next('label').next('br').show();
@@ -1427,10 +1460,10 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
                 function clearOption($option_container, $price, $price_old, $special, element,initial_price_update, initial_price, initial_price_old, $qty) {
                     $option_container.find('select').val('');
 //                    if (!$option_container.parents('.product-thumb').find('input[name=quantity]').is('.changed')) {
-                        
+
                     $option_container.find('.radio-type-button2 span').removeClass('active');
                     $option_container.find('input[type=radio], input[type=checkbox]').removeAttr('checked');
-                    
+
 //                    }
                     //$option_container.find('input[type=text], textarea').attr('value', '');
                     recalcPrice($price, $price_old, $special, element, initial_price_update, initial_price, initial_price_old, $qty);
@@ -1440,7 +1473,7 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
             if (isset($related_options['price_adjustment_on']) && $related_options['price_adjustment_on']) {
             ?>
             <script type="text/javascript"><!--
-                
+
 
                 function formatMoney(n, c, d, t) {
                     var c = isNaN(c = Math.abs(c)) ? 2 : c,
@@ -1458,7 +1491,7 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
                   var diff = 0;
                   element.parents('.option').find('input[type=radio]:checked, input[type=checkbox]:checked').each(function(){
                     additional_price = regex_add_price.exec(element.parents('.option').find('label[for=' + element.attr('id') + '] span.hidden').text().replace('<?php echo $decimal_point; ?>', '.').replace(new RegExp('<?php echo $thousand_point; ?>', 'g'), ''));
-                    
+
                     if (additional_price != null && additional_price != '' && additional_price != undefined) {
                       if (additional_price[1] == '+') {
                         diff += additional_price[2]*1;
@@ -1482,11 +1515,11 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
                   });
                   */
                   qty = element.parents('.product-info').find('input[name=quantity]').val();
-                  
+
                   return diff * qty;
                 }
                 function price_format(/*price_view, */price) {
-                    
+
                         var regex_replace_price = /([0-9]+[\.]{0,1}[0-9]*)/;
                         var num = <?php echo $related_options['price_residue'] ?>;
                   price = formatMoney(price, num, '<?php echo $decimal_point; ?>', '<?php echo $thousand_point; ?>');
@@ -1530,7 +1563,7 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
                   }
                 }
                 <?php } else { ?>
-                
+
                 function showPrice(wrapper, price) {
                   wrapper.html( price_format(wrapper, price) );
                 }
@@ -1547,14 +1580,14 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
                       showPrice($price, initial_price + diff);
                     <?php } ?>
                     */
-                    
+
                     if ($special) {
                         element.parents('.product-info').find('.price-new').html( price_format(Number(initial_price) + Number(diff)) );
                         element.parents('.product-info').find('.price-old').html( price_format(Number(initial_price_old) + Number(diff)) );
                     } else {
                         element.parents('.product-info').find('.price-new').html( price_format(Number(initial_price) + Number(diff)) );
                     }
-                    
+
 //                    showPrice($price, initial_price + diff, element);
                     initial_price_update = initial_price + diff;
                     if ($special) {
@@ -1579,7 +1612,7 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
             //--></script>
             <?php } ?>
             <!--EOF Related Options-->
-            
+
 
                   <script type="application/ld+json">
                {
@@ -1603,7 +1636,7 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
                  },
                  <?php } ?>
 				 <?php if ($rich_snippets['reviewCount'] > 0) {
-					foreach ($reviews_first['reviews'] as $review ) { ?> 
+					foreach ($reviews_first['reviews'] as $review ) { ?>
 				  "review": {
 					"@type": "Review",
 					"reviewRating": {
@@ -1635,7 +1668,7 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
                   }
                 }
                 </script>
-                
+
 
 				<script type="application/ld+json">
 				{
@@ -1653,7 +1686,7 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
                   "name": "<?php echo $store_name; ?>"
                 }
 				},
-				<?php for($i = 0; $i < count($breadcrumbs); ++$i) { 
+				<?php for($i = 0; $i < count($breadcrumbs); ++$i) {
 				if ( strpos($breadcrumbs[$i]['href'], '?route=') == false ) {
 				   $breadcrumb_url = explode("?", $breadcrumbs[$i]['href']);
 				} else { $breadcrumb_url = explode("&", $breadcrumbs[$i]['href']); }
@@ -1671,7 +1704,7 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
 				]
 				}
 				</script>
-                
+
 
 				<script type="application/ld+json">
 				{
@@ -1689,7 +1722,7 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
                   "name": "<?php echo $store_name; ?>"
                 }
 				},
-				<?php for($i = 0; $i < count($breadcrumbs); ++$i) { 
+				<?php for($i = 0; $i < count($breadcrumbs); ++$i) {
 				if ( strpos($breadcrumbs[$i]['href'], '?route=') == false ) {
 				   $breadcrumb_url = explode("?", $breadcrumbs[$i]['href']);
 				} else { $breadcrumb_url = explode("&", $breadcrumbs[$i]['href']); }
@@ -1707,5 +1740,5 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
 				]
 				}
 				</script>
-                
+
 <?php echo $footer; ?>
