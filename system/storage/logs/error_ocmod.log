@@ -1,0 +1,150 @@
+2018-05-23 9:45:49 - 
+ERROR: CODE NOT FOUND!
+FILE: catalog/view/theme/marcjewelry/template/checkout/checkout.tpl
+CODE: <h1><?php echo $heading_title; ?></h1>
+MOD: fondy_payment
+
+ERROR: FILE NOT FOUND!
+FILE: /var/www/marcasite_ru/data/www/marcasite.ru/admin/controller/dashboard/order.php
+MOD: Manager for Customers
+
+ERROR: FILE NOT FOUND!
+FILE: /var/www/marcasite_ru/data/www/marcasite.ru/admin/controller/dashboard/customer.php
+MOD: Manager for Customers
+
+ERROR: FILE NOT FOUND!
+FILE: /var/www/marcasite_ru/data/www/marcasite.ru/admin/controller/dashboard/sale.php
+MOD: Manager for Customers
+
+ERROR: FILE NOT FOUND!
+FILE: /var/www/marcasite_ru/data/www/marcasite.ru/admin/controller/dashboard/recent.php
+MOD: Manager for Customers
+
+ERROR: CODE NOT FOUND!
+FILE: catalog/controller/product/special.php
+CODE: $product_total = $this->model_catalog_product->getTotalProducts($filter_data);
+MOD: Mega Filter PRO
+
+ERROR: CODE NOT FOUND!
+FILE: catalog/view/theme/marcjewelry/template/product/product.tpl
+CODE: <div class="form-group<?php echo ($option['required'] ? ' required' : ''); ?>">
+MOD: Related / Dependent options / temlate default
+
+ERROR: CODE NOT FOUND!
+FILE: catalog/view/theme/marcjewelry/template/product/quickview.tpl
+CODE: <div class="form-group<?php echo ($option['required'] ? ' required' : ''); ?>">
+MOD: Related / Dependent options / temlate default
+
+ERROR: FILE NOT FOUND!
+FILE: /var/www/marcasite_ru/data/www/marcasite.ru/admin/controller/common/menu.php
+MOD: affiliate
+
+ERROR: FILE NOT FOUND!
+FILE: /var/www/marcasite_ru/data/www/marcasite.ru/catalog/controller/total/coupon.php
+MOD: affiliate
+
+ERROR: FILE NOT FOUND!
+FILE: /var/www/marcasite_ru/data/www/marcasite.ru/admin/view/template/common/menu.tpl
+MOD: affiliate
+
+ERROR: FILE NOT FOUND!
+FILE: /var/www/marcasite_ru/data/www/marcasite.ru/admin/language/ua-uk/catalog/review.php
+MOD: Answer to the commentary for OpenCart 2x
+
+ERROR: FILE NOT FOUND!
+FILE: /var/www/marcasite_ru/data/www/marcasite.ru/admin/view/template/common/menu.tpl
+MOD: Exchange Module for OpenCart 2.3
+
+ERROR: FILE NOT FOUND!
+FILE: /var/www/marcasite_ru/data/www/marcasite.ru/admin/language/en-gb/common/menu.php
+MOD: Exchange Module for OpenCart 2.3
+
+ERROR: FILE NOT FOUND!
+FILE: /var/www/marcasite_ru/data/www/marcasite.ru/admin/language/ru-ru/common/menu.php
+MOD: Exchange Module for OpenCart 2.3
+
+ERROR: CODE NOT FOUND!
+FILE: catalog/language/ru-ru/checkout/cart.php
+CODE: $_['column_price']          = 'Цена за шт.';
+MOD: Exchange Module for OpenCart 2.3
+
+ERROR: CODE NOT FOUND!
+FILE: catalog/view/theme/marcjewelry/template/checkout/cart.tpl
+CODE: <td class="text-right"><?php echo $column_price; ?></td>
+MOD: Exchange Module for OpenCart 2.3
+
+ERROR: CODE NOT FOUND!
+FILE: system/library/cart/cart.php
+CODE: $this->db->query("INSERT " . DB_PREFIX . "cart SET api_id = '" . (isset($this->session->data['api_id']) ? (int)$this->session->data['api_id'] : 0) . "', customer_id = '" . (int)$this->customer->getId() . "', session_id = '" . $this->db->escape($this->session->getId()) . "', product_id = '" . (int)$product_id . "', recurring_id = '" . (int)$recurring_id . "', `option` = '" . $this->db->escape(json_encode($option)) . "', quantity = '" . (int)$quantity . "', date_added = NOW()");
+MOD: Exchange Module for OpenCart 2.3
+
+ERROR: CODE NOT FOUND!
+FILE: catalog/language/ru-ru/checkout/checkout.php
+CODE: $_['column_price']                   = 'Цена';
+MOD: Exchange Module for OpenCart 2.3
+
+ERROR: FILE NOT FOUND!
+FILE: /var/www/marcasite_ru/data/www/marcasite.ru/system/library/cart.php
+MOD: Exchange Module for OpenCart 2.3
+
+ERROR: CODE NOT FOUND!
+FILE: catalog/view/theme/marcjewelry/template/product/product.tpl
+CODE: <li><?php echo $text_stock; ?> <?php echo $stock; ?></li>
+MOD: Exchange Module for OpenCart 2.3
+
+ERROR: FILE NOT FOUND!
+FILE: /var/www/marcasite_ru/data/www/marcasite.ru/admin/controller/common/menu.php
+MOD: Export/Import Tool (V3.10) for Ocstore 2.x
+
+ERROR: FILE NOT FOUND!
+FILE: /var/www/marcasite_ru/data/www/marcasite.ru/admin/language/*/common/menu.php
+MOD: Export/Import Tool (V3.10) for Ocstore 2.x
+
+ERROR: FILE NOT FOUND!
+FILE: /var/www/marcasite_ru/data/www/marcasite.ru/admin/view/template/common/menu.tpl
+MOD: Export/Import Tool (V3.10) for Ocstore 2.x
+
+ERROR: FILE NOT FOUND!
+FILE: /var/www/marcasite_ru/data/www/marcasite.ru/catalog/language/russian/mail/order.php
+MOD: Extra_email_WebJeweler
+
+ERROR: FILE NOT FOUND!
+FILE: /var/www/marcasite_ru/data/www/marcasite.ru/catalog/language/russian/mail/order.php
+MOD: Extra_email_WebJeweler
+
+ERROR: FILE NOT FOUND!
+FILE: /var/www/marcasite_ru/data/www/marcasite.ru/admin/view/template/editors/product/product_form.tpl
+MOD: OCFilter Modification
+
+ERROR: CODE NOT FOUND!
+FILE: catalog/view/theme/marcjewelry/template/product/product.tpl
+CODE: <div id="review"></div>
+MOD: Rich snippets for Opencart v2.2
+
+ERROR: FILE NOT FOUND!
+FILE: /var/www/marcasite_ru/data/www/marcasite.ru/catalog/controller/checkout/custom.php
+MOD: SMSC
+
+ERROR: FILE NOT FOUND!
+FILE: /var/www/marcasite_ru/data/www/marcasite.ru/catalog/language/russian/account/register.php
+MOD: SMSC
+
+ERROR: FILE NOT FOUND!
+FILE: /var/www/marcasite_ru/data/www/marcasite.ru/catalog/language/english/account/register.php
+MOD: SMSC
+
+ERROR: FILE NOT FOUND!
+FILE: /var/www/marcasite_ru/data/www/marcasite.ru/admin/controller/common/menu.php
+MOD: Удаление модулей
+
+ERROR: FILE NOT FOUND!
+FILE: /var/www/marcasite_ru/data/www/marcasite.ru/admin/controller/common/menu.php
+MOD: Удаление модулей
+
+ERROR: FILE NOT FOUND!
+FILE: /var/www/marcasite_ru/data/www/marcasite.ru/admin/controller/common/menu.php
+MOD: Удаление модулей
+
+ERROR: FILE NOT FOUND!
+FILE: /var/www/marcasite_ru/data/www/marcasite.ru/admin/view/template/common/menu.tpl
+MOD: Удаление модулей

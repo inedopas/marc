@@ -1,0 +1,1101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <name>Options Category</name>
+    <code>options_category.ocmod</code>
+    <author>http://seregin-pro.ru/</author>
+    <version>1.3.2</version>
+    <link>http://seregin-pro.ru/</link>
+    
+    <!-- system -->
+    
+    <file path="system/library/cart/cart.php">
+        <operation>
+            <search><![CDATA[$price = $product_query->row['price'];]]></search>
+            <add position="replace"><![CDATA[
+                if (!$price_equal) {
+                    $price = $product_query->row['price'];
+                } else {
+                    $price = 0;
+                }
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[$price = $product_discount_query->row['price'];]]></search>
+            <add position="replace"><![CDATA[
+                if (!$price_equal) {
+                    $price = $product_discount_query->row['price'];
+                } else {
+                    $price = 0;
+                }
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[$price = $product_special_query->row['price'];]]></search>
+            <add position="replace"><![CDATA[
+                if (!$price_equal) {
+                    $price = $product_special_query->row['price'];
+                } else {
+                    $price = 0;
+                }
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[
+                $option_price = 0;]]></search>
+            <add position="before"><![CDATA[
+                $price_equal = 0;]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[if ($option_value_query->row['points_prefix'] == '+') {]]></search>
+            <add position="before"><![CDATA[
+                elseif ($option_value_query->row['price_prefix'] == '=') {
+                    $price_equal = 1;
+                    if ((float)$option_value_query->row['special'] && (($option_value_query->row['date_start'] == '0000-00-00' || strtotime($option_value_query->row['date_start']) < time()) && ($option_value_query->row['date_end'] == '0000-00-00' || strtotime($option_value_query->row['date_end']) > time()))) {
+                        $option_price = $option_value_query->row['special'];
+                    } else {
+                        $option_price = $option_value_query->row['price'];
+                    }
+                }
+            ]]></add>
+        </operation>        
+    </file> 
+    
+    <!-- controller -->
+    
+    <file path="catalog/controller/checkout/cart.php">
+        <operation>
+            <search><![CDATA[public function add() {]]></search>
+            <add position="before"><![CDATA[
+                public function calcMin($option_value, $product_info, $total) {
+                    
+                    if (($this->config->get('config_customer_price') && $this->customer->isLogged()) || !$this->config->get('config_customer_price')) {
+                        $price = $total['price'] - $this->tax->calculate($option_value['price'], $product_info['tax_class_id'], $this->config->get('config_tax') ? 'P' : false);
+                    } else {
+                        $price = false;
+                    }
+                    
+                    if ((float)$product_info['special'] || isset($product_info['special_percent']) && (int)$product_info['special_percent']) {
+                        $special = $total['special'] - $this->tax->calculate($option_value['price'], $product_info['tax_class_id'], $this->config->get('config_tax') ? 'P' : false);
+                    } else {
+                        $special = false;
+                    }
+                    
+                    if ($this->config->get('config_tax')) {
+                        $tax = $total['tax'] - $option_value['price'];
+                    } else {
+                        $tax = false;
+                    }
+                    
+                    return array(
+                        'price'   => $price,
+                        'special' => $special,
+                        'tax'     => $tax
+                    );
+                }
+                
+                public function calcPlus($option_value, $product_info, $total) {
+                    
+                    if (($this->config->get('config_customer_price') && $this->customer->isLogged()) || !$this->config->get('config_customer_price')) {
+                        $price = $total['price'] + $this->tax->calculate($option_value['price'], $product_info['tax_class_id'], $this->config->get('config_tax') ? 'P' : false);
+                    } else {
+                        $price = false;
+                    }
+                    
+                    if ((float)$product_info['special'] || isset($product_info['special_percent']) && (int)$product_info['special_percent']) {
+                        $special = $total['special'] + $this->tax->calculate($option_value['price'], $product_info['tax_class_id'], $this->config->get('config_tax') ? 'P' : false);
+                    } else {
+                        $special = false;
+                    }
+                    
+                    if($this->config->get('config_tax')) {
+                        $tax = $total['tax'] + $option_value['price'];
+                    } else {
+                        $tax = false;
+                    }
+                    
+                    return array(
+                        'price'   => $price,
+                        'special' => $special,
+                        'tax'     => $tax
+                    );
+                }
+
+                public function calcEqual($option_value, $product_info) {
+                    
+                    if (($this->config->get('config_customer_price') && $this->customer->isLogged()) || !$this->config->get('config_customer_price')) {
+                        $price = $this->tax->calculate($option_value['price'], $product_info['tax_class_id'], $this->config->get('config_tax'));
+                    } else {
+                        $price = false;
+                    }
+                    
+                    if ((float)$product_info['special'] || isset($product_info['special_percent']) && (int)$product_info['special_percent']) {
+                        $special = $this->tax->calculate($option_value['price'], $product_info['tax_class_id'], $this->config->get('config_tax'));
+                    } else {
+                        $special = false;
+                    }
+                            
+                    if ($this->config->get('config_tax')) {
+                        $tax = $option_value['price'];
+                    } else {
+                        $tax = false;
+                    }
+                    
+                    return array(
+                        'price'   => $price,
+                        'special' => $special,
+                        'tax'     => $tax
+                    ); 
+                }
+                        
+                public function option_price() {
+
+                    $json = array();
+
+                    if (isset($this->request->post['product_id'])) {
+                        $product_id = (int)$this->request->post['product_id'];
+                    } else {
+                        $product_id = 0;
+                    }
+
+                    $this->load->model('catalog/product');
+
+                    $product_info = $this->model_catalog_product->getProduct($product_id);
+
+                    if ($product_info) {
+                    
+                        if (isset($this->request->post['option'])) {
+                            $option = array_filter($this->request->post['option']);    
+                        } else {
+                            $option = array();
+                        }
+                        
+                        $total = array();
+                        
+                        $total['price']   = 0;
+                        $total['special'] = 0;
+                        $total['tax']       = 0;
+
+                        $product_options = $this->model_catalog_product->getProductOptions($this->request->post['product_id']);
+                        
+                        $price_percent = $product_info['price'];
+
+                        foreach ($product_options as $product_option) {
+                            
+                            if (!$total['price']) {
+                                if (isset($product_info['discount_percent']) && $product_info['discount_percent']) {
+                                    $price_percent = $product_info['price_percent'] - ($product_info['price_percent']/100) * $product_info['discount_percent'];
+                                    
+                                    $total['price'] = $this->tax->calculate($price_percent, $product_info['tax_class_id'], $this->config->get('config_tax'));
+                                } else {
+                                    $total['price'] = $this->tax->calculate($product_info['price'], $product_info['tax_class_id'], $this->config->get('config_tax'));
+                                }
+                            }
+                            $special_percent = $product_info['special'];
+                            if (!$total['special']) {
+                                $total['special'] = $this->tax->calculate($special_percent, $product_info['tax_class_id'], $this->config->get('config_tax'));
+                                
+                                if (isset($product_info['special_percent']) && (float)$product_info['special_percent']) {
+                                    $special_percent = $price_percent - ($price_percent/100) * $product_info['special_percent'];
+                                    $total['special'] = $this->tax->calculate($special_percent, $product_info['tax_class_id'], $this->config->get('config_tax'));
+                                }
+                            }
+                                
+                            if (!$total['tax'] && $this->config->get('config_tax')) {
+                                $total['tax'] = (float)$special_percent ? $special_percent : $price_percent;
+                            }
+                                
+                            if (!empty($option[$product_option['product_option_id']])) {
+                                
+                                foreach ($product_option['product_option_value'] as $option_value) {
+                                    if (is_array($option[$product_option['product_option_id']])) {
+                                        foreach ($option[$product_option['product_option_id']] as $product_option_value_id) {
+                                            if ($option_value['product_option_value_id'] == $product_option_value_id) {
+                                                if ($option_value['price_prefix'] == '+') {
+                                                    $total = $this->calcPlus($option_value, $product_info, $total);
+                                                } elseif ($option_value['price_prefix'] == '-') { 
+                                                    $total = $this->calcMin($option_value, $product_info, $total);
+                                                } else {
+                                                    $total = $this->calcEqual($option_value, $product_info);
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        if ($option_value['product_option_value_id'] == $option[$product_option['product_option_id']]) {
+                                            if ($option_value['price_prefix'] == '+') {
+                                                $total = $this->calcPlus($option_value, $product_info, $total);
+                                            } elseif ($option_value['price_prefix'] == '-') { 
+                                                $total = $this->calcMin($option_value, $product_info, $total);
+                                            } else {
+                                                $total = $this->calcEqual($option_value, $product_info);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        // Display prices
+                        if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
+                            
+                            $json['price'] = $this->currency->format($total['price'], $this->session->data['currency']);
+                            
+                            if ((float)$product_info['special'] || isset($product_info['special_percent']) && (int)$product_info['special_percent']) {
+                                $json['special'] = $this->currency->format($total['special'], $this->session->data['currency']);
+                            }
+                            
+                            if ($this->config->get('config_tax')) {
+                                $json['tax'] = $this->currency->format($total['tax'], $this->session->data['currency']);
+                            }
+                        }    
+                    }
+                    $this->response->addHeader('Content-Type: application/json');
+                    $this->response->setOutput(json_encode($json));
+                }
+            ]]></add>
+        </operation>        
+    </file>
+    <!--<file path="catalog/controller/extension/module/featured.php">
+        <operation>
+            <search><![CDATA[$data['products'] = array();]]></search>
+            <add position="before"><![CDATA[
+                $data['button_upload'] = $this->language->get('button_upload');
+                $data['text_select'] = $this->language->get('text_select');
+                $data['text_loading'] = $this->language->get('text_loading');
+                $this->document->addScript('catalog/view/javascript/options_category/default.js');
+                $this->document->addStyle('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css');
+                $this->document->addScript('catalog/view/javascript/jquery/datetimepicker/moment.js');
+                $this->document->addScript('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js');
+                $this->document->addScript('catalog/view/javascript/options_category/script.js');
+                
+                $show_quantity = $this->config->get('config_oc_show_quantity');
+                $show_no_stock = $this->config->get('config_oc_show_no_stock');
+                
+                $show_image = $this->config->get('config_oc_show_image');
+                $show_price = $this->config->get('config_oc_show_price');
+                
+                $data['pull_left'] = $this->config->get('config_oc_pull_left');
+                
+                $data['module_name'] = 'featured';
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[$data['products'][] = array(]]></search>
+            <add position="before"><![CDATA[            
+                $options = array();
+
+                foreach ($this->model_catalog_product->getProductOptions($product_info['product_id']) as $option) {
+                    $product_option_value_data = array();
+
+                    foreach ($option['product_option_value'] as $option_value) {
+                        if ($show_no_stock || !$option_value['subtract'] || ($option_value['quantity'] > 0)) {
+                            if ((($this->config->get('config_customer_price') && $this->customer->isLogged()) || !$this->config->get('config_customer_price')) && (float)$option_value['price']) {
+                                if ($option_value['price_prefix'] == '=') {
+                                    $price_option = $this->currency->format($this->tax->calculate($option_value['price'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+                                } else {
+                                    $price_option = $this->currency->format($this->tax->calculate($option_value['price'], $product_info['tax_class_id'], $this->config->get('config_tax') ? 'P' : false), $this->session->data['currency']);
+                                }
+                            } else {
+                                $price_option = false;
+                            }
+
+                            $product_option_value_data[] = array(
+                                'product_option_value_id' => $option_value['product_option_value_id'],
+                                'option_value_id'         => $option_value['option_value_id'],
+                                'name'                    => $option_value['name'],
+                                'image'                   => (int)$show_image ? $this->model_tool_image->resize($option_value['image'], 50, 50) : false,
+                                'price'                   => (int)$show_price ? $price_option : false,
+                                'price_prefix'            => $option_value['price_prefix'],
+                                'quantity'                => (int)$show_quantity ?  $option_value['quantity'] . $this->language->get('text_oc_quantity') : false
+                            ); 
+                        }
+                    } 
+
+                    $options[] = array(
+                        'product_option_id'    => $option['product_option_id'],
+                        'product_option_value' => $product_option_value_data,
+                        'option_id'            => $option['option_id'],
+                        'name'                 => $option['name'],
+                        'type'                 => $option['type'],
+                        'value'                => $option['value'],
+                        'required'             => $option['required']
+                    );
+                    
+                } 
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[
+                $data['products'][] = array(
+            ]]></search>
+            <add position="after"><![CDATA[
+                'options'   => $options,
+            ]]></add>
+        </operation>
+    </file>
+    <file path="catalog/controller/extension/module/bestseller.php">
+        <operation>
+            <search><![CDATA[
+                $data['products'] = array();
+            ]]></search>
+            <add position="before"><![CDATA[
+                $data['module_name'] = 'bestseller';
+            ]]></add>
+        </operation>
+    </file>
+    <file path="catalog/controller/extension/module/latest.php">
+        <operation>
+            <search><![CDATA[
+                $data['products'] = array();
+            ]]></search>
+            <add position="before"><![CDATA[
+                $data['module_name'] = 'latest';
+            ]]></add>
+        </operation>
+    </file>
+    <file path="catalog/controller/extension/module/special.php">
+        <operation>
+            <search><![CDATA[
+                $data['products'] = array();
+            ]]></search>
+            <add position="before"><![CDATA[
+                $data['module_name'] = 'special';
+            ]]></add>
+        </operation>
+    </file>
+    <file path="catalog/controller/extension/module/{bestseller.php,latest.php,special.php}|catalog/controller/product/{category.php,manufacturer.php,search.php,special.php}">
+        <operation>
+            <search><![CDATA[
+                $data['products'] = array();
+            ]]></search>
+            <add position="before"><![CDATA[
+                $data['button_upload'] = $this->language->get('button_upload');
+                $data['text_select'] = $this->language->get('text_select');
+                $data['text_loading'] = $this->language->get('text_loading');
+                $this->document->addScript('catalog/view/javascript/options_category/default.js');
+                $this->document->addStyle('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css');
+                $this->document->addScript('catalog/view/javascript/jquery/datetimepicker/moment.js');
+                $this->document->addScript('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js');
+                $this->document->addScript('catalog/view/javascript/options_category/script.js');
+                
+                $show_quantity = $this->config->get('config_oc_show_quantity');
+                $show_no_stock = $this->config->get('config_oc_show_no_stock');
+                
+                $show_image = $this->config->get('config_oc_show_image');
+                $show_price = $this->config->get('config_oc_show_price');
+                
+                $data['pull_left'] = $this->config->get('config_oc_pull_left');
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[
+                $data['products'][] = array(
+            ]]></search>
+            <add position="before"><![CDATA[            
+                $options = array();
+
+                foreach ($this->model_catalog_product->getProductOptions($result['product_id']) as $option) {
+                    $product_option_value_data = array();
+
+                    foreach ($option['product_option_value'] as $option_value) {
+                        if ($show_no_stock || !$option_value['subtract'] || ($option_value['quantity'] > 0)) {
+                            if ((($this->config->get('config_customer_price') && $this->customer->isLogged()) || !$this->config->get('config_customer_price')) && (float)$option_value['price']) {
+                                if ($option_value['price_prefix'] == '=') {
+                                    $price_option = $this->currency->format($this->tax->calculate($option_value['price'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+                                } else {
+                                    $price_option = $this->currency->format($this->tax->calculate($option_value['price'], $result['tax_class_id'], $this->config->get('config_tax') ? 'P' : false), $this->session->data['currency']);
+                                }
+                            } else {
+                                $price_option = false;
+                            }
+
+                            $product_option_value_data[] = array(
+                                'product_option_value_id' => $option_value['product_option_value_id'],
+                                'option_value_id'         => $option_value['option_value_id'],
+                                'name'                    => $option_value['name'],
+                                'image'                   => (int)$show_image ? $this->model_tool_image->resize($option_value['image'], 50, 50) : false,
+                                'price'                   => (int)$show_price ? $price_option : false,
+                                'price_prefix'            => $option_value['price_prefix'],
+                                'quantity'                => (int)$show_quantity ?  $option_value['quantity'] . $this->language->get('text_oc_quantity') : false
+                            ); 
+                        }
+                    } 
+
+                    $options[] = array(
+                        'product_option_id'    => $option['product_option_id'],
+                        'product_option_value' => $product_option_value_data,
+                        'option_id'            => $option['option_id'],
+                        'name'                 => $option['name'],
+                        'type'                 => $option['type'],
+                        'value'                => $option['value'],
+                        'required'             => $option['required']
+                    );
+                    
+                } 
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[
+                $data['products'][] = array(
+            ]]></search>
+            <add position="after"><![CDATA[
+                'options'   => $options,
+            ]]></add>
+        </operation>
+    </file>
+    <file path="catalog/controller/product/product.php">
+        <operation>
+            <search><![CDATA[
+                $data['tab_review'] = sprintf($this->language->get('tab_review'), $product_info['reviews']);
+            ]]></search>
+            <add position="after"><![CDATA[    
+                $data['button_upload'] = $this->language->get('button_upload');
+                $data['text_select'] = $this->language->get('text_select');
+                $data['text_loading'] = $this->language->get('text_loading');
+                $this->document->addScript('catalog/view/javascript/options_category/default.js');
+                
+                $show_quantity = $this->config->get('config_oc_show_quantity');
+                $show_no_stock = $this->config->get('config_oc_show_no_stock');
+                
+                $show_image = $this->config->get('config_oc_show_image');
+                $show_price = $this->config->get('config_oc_show_price');
+                
+                $data['pull_left'] = $this->config->get('config_oc_pull_left');
+                
+                $data['module_name'] = 'related';
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[
+                $price = $this->currency->format($this->tax->calculate($option_value['price'], $product_info['tax_class_id'], $this->config->get('config_tax') ? 'P' : false), $this->session->data['currency']);
+            ]]></search>
+            <add position="replace"><![CDATA[
+                if($option_value['price_prefix'] == '='){
+                    $price = $this->currency->format($this->tax->calculate($option_value['price'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+                } else {
+                    $price = $this->currency->format($this->tax->calculate($option_value['price'], $product_info['tax_class_id'], $this->config->get('config_tax') ? 'P' : false), $this->session->data['currency']);
+                }
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[
+                if (!$option_value['subtract'] || ($option_value['quantity'] > 0)) {
+            ]]></search>
+            <add position="replace"><![CDATA[    
+                if ($show_no_stock || !$option_value['subtract'] || ($option_value['quantity'] > 0)) {
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[
+                'image'                   => $this->model_tool_image->resize($option_value['image'], 50, 50),]]></search>
+            <add position="replace"><![CDATA[    
+                'image'                   => (int)$show_image ? $this->model_tool_image->resize($option_value['image'], 50, 50) : false,
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[
+                'price'                   => $price,
+            ]]></search>
+            <add position="replace"><![CDATA[    
+                'price'                   => (int)$show_price ? $price : false,
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[
+                $product_option_value_data[] = array(
+            ]]></search>
+            <add position="after"><![CDATA[    
+                'quantity'                => (int)$show_quantity ?  $option_value['quantity'] . $this->language->get('text_oc_quantity') : false,
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[
+                $data['products'][] = array(
+            ]]></search>
+            <add position="before"><![CDATA[            
+                $options = array();
+
+                foreach ($this->model_catalog_product->getProductOptions($result['product_id']) as $option) {
+                    $product_option_value_data = array();
+
+                    foreach ($option['product_option_value'] as $option_value) {
+                        if ($show_no_stock || !$option_value['subtract'] || ($option_value['quantity'] > 0)) {
+                            if ((($this->config->get('config_customer_price') && $this->customer->isLogged()) || !$this->config->get('config_customer_price')) && (float)$option_value['price']) {
+                                if ($option_value['price_prefix'] == '=') {
+                                    $price_option = $this->currency->format($this->tax->calculate($option_value['price'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+                                } else {
+                                    $price_option = $this->currency->format($this->tax->calculate($option_value['price'], $result['tax_class_id'], $this->config->get('config_tax') ? 'P' : false), $this->session->data['currency']);
+                                }
+                            } else {
+                                $price_option = false;
+                            }
+
+                            $product_option_value_data[] = array(
+                                'product_option_value_id' => $option_value['product_option_value_id'],
+                                'option_value_id'         => $option_value['option_value_id'],
+                                'name'                    => $option_value['name'],
+                                'image'                   => (int)$show_image ? $this->model_tool_image->resize($option_value['image'], 50, 50) : false,
+                                'price'                   => (int)$show_price ? $price : false,
+                                'price_prefix'            => $option_value['price_prefix'],
+                                'quantity'                => (int)$show_quantity ?  $option_value['quantity'] . $this->language->get('text_oc_quantity') : false
+                            ); 
+                        }
+                    } 
+
+                    $options[] = array(
+                        'product_option_id'    => $option['product_option_id'],
+                        'product_option_value' => $product_option_value_data,
+                        'option_id'            => $option['option_id'],
+                        'name'                 => $option['name'],
+                        'type'                 => $option['type'],
+                        'value'                => $option['value'],
+                        'required'             => $option['required']
+                    );
+                } 
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[
+                $data['products'][] = array(
+            ]]></search>
+            <add position="after"><![CDATA[
+                'options'   => $options,
+            ]]></add>
+        </operation>        
+    </file>
+    <file path="admin/controller/setting/setting.php">
+        <operation>
+            <search><![CDATA[
+                $data['heading_title'] = $this->language->get('heading_title');
+            ]]></search>
+            <add position="after"><![CDATA[
+                $data['entry_show_quantity'] = $this->language->get('entry_show_quantity');
+                $data['entry_show_no_stock'] = $this->language->get('entry_show_no_stock');
+                $data['entry_show_image'] = $this->language->get('entry_show_image');
+                $data['entry_show_price'] = $this->language->get('entry_show_price');
+                $data['entry_pull_left'] = $this->language->get('entry_pull_left');
+                
+                $data['text_options_category'] = $this->language->get('text_options_category');
+                
+                $data['help_pull_left'] = $this->language->get('help_pull_left');
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[$data['header'] = $this->load->controller('common/header');]]></search>
+            <add position="before"><![CDATA[
+                if (isset($this->request->post['config_oc_show_quantity'])) {
+                    $data['config_oc_show_quantity'] = $this->request->post['config_oc_show_quantity'];
+                } else {
+                    $data['config_oc_show_quantity'] = $this->config->get('config_oc_show_quantity');
+                }
+                
+                if (isset($this->request->post['config_oc_show_no_stock'])) {
+                    $data['config_oc_show_no_stock'] = $this->request->post['config_oc_show_no_stock'];
+                } else {
+                    $data['config_oc_show_no_stock'] = $this->config->get('config_oc_show_no_stock');
+                }
+                
+                if (isset($this->request->post['config_oc_show_image'])) {
+                    $data['config_oc_show_image'] = $this->request->post['config_oc_show_image'];
+                } else {
+                    $data['config_oc_show_image'] = $this->config->get('config_oc_show_image');
+                }
+                
+                if (isset($this->request->post['config_oc_show_price'])) {
+                    $data['config_oc_show_price'] = $this->request->post['config_oc_show_price'];
+                } else {
+                    $data['config_oc_show_price'] = $this->config->get('config_oc_show_price');
+                }
+                
+                if (isset($this->request->post['config_oc_pull_left'])) {
+                    $data['config_oc_pull_left'] = $this->request->post['config_oc_pull_left'];
+                } else {
+                    $data['config_oc_pull_left'] = $this->config->get('config_oc_pull_left');
+                }
+            ]]></add>
+        </operation>
+    </file>-->
+    
+    <!-- view -->
+    
+    <!--<file path="catalog/view/theme/*/template/product/product.tpl">
+        <operation>
+            <search><![CDATA[
+                <?php if ($option_value['price']) { ?>
+            ]]></search>
+            <add position="replace"><![CDATA[
+                <?php if ($option_value['quantity'] || $option_value['price']) { ?>
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[
+                (<?php echo $option_value['price_prefix']; ?><?php echo $option_value['price']; ?>)
+            ]]></search>
+            <add position="replace"><![CDATA[
+                : <?php echo $option_value['quantity']; ?> <?php if ($option_value['price']) { ?>
+                <?php echo $option_value['price_prefix']; ?><?php echo $option_value['price']; ?>
+                <?php } ?>
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[
+                <img src="<?php echo $option_value['image']; ?>" alt="<?php echo $option_value['name'] . ($option_value['price'] ? ' ' . $option_value['price_prefix'] . $option_value['price'] : ''); ?>" class="img-thumbnail" />
+            ]]></search>
+            <add position="replace"><![CDATA[
+                <?php if ($option_value['image']) { ?>
+                <img src="<?php echo $option_value['image']; ?>" alt="<?php echo $option_value['name'] . ($option_value['price'] ? ' ' . $option_value['price_prefix'] . $option_value['price'] : ''); ?>" class="img-thumbnail" /> 
+                <?php } ?>
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[
+                <div class="radio">
+            ]]></search>
+            <add position="replace"><![CDATA[
+                <div class="<?php if($pull_left) { echo 'radio-inline'; } else { echo 'radio'; } ?>">
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[
+                <div class="checkbox">
+            ]]></search>
+            <add position="replace"><![CDATA[
+                <div class="<?php if($pull_left) { echo 'checkbox-inline'; } else { echo 'checkbox'; } ?>">]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[
+                type="radio" name="option[
+            ]]></search>
+            <add position="replace"><![CDATA[
+                onchange="updateOptionPriceProduct('<?php echo $product_id; ?>')" type="radio" name="option[]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[
+                <select name="option[
+            ]]></search>
+            <add position="replace"><![CDATA[
+                <select onchange="updateOptionPriceProduct('<?php echo $product_id; ?>')" name="option[]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[
+                type="checkbox" name="option[
+            ]]></search>
+            <add position="replace"><![CDATA[
+                onchange="updateOptionPriceProduct('<?php echo $product_id; ?>')" type="checkbox" name="option[]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[
+                <?php echo $price; ?>
+            ]]></search>
+            <add position="replace"><![CDATA[
+                <span id="price"><?php echo $price; ?></span>
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[
+                <?php echo $special; ?>
+            ]]></search>
+            <add position="replace"><![CDATA[
+                <span id="special"><?php echo $special; ?></span>
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[
+                <?php echo $tax; ?>
+            ]]></search>
+            <add position="replace"><![CDATA[
+                <span id="tax"><?php echo $tax; ?></span>
+            ]]></add>
+        </operation>
+    </file>
+    <file path="catalog/view/theme/*/template/extension/module/{bestseller.tpl,latest.tpl,featured.tpl,special.tpl}|catalog/view/theme/*/template/product/{category.tpl,manufacturer_info.tpl,search.tpl,special.tpl,product.tpl}">
+        <operation>
+            <search><![CDATA[
+                <?php echo $product['price']; ?>
+            ]]></search>
+            <add position="replace"><![CDATA[
+                <span class="price_<?php echo $product['product_id']; ?>"><?php echo $product['price']; ?></span>
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[
+                <?php echo $product['special']; ?>
+            ]]></search>
+            <add position="replace"><![CDATA[
+                <span class="price_special_<?php echo $product['product_id']; ?>"><?php echo $product['special']; ?></span>
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[
+                <?php echo $product['tax']; ?>
+            ]]></search>
+            <add position="replace"><![CDATA[
+                <span class="price_tax_<?php echo $product['product_id']; ?>"><?php echo $product['tax']; ?></span>
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[
+                <?php if ($product['price']) { ?>
+            ]]></search>
+            <add position="before"><![CDATA[
+                <div class="options-category" id="<?php if (isset($module_name)) { echo $module_name; } ?>product_<?php echo $product['product_id']; ?>">
+                  <?php if ($product['options']) { ?>
+                    <?php foreach ($product['options'] as $option) { ?>
+                      <?php if ($option['type'] == 'select') { ?>
+                        <div class="form-group col-sm-5<?php echo ($option['required'] ? ' required' : ''); ?>">
+                          <label class="control-label" for="input-option<?php echo $option['product_option_id']; ?>"><?php echo $option['name']; ?></label>
+                          <select onchange="updateOptionPrice('<?php if (isset($module_name)) { echo $module_name; } else { echo ''; } ?>', '<?php echo $product['product_id']; ?>')" name="option[<?php echo $option['product_option_id']; ?>]" id="input-option<?php echo $option['product_option_id']; ?>" class="form-control">
+                            <option value=""><?php echo $text_select; ?></option>
+                            <?php foreach ($option['product_option_value'] as $option_value) { ?>
+                            <option value="<?php echo $option_value['product_option_value_id']; ?>"><?php echo $option_value['name']; ?>
+                            <?php if ($option_value['quantity'] || $option_value['price']) { ?>
+                            : <?php echo $option_value['quantity']; ?> <?php if ($option_value['price']) { ?>
+                            <?php echo $option_value['price_prefix']; ?><?php echo $option_value['price']; ?>
+                            <?php } ?>
+                            <?php } ?>
+                            </option>
+                            <?php } ?>
+                          </select>
+                        </div>
+                        <?php } ?>
+                        <?php if ($option['type'] == 'radio') { ?>
+                        <div class="form-group col-sm-5<?php echo ($option['required'] ? ' required' : ''); ?>">
+                          <label class="control-label"><?php echo $option['name']; ?></label>
+                          <div id="input-option<?php echo $option['product_option_id']; ?>">
+                            <?php foreach ($option['product_option_value'] as $option_value) { ?>
+                            <div class="<?php if($pull_left) { echo 'radio-inline'; } else { echo 'radio'; } ?>">
+                              <label>
+                                <input onchange="updateOptionPrice('<?php if (isset($module_name)) { echo $module_name; } else { echo ''; } ?>', '<?php echo $product['product_id']; ?>')" type="radio" name="option[<?php echo $option['product_option_id']; ?>]" value="<?php echo $option_value['product_option_value_id']; ?>" />
+                                <?php echo $option_value['name']; ?>
+                                <?php if ($option_value['quantity'] || $option_value['price']) { ?>
+                                : <?php echo $option_value['quantity']; ?> <?php if ($option_value['price']) { ?>
+                                <?php echo $option_value['price_prefix']; ?><?php echo $option_value['price']; ?>
+                                <?php } ?>
+                                <?php } ?>
+                              </label>
+                            </div>
+                            <?php } ?>
+                          </div>
+                        </div>
+                        <?php } ?>
+                        <?php if ($option['type'] == 'checkbox') { ?>
+                        <div class="form-group col-sm-5<?php echo ($option['required'] ? ' required' : ''); ?>">
+                          <label class="control-label"><?php echo $option['name']; ?></label>
+                          <div id="input-option<?php echo $option['product_option_id']; ?>">
+                            <?php foreach ($option['product_option_value'] as $option_value) { ?>
+                            <div class="<?php if($pull_left) { echo 'checkbox-inline'; } else { echo 'checkbox'; } ?>">
+                              <label>
+                                <input onchange="updateOptionPrice('<?php if (isset($module_name)) { echo $module_name; } else { echo ''; } ?>', '<?php echo $product['product_id']; ?>')" type="checkbox" name="option[<?php echo $option['product_option_id']; ?>][]" value="<?php echo $option_value['product_option_value_id']; ?>" />
+                                <?php if ($option_value['image']) { ?>
+                                <img src="<?php echo $option_value['image']; ?>" alt="<?php echo $option_value['name'] . ($option_value['price'] ? ' ' . $option_value['price_prefix'] . $option_value['price'] : ''); ?>" class="img-thumbnail" /> 
+                                <?php } ?>
+                                <?php echo $option_value['name']; ?>
+                                <?php if ($option_value['quantity'] || $option_value['price']) { ?>
+                                : <?php echo $option_value['quantity']; ?> <?php if ($option_value['price']) { ?>
+                                <?php echo $option_value['price_prefix']; ?><?php echo $option_value['price']; ?>
+                                <?php } ?>
+                                <?php } ?>
+                              </label>
+                            </div>
+                            <?php } ?>
+                          </div>
+                        </div>
+                        <?php } ?>
+                        <?php if ($option['type'] == 'image') { ?>
+                        <div class="form-group col-sm-5<?php echo ($option['required'] ? ' required' : ''); ?>">
+                          <label class="control-label"><?php echo $option['name']; ?></label>
+                          <div id="input-option<?php echo $option['product_option_id']; ?>">
+                            <?php foreach ($option['product_option_value'] as $option_value) { ?>
+                            <div class="<?php if($pull_left) { echo 'radio-inline'; } else { echo 'radio'; } ?>">
+                              <label>
+                                <input onchange="updateOptionPrice('<?php if (isset($module_name)) { echo $module_name; } else { echo ''; } ?>', '<?php echo $product['product_id']; ?>')" type="radio" name="option[<?php echo $option['product_option_id']; ?>]" value="<?php echo $option_value['product_option_value_id']; ?>" />
+                                <?php if ($option_value['image']) { ?>
+                                <img src="<?php echo $option_value['image']; ?>" alt="<?php echo $option_value['name'] . ($option_value['price'] ? ' ' . $option_value['price_prefix'] . $option_value['price'] : ''); ?>" class="img-thumbnail" /> 
+                                <?php } ?>
+                                <?php echo $option_value['name']; ?>
+                                <?php if ($option_value['quantity'] || $option_value['price']) { ?>
+                                : <?php echo $option_value['quantity']; ?> <?php if ($option_value['price']) { ?>
+                                <?php echo $option_value['price_prefix']; ?><?php echo $option_value['price']; ?>
+                                <?php } ?>
+                                <?php } ?>
+                              </label>
+                            </div>
+                            <?php } ?>
+                          </div>
+                        </div>
+                        <?php } ?>
+                        <?php if ($option['type'] == 'text') { ?>
+                        <div class="form-group col-sm-5<?php echo ($option['required'] ? ' required' : ''); ?>">
+                          <label class="control-label" for="input-option<?php echo $option['product_option_id']; ?>"><?php echo $option['name']; ?></label>
+                          <input type="text" name="option[<?php echo $option['product_option_id']; ?>]" value="<?php echo $option['value']; ?>" placeholder="<?php echo $option['name']; ?>" id="input-option<?php echo $option['product_option_id']; ?>" class="form-control" />
+                        </div>
+                        <?php } ?>
+                        <?php if ($option['type'] == 'textarea') { ?>
+                        <div class="form-group col-sm-5<?php echo ($option['required'] ? ' required' : ''); ?>">
+                          <label class="control-label" for="input-option<?php echo $option['product_option_id']; ?>"><?php echo $option['name']; ?></label>
+                          <textarea name="option[<?php echo $option['product_option_id']; ?>]" rows="5" placeholder="<?php echo $option['name']; ?>" id="input-option<?php echo $option['product_option_id']; ?>" class="form-control"><?php echo $option['value']; ?></textarea>
+                        </div>
+                        <?php } ?>
+                        <?php if ($option['type'] == 'file') { ?>
+                        <div class="form-group<?php echo ($option['required'] ? ' required' : ''); ?>">
+                          <label class="control-label"><?php echo $option['name']; ?></label>
+                          <button type="button" id="button-upload<?php echo $option['product_option_id']; ?>" data-loading-text="<?php echo $text_loading; ?>" class="btn btn-default btn-block"><i class="fa fa-upload"></i> <?php echo $button_upload; ?></button>
+                          <input type="hidden" name="option[<?php echo $option['product_option_id']; ?>]" value="" id="input-option<?php echo $option['product_option_id']; ?>" />
+                        </div>
+                        <?php } ?>
+                        <?php if ($option['type'] == 'date') { ?>
+                        <div class="form-group<?php echo ($option['required'] ? ' required' : ''); ?>">
+                          <label class="control-label" for="input-option<?php echo $option['product_option_id']; ?>"><?php echo $option['name']; ?></label>
+                          <div class="input-group date">
+                            <input type="text" name="option[<?php echo $option['product_option_id']; ?>]" value="<?php echo $option['value']; ?>" data-date-format="YYYY-MM-DD" id="input-option<?php echo $option['product_option_id']; ?>" class="form-control" />
+                            <span class="input-group-btn">
+                            <button class="btn btn-default" type="button"><i class="fa fa-calendar"></i></button>
+                            </span></div>
+                        </div>
+                        <?php } ?>
+                        <?php if ($option['type'] == 'datetime') { ?>
+                        <div class="form-group<?php echo ($option['required'] ? ' required' : ''); ?>">
+                          <label class="control-label" for="input-option<?php echo $option['product_option_id']; ?>"><?php echo $option['name']; ?></label>
+                          <div class="input-group datetime">
+                            <input type="text" name="option[<?php echo $option['product_option_id']; ?>]" value="<?php echo $option['value']; ?>" data-date-format="YYYY-MM-DD HH:mm" id="input-option<?php echo $option['product_option_id']; ?>" class="form-control" />
+                            <span class="input-group-btn">
+                            <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                            </span></div>
+                        </div>
+                        <?php } ?>
+                        <?php if ($option['type'] == 'time') { ?>
+                        <div class="form-group<?php echo ($option['required'] ? ' required' : ''); ?>">
+                          <label class="control-label" for="input-option<?php echo $option['product_option_id']; ?>"><?php echo $option['name']; ?></label>
+                          <div class="input-group time">
+                            <input type="text" name="option[<?php echo $option['product_option_id']; ?>]" value="<?php echo $option['value']; ?>" data-date-format="HH:mm" id="input-option<?php echo $option['product_option_id']; ?>" class="form-control" />
+                            <span class="input-group-btn">
+                            <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                            </span></div>
+                        </div>
+                        <?php } ?>
+                    <?php } ?>
+                  <?php } ?>
+                  <?php if(isset($product['minimum'])) { ?>
+                  <input type="hidden" name="quantity" size="3" value="<?php echo $product['minimum']; ?>" />
+                  <?php } ?>
+                  <input type="hidden" name="product_id" value="<?php echo $product['product_id']; ?>" />
+                </div>
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[
+                cart.add(
+            ]]></search>
+            <add position="replace"><![CDATA[addCartOption('<?php if (isset($module_name)) { echo $module_name; } else { echo ''; } ?>',]]></add>
+        </operation>            
+    </file>-->
+    <file path="admin/view/template/catalog/product_form.tpl">
+        <operation>
+            <search><![CDATA[
+                <?php if ($product_option_value['price_prefix'] == '+') { ?>
+            ]]></search>
+            <add position="before"><![CDATA[
+                <?php if ($product_option_value['price_prefix'] == '=') { ?>
+                <option value="=" selected="selected">=</option>
+                <?php } else { ?>
+                <option value="=">=</option>
+                <?php } ?>
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[
+                html += '  <td class="text-right"><select name="product_option[' + option_row + '][product_option_value][' + option_value_row + '][price_prefix]" class="form-control">';
+            ]]></search>
+            <add position="after"><![CDATA[
+                html += '    <option value="=">=</option>';
+            ]]></add>
+        </operation>        
+    </file>
+    <!--<file path="admin/view/template/setting/setting.tpl">
+        <operation>
+            <search><![CDATA[
+                <div class="tab-pane" id="tab-option">
+            ]]></search>
+            <add position="after"><![CDATA[
+              <fieldset>
+                <legend><?php echo $text_options_category; ?></legend>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">
+                    <?php echo $entry_show_quantity; ?></label>
+                    <div class="col-sm-10">
+                      <label class="radio-inline">
+                      <?php if ($config_oc_show_quantity) { ?>
+                      <input type="radio" name="config_oc_show_quantity" value="1" checked="checked" />
+                      <?php echo $text_yes; ?>
+                      <?php } else { ?>
+                      <input type="radio" name="config_oc_show_quantity" value="1" />
+                      <?php echo $text_yes; ?>
+                      <?php } ?>
+                    </label>
+                    <label class="radio-inline">
+                      <?php if (!$config_oc_show_quantity) { ?>
+                      <input type="radio" name="config_oc_show_quantity" value="0" checked="checked" />
+                      <?php echo $text_no; ?>
+                      <?php } else { ?>
+                      <input type="radio" name="config_oc_show_quantity" value="0" />
+                      <?php echo $text_no; ?>
+                      <?php } ?>
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">
+                    <?php echo $entry_show_no_stock; ?></label>
+                    <div class="col-sm-10">
+                      <label class="radio-inline">
+                      <?php if ($config_oc_show_no_stock) { ?>
+                      <input type="radio" name="config_oc_show_no_stock" value="1" checked="checked" />
+                      <?php echo $text_yes; ?>
+                      <?php } else { ?>
+                      <input type="radio" name="config_oc_show_no_stock" value="1" />
+                      <?php echo $text_yes; ?>
+                      <?php } ?>
+                    </label>
+                    <label class="radio-inline">
+                      <?php if (!$config_oc_show_no_stock) { ?>
+                      <input type="radio" name="config_oc_show_no_stock" value="0" checked="checked" />
+                      <?php echo $text_no; ?>
+                      <?php } else { ?>
+                      <input type="radio" name="config_oc_show_no_stock" value="0" />
+                      <?php echo $text_no; ?>
+                      <?php } ?>
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">
+                    <?php echo $entry_show_image; ?></label>
+                    <div class="col-sm-10">
+                      <label class="radio-inline">
+                      <?php if ($config_oc_show_image) { ?>
+                      <input type="radio" name="config_oc_show_image" value="1" checked="checked" />
+                      <?php echo $text_yes; ?>
+                      <?php } else { ?>
+                      <input type="radio" name="config_oc_show_image" value="1" />
+                      <?php echo $text_yes; ?>
+                      <?php } ?>
+                    </label>
+                    <label class="radio-inline">
+                      <?php if (!$config_oc_show_image) { ?>
+                      <input type="radio" name="config_oc_show_image" value="0" checked="checked" />
+                      <?php echo $text_no; ?>
+                      <?php } else { ?>
+                      <input type="radio" name="config_oc_show_image" value="0" />
+                      <?php echo $text_no; ?>
+                      <?php } ?>
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">
+                    <?php echo $entry_show_price; ?></label>
+                    <div class="col-sm-10">
+                      <label class="radio-inline">
+                      <?php if ($config_oc_show_price) { ?>
+                      <input type="radio" name="config_oc_show_price" value="1" checked="checked" />
+                      <?php echo $text_yes; ?>
+                      <?php } else { ?>
+                      <input type="radio" name="config_oc_show_price" value="1" />
+                      <?php echo $text_yes; ?>
+                      <?php } ?>
+                    </label>
+                    <label class="radio-inline">
+                      <?php if (!$config_oc_show_price) { ?>
+                      <input type="radio" name="config_oc_show_price" value="0" checked="checked" />
+                      <?php echo $text_no; ?>
+                      <?php } else { ?>
+                      <input type="radio" name="config_oc_show_price" value="0" />
+                      <?php echo $text_no; ?>
+                      <?php } ?>
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="<?php echo $help_pull_left; ?>"><?php echo $entry_pull_left; ?></span>
+                    </label>
+                    <div class="col-sm-10">
+                      <label class="radio-inline">
+                      <?php if ($config_oc_pull_left) { ?>
+                      <input type="radio" name="config_oc_pull_left" value="1" checked="checked" />
+                      <?php echo $text_yes; ?>
+                      <?php } else { ?>
+                      <input type="radio" name="config_oc_pull_left" value="1" />
+                      <?php echo $text_yes; ?>
+                      <?php } ?>
+                    </label>
+                    <label class="radio-inline">
+                      <?php if (!$config_oc_pull_left) { ?>
+                      <input type="radio" name="config_oc_pull_left" value="0" checked="checked" />
+                      <?php echo $text_no; ?>
+                      <?php } else { ?>
+                      <input type="radio" name="config_oc_pull_left" value="0" />
+                      <?php echo $text_no; ?>
+                      <?php } ?>
+                    </label>
+                  </div>
+                </div>
+              </fieldset>
+            ]]></add>
+        </operation>        
+    </file>-->
+    
+    <!-- language -->
+    
+     <!--<file path="catalog/language/en-gb/en-gb.php">
+        <operation>
+            <search><![CDATA[
+                // Text]]>
+            </search>
+            <add position="after"><![CDATA[
+                $_['text_oc_quantity'] = ' pcs';
+            ]]></add>
+        </operation>        
+    </file>
+    <file path="catalog/language/ru-ru/ru-ru.php">
+        <operation>
+            <search><![CDATA[
+                // Text]]>
+            </search>
+            <add position="after"><![CDATA[
+                $_['text_oc_quantity'] = ' шт.';
+            ]]></add>
+        </operation>        
+    </file>
+    <file path="admin/language/en-gb/setting/setting.php">
+        <operation>
+            <search><![CDATA[
+                // Text
+            ]]></search>
+            <add position="after"><![CDATA[
+                $_['entry_show_quantity']         = 'Show quantity';
+                $_['entry_show_no_stock']         = 'Show with a shortage of stock';
+                $_['entry_show_image']             = 'Show Image';
+                $_['entry_show_price']             = 'Show Price';
+                $_['entry_pull_left']             = 'Compact mode';
+                $_['text_options_category']     = 'Options in Category';
+                $_['help_pull_left']             = 'Displays a list of options in a single line, it is desirable to disable the display of images, amount and price';
+            ]]></add>
+        </operation>        
+    </file>
+    <file path="admin/language/ru-ru/setting/setting.php">
+        <operation>
+            <search><![CDATA[
+                // Text
+            ]]></search>
+            <add position="after"><![CDATA[
+                $_['entry_show_quantity']         = 'Показывать количество';
+                $_['entry_show_no_stock']         = 'Показывать при отсутствии на складе';
+                $_['entry_show_image']             = 'Показывать изображение';
+                $_['entry_show_price']             = 'Показывать цену';
+                $_['entry_pull_left']             = 'Компактный режим';
+                $_['text_options_category']     = 'Опции в Категориях';
+                $_['help_pull_left']             = 'Отображет список опций в одну строку, желательно отключить показ изображений, количества и цены';
+            ]]></add>
+        </operation>        
+    </file>-->
+    
+</modification>

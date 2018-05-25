@@ -1,0 +1,16 @@
+input[type='text'], select {
+  font: 14px 'Open Sans';
+  padding: 3px 5px;
+}
+#fixpanel_content{
+  font: 14px 'Open Sans';
+}
+.block_oc_link.enabled {
+	padding: 10px;
+  	background: #E8E8E8;
+}
+.block_oc_link.disabled {
+	padding: 10px;
+  	background: #E8E8E8;
+  	color: #999;
+}

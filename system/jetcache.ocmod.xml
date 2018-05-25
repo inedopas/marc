@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <name>Jet Cache</name>
+    <version>3.0</version>
+    <vqmver required="true">2.4.0</vqmver>
+    <code>jetcache</code>
+
+<file path="system/library/db.php" error="skip">
+    <operation error="skip">
+        <search  position="after"><![CDATA[class DB {]]></search>
+        <add position="after"><![CDATA[
+	private $sc_jetcache_query_count = 0;
+]]></add>
+    </operation>
+    <operation error="skip">
+        <search regex="true" position="replace"><![CDATA[~(.*?)function query[(](.*?)\{~]]></search>
+        <add position="replace"><![CDATA[
+	public function get_sc_jetcache_query_count() {
+		return $this->sc_jetcache_query_count;
+	}
+
+$1function query($2{
+	$this->sc_jetcache_query_count++;
+
+]]></add>
+    </operation>
+</file>
+</modification>

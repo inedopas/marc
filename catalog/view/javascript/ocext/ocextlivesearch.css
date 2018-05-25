@@ -1,0 +1,92 @@
+[name=search] {
+	outline: none;
+}
+#ocextlivesearch ul, #ocextlivesearch * {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+#ocextlivesearch {
+	position: absolute;
+	min-width: 455px;
+        max-height: 450px;
+        overflow-y: auto;
+	top: 0px;
+	background: #ffffff;
+	z-index: 100;
+	box-shadow: 0px 10px 30px rgba(0,0,0,.5);
+        z-index: 100000;
+}
+#ocextlivesearch ul li {
+	border-top: 1px solid #eeeeee;
+}
+#ocextlivesearch a {
+	color: #666666;
+	display: block;
+	clear: both;
+	overflow: hidden;
+	line-height: 16px;
+	padding: 11px;
+	text-decoration: none;
+}
+
+#ocextlivesearch a:hover, 
+#ocextlivesearch a:hover .pmore,
+#ocextlivesearch li.active a
+{
+	background: #666666 !important;
+	color: #ffffff !important;
+}
+
+#ocextlivesearch a.amore {
+        text-align: center;
+        color: #444444  !important;;
+}
+
+#ocextlivesearch img {
+	float: left;
+	width: 50px;
+	height: 50px;
+	margin-right: 10px;
+}
+#ocextlivesearch img[src=''] {
+	display: none;
+}
+.pmore {
+	padding: 3px 10px !important;
+	text-align: left;
+        background: #F5F5F5;
+        text-decoration: underline;
+        color: #bbb;
+}
+.pmore:hover{
+    background: none;
+    text-decoration: underline;
+    color: #bbb;
+}
+#ocextlivesearch a em {
+	display: block;
+	color: #333333;
+	font-style: normal;
+	font-weight: bold;
+}
+#ocextlivesearch a:hover em, #ocextlivesearch li.active a em {
+	color: white;
+}
+#ocextlivesearch strike {
+	color: #aaaaaa;
+}
+#ocextlivesearch a:hover strike {
+	color: #f66;
+}
+#ocextlivesearch small {
+	display: block;
+}
+
+#ocextlivesearch  .title-box{
+    padding: 7px 10px !important;
+    font-size: 13px;
+    font-weight: bold;
+    border-top: 1px solid #eeeeee;
+    color: #1f90bb;
+}
