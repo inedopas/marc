@@ -10,7 +10,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			$('#q_down').click(function () {
 			var $input = $(this).parent().find('#quantity_wanted');
 			var count = parseInt($input.val()) - 1;
-			count = count <span 1 ? 1 : count;
+			count = count < 1 ? 1 : count;
 			$input.val(count);
 			$input.change();
 			return false;
@@ -281,7 +281,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 					<!--EOF Related Options-->
                                   <span <?php if ($option_value['image']) { echo 'style="padding: 5px 2px 0px"'; } ?>>
                                  <?php if (!$option_value['image']) { ?><?php } ?>
-                                 <span id="opt-name" class="opt"><?php echo $option_value['name']; ?></span>
+                                <span id="opt-name" class="opt"><?php echo $option_value['name']; ?></span>
                                  <div class="hidden">
                                  <?php if ($option_value['special']) { ?><span id='opt-special' class="opt"><?php echo $special . " ₽"; ?></span><?php } else { ?><span id="opt-price" class="opt" style="background-color:#eeeeee;padding:2px 0px 3px 0px;color:#4e636d;border-radius: 9px;"><?php echo $option_value['price'] . " ₽"; ?></span><?php } ?>
                                  <?php if ($option_value['weight'] > 0) { ?><span id="opt-weight" class="opt"><?php echo $option_value['weight']; ?> гр.</span><?php } ?><span id="opt-quantity" class="opt" style="background-color:#eeeeee;padding:2px 0px 3px 0px;color:#4e636d;border-radius: 9px;"><?php echo $option_value['quantity']; ?> шт.</span>
@@ -290,7 +290,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
                                   <?php } ?>
                                   <span class="hidden"><?php if ($option_value['special']) { ?>(<?php echo $option_value['price_prefix']; ?><?php echo $option_value['special']; ?>)<?php } elseif ($option_value['price']) { ?><!--BOF Related Options-->(<?php echo $option_value['price_prefix']; ?><?php echo $option_value['price']; ?>)<!--EOF Related Options--><?php } ?></span>
                                   <?php if($theme_options->get( 'product_page_radio_style' ) != 1) { ?>
-                                  <?php } ?></>
+                                  <?php } ?></span>
                                   </div>
                                 </label>
                               </div>
@@ -387,7 +387,6 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
                              </script>
                              <?php } ?>
                            </div>
-
                          </div>
                          <?php } ?>
                          <?php if ($option['type'] == 'text') { ?>
@@ -477,40 +476,34 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			            <div class="heading">Выбрано</div>
 			            <table cellpadding="10">
                             <tr class="opt-heading">
-                                <td width="25%">Вставка</td>
+                        <!--      <td width="25%">Вставка</td> -->
                                 <td width="15%">Размер</td>
                                 <td width="15%">Вес</td>
                                 <td width="15%">В наличии</td>
                                 <td width="15%">Цена</td>
                             </tr>
                             <tr class="opt-value">
-                                <td option="14" class="opt-name"></td>
+                                <!--   <td option="14" class="opt-name"></td>-->
                                 <td option="11" class="opt-name"></td>
                                 <td option="11" class="opt-weight"></td>
-                                <td option="11" class="opt-quantity"></td>
+                                <td id="tab" option="11" class="opt-quantity"></td>
                                 <td class="opt-price"></td>
                             </tr>
                         </table>
                 </div>
-				<?php } else if ($option['option_id'] == '14') { ?>
-<div class="form-group checked-options" style="background-color: #f9f9f9;margin-top: 5px;">
-			            <div class="heading">Выбрано</div>
-			            <table cellpadding="10">
-                            <tr class="opt-heading">
-                                <td width="25%">Вставка</td>
-                                <td width="15%">Вес</td>
-                                <td width="20%">В наличии</td>
-                                <td width="20%">Цена</td>
-                            </tr>
-                            <tr class="opt-value">
-                                <td option="14" class="opt-name"></td>
-                                <td option="14" class="opt-weight"></td>
-                                <td id="tab" option="14" class="opt-quantity"></td>
-                                <td class="opt-price"><span class="opt-newprice"></span><span class="opt-oldprice"></span></td>
-                            </tr>
-                        </table>
-                </div>
-<?php } ?>
+				<?php } ?>
+
+            <div id="win" style="display:none;">
+ 										   <div class="overlay"></div>
+ 										      <div class="visible">
+										        <h2 style="text-align:center">Уважаемый покупатель!</h2>
+ 										          <div class="content">
+									            <p></p>Извините у нас в наличии только <span id="qv"></span> штук. Можете связаться с менеджером для заказа большего количество.</p>
+ 										          </div>
+									        <button type="submit"class="button" onClick="getElementById('win').style.display='none';">закрыть</button>
+ 										    </div>
+ 										</div>
+
 			      <div class="cart">
                         <div class="add-to-cart clearfix">
 			          <?php
@@ -524,21 +517,6 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
      			          <!-- <p><?php echo $entry_qty; ?></p> -->
 						  <input type="hidden" name="product_id" size="2" value="<?php echo $product_id; ?>" />
      			          <input type="button" value="<?php echo $button_cart; ?>" id="button-cart" rel="<?php echo $product_id; ?>" data-loading-text="<?php echo $text_loading; ?>" class="button" />
-
-										<div id="win" style="display:none;">
-										   <div class="overlay"></div>
-										      <div class="visible">
-										        <h2 style="text-align:center">Уважаемый покупатель!</h2>
-										          <div class="content">
-										            <p></p>Извините у нас в наличии только <span id="qv"></span> штук. Можете связаться с менеджером для заказа большего количество.</p>
-										          </div>
-										        <button type="submit"class="button" onClick="getElementById('win').style.display='none';">закрыть</button>
-										    </div>
-										</div>
-
-
-
-
 						  <div class="quantity">
      			          <span id="q_up"><i class="fa fa-angle-up"></i></span>
      				      <input type="text" name="quantity" id="quantity_wanted" size="2" value="<?php echo $minimum; ?>" />
@@ -617,8 +595,15 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			        <?php } ?>
 			        <span><?php echo $text_stock; ?></span> <?php echo $stock; ?><?php echo $text_qustock; ?><br />
 			        <?php foreach ($attribute_groups as $attribute_group) { ?>
-			        <?php foreach ($attribute_group['attribute'] as $attribute) { ?>
-			        	<span><?php echo $attribute['name']; ?>:</span> <?php echo $attribute['text']; ?><br />
+			        <?php foreach ($attribute_group['attribute'] as $attribute) {
+
+								if ($attribute['name']=='Вставка') {
+									$dump=$attribute['text'];
+								}
+
+								?>
+			        	<span><?php echo $attribute['name'];  ?>:</span> <?php echo $attribute['text']; ?>
+								<br />
 			        <?php } ?>
 			        <?php } ?>
 			      </div>
@@ -911,20 +896,16 @@ $('select[name=\'recurring_id\'], input[name="quantity"]').change(function(){
 //--></script>
 <script type="text/javascript"><!--
 $('#button-cart').on('click', function() {
-var $input = $(this).parent().find('#quantity_wanted');
-var count = parseInt($input.val());
+ var $input = $(this).parent().find('#quantity_wanted');
+ var count = parseInt($input.val());
 var sht = document.getElementById('tab');
 var tor=(sht.innerHTML);
-var num = tor[0] + tor[1]
-var kil= +num;
-if (count>kil){
-document.getElementById('qv').innerHTML=kil;
-document.getElementById("win").style.display = null;
+var kil= parseInt(tor.replace(/\D+/g,""));
+ if (count>kil){
+ document.getElementById('qv').innerHTML=kil;
+ document.getElementById("win").style.display = null;
 return;
 }
-
-
-
 	$.ajax({
 		url: 'index.php?route=checkout/cart/add',
 		type: 'post',
@@ -1230,7 +1211,7 @@ $('#tabs a').tabs();
 <?php if($theme_options->get( 'product_image_zoom' ) != 2) {
 echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($config->get('config_theme') . '_directory') . '/js/jquery.elevateZoom-3.0.3.min.js"></script>';
 } ?>
-<input type="button" onclick="history.back();" value="Назад" style="    border: none;
+<input type="button" onclick="history.back();" value="Назад" style="border: none;
     padding: 2px 10px 2px 10px;
     font-size: 16px;
     color: #ffffff;

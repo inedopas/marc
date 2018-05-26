@@ -323,12 +323,6 @@ class ControllerProductProduct extends Controller {
 			$data['text_tags'] = $this->language->get('text_tags');
 			$data['text_related'] = $this->language->get('text_related');
 			$data['text_payment_recurring'] = $this->language->get('text_payment_recurring');
-//BOF Related Options
-			$data['decimal_point'] = $this->language->get('decimal_point');
-			$data['thousand_point'] = $this->language->get('thousand_point');
-			$related_options = $this->config->get('related_options');
-			$data['related_options'] = $related_options;
-			// EOF Related Options
 			$data['text_loading'] = $this->language->get('text_loading');
 
 			$data['entry_qty'] = $this->language->get('entry_qty');
@@ -555,51 +549,7 @@ class ControllerProductProduct extends Controller {
 			$data['options'] = array();
 
             foreach ($this->model_catalog_product->getProductOptions($this->request->get['product_id']) as $option) {
-//BOF Related Options
-						  if ($option['type'] == 'select' || $option['type'] == 'radio' || $option['type'] == 'checkbox' || $option['type'] == 'image') {
-						  // EOF Related Options
                 $product_option_value_data = array();
-//BOF Related Options
-			$related_options = $this->config->get('related_options');
-				if (isset($related_options['residue_on']) && $related_options['residue_on']) {
-					foreach ($option['product_option_value'] as $option_value) {
-						if ((($this->config->get('config_customer_price') && $this->customer->isLogged()) || !$this->config->get('config_customer_price')) && (float)$option_value['price']) {
-							$price = $this->currency->format($this->tax->calculate($option_value['price'], $product_info['tax_class_id'], $this->config->get('config_tax') ? 'P' : false), $this->session->data['currency']);
-						} else {
-							$price = false;
-						}
-
-						// +++ TESLA-CHITA
-						$class = "";
-						foreach ($product_option_values[$option_value['product_option_value_id']] as $value) {
-							if (empty($class)) {
-								$class = $value;
-							} else {
-								$class .= " " . $value;
-							}
-						}
-						// --- TESLA-CHITA
-
-
-						$product_option_value_data[] = array(
-							'product_option_value_id' => $option_value['product_option_value_id'],
-							// +++ TESLA-CHITA
-							'price_prefix'            => $option_value['price_prefix'],
-							'class'                   => $class,
-							// --- TESLA-CHITA
-							'option_value_id'         => $option_value['option_value_id'],
-							'name'                    => $option_value['name'],
-							'image'                   => $this->model_tool_image->resize($option_value['image'], 50, 50),
-							'price'                   => $price,
-							//BOF Related Options
-							'master_option_value'     => $option_value['master_option_value'],
-							'quantity'     			  => $option_value['quantity'],
-							// EOF Related Options
-							'price_prefix'            => $option_value['price_prefix']
-						);
-					}
-				} else {
-						  		  // EOF Related Options
 
                 foreach ($option['product_option_value'] as $option_value) {
                     if (!$option_value['subtract'] || ($option_value['quantity'] > 0)) {
@@ -639,18 +589,12 @@ class ControllerProductProduct extends Controller {
                             'image'                   => $option_value['image'] ? $this->model_tool_image->resize($option_value['image'], 50, 50) : '',
                             'price'                   => $price,
                             'special'				  => $special,
-//BOF Related Options
-						  'master_option_value'     => $option_value['master_option_value'],
-						  // EOF Related Options
                             'price_prefix'            => $option_value['price_prefix'],
                             'weight'                  => $option_value['weight']
                         );
                     }
                 }
 
-//BOF Related Options
-			}
-			 // EOF Related Options
                 $data['options'][] = array(
                     'product_option_id'    => $option['product_option_id'],
                     'product_option_value' => $product_option_value_data,
@@ -658,30 +602,10 @@ class ControllerProductProduct extends Controller {
                     'name'                 => $option['name'],
                     'type'                 => $option['type'],
                     'value'                => $option['value'],
-					//BOF Related Options
-					'master_option'          => $option['master_option'],
-					// EOF Related Options
                     'required'             => $option['required']
                 );
             }
 
-//BOF Related Options
-						  elseif ($option['type'] == 'text' || $option['type'] == 'textarea' || $option['type'] == 'file' || $option['type'] == 'date' || $option['type'] == 'datetime' || $option['type'] == 'time') {
-					$data['options'][] =array(
-						'product_option_id' => $option['product_option_id'],
-						'option_id'         => $option['option_id'],
-						'name'              => $option['name'],
-						'type'              => $option['type'],
-						'value'      => $option['value'],
-						//BOF Related Options
-						'master_option'          => $option['master_option'],
-						'master_option_value'    => $option['master_option_value'],
-						// EOF Related Options
-						'required'          => $option['required']
-					);
-				}
-			}
-						  // EOF Related Options
 			if ($product_info['minimum']) {
 				$data['minimum'] = $product_info['minimum'];
 			} else {

@@ -57,34 +57,19 @@ class ModelCatalogProduct extends Model {
 		}
 
 		if (isset($data['product_option'])) {
-//BOF Related Options
-			$previous_product_option_id = 0;
-			// EOF Related Options
 			foreach ($data['product_option'] as $product_option) {
 				if ($product_option['type'] == 'select' || $product_option['type'] == 'radio' || $product_option['type'] == 'checkbox' || $product_option['type'] == 'image') {
 					if (isset($product_option['product_option_value'])) {
 						$this->db->query("INSERT INTO " . DB_PREFIX . "product_option SET product_id = '" . (int)$product_id . "', option_id = '" . (int)$product_option['option_id'] . "', required = '" . (int)$product_option['required'] . "'");
 
 						$product_option_id = $this->db->getLastId();
-//BOF Related Options
-			$this->db->query("UPDATE " . DB_PREFIX . "product_option SET master_option = '" . (int)$product_option['master_option'] . "' WHERE product_option_id = '" . $product_option_id . "'");
-			// EOF Related Options
 
 						foreach ($product_option['product_option_value'] as $product_option_value) {
 							$this->db->query("INSERT INTO " . DB_PREFIX . "product_option_value SET product_option_id = '" . (int)$product_option_id . "', product_id = '" . (int)$product_id . "', option_id = '" . (int)$product_option['option_id'] . "', option_value_id = '" . (int)$product_option_value['option_value_id'] . "', quantity = '" . (int)$product_option_value['quantity'] . "', subtract = '" . (int)$product_option_value['subtract'] . "', price = '" . (float)$product_option_value['price'] . "', special = '" . (float)$product_option_value['special'] . "', date_start = '" . $this->db->escape($product_option_value['date_start']) . "', date_end = '" . $this->db->escape($product_option_value['date_end']) . "', price_prefix = '" . $this->db->escape($product_option_value['price_prefix']) . "', points = '" . (int)$product_option_value['points'] . "', points_prefix = '" . $this->db->escape($product_option_value['points_prefix']) . "', weight = '" . (float)$product_option_value['weight'] . "', weight_prefix = '" . $this->db->escape($product_option_value['weight_prefix']) . "'");
-//BOF Related Options
-			if ((int)$product_option['master_option']) {
-				$this->db->query("UPDATE " . DB_PREFIX . "product_option_value SET master_option_value = '" . (int)$product_option_value['master_option_value'] . "' WHERE product_option_value_id = '" . $this->db->getLastId() . "'");
-			}
-			// EOF Related Options
 						}
 					}
 				} else {
 					$this->db->query("INSERT INTO " . DB_PREFIX . "product_option SET product_id = '" . (int)$product_id . "', option_id = '" . (int)$product_option['option_id'] . "', value = '" . $this->db->escape($product_option['value']) . "', required = '" . (int)$product_option['required'] . "'");
-//BOF Related Options
-			$product_option_id = $this->db->getLastId();
-			$this->db->query("UPDATE " . DB_PREFIX . "product_option SET master_option = '" . (int)$product_option['master_option'] . "', master_option_value = '" . (int)$product_option['master_option_value'] . "' WHERE product_option_id = '" . $this->db->getLastId() . "'");
-			// EOF Related Options
 				}
 			}
 		}
@@ -239,34 +224,19 @@ class ModelCatalogProduct extends Model {
 		$this->db->query("DELETE FROM " . DB_PREFIX . "product_option_value WHERE product_id = '" . (int)$product_id . "'");
 
 		if (isset($data['product_option'])) {
-//BOF Related Options
-			$previous_product_option_id = 0;
-			// EOF Related Options
 			foreach ($data['product_option'] as $product_option) {
 				if ($product_option['type'] == 'select' || $product_option['type'] == 'radio' || $product_option['type'] == 'checkbox' || $product_option['type'] == 'image') {
 					if (isset($product_option['product_option_value'])) {
 						$this->db->query("INSERT INTO " . DB_PREFIX . "product_option SET product_option_id = '" . (int)$product_option['product_option_id'] . "', product_id = '" . (int)$product_id . "', option_id = '" . (int)$product_option['option_id'] . "', required = '" . (int)$product_option['required'] . "'");
 
 						$product_option_id = $this->db->getLastId();
-//BOF Related Options
-			$this->db->query("UPDATE " . DB_PREFIX . "product_option SET master_option = '" . (int)$product_option['master_option'] . "' WHERE product_option_id = '" . $product_option_id . "'");
-			// EOF Related Options
 
 						foreach ($product_option['product_option_value'] as $product_option_value) {
 							$this->db->query("INSERT INTO " . DB_PREFIX . "product_option_value SET product_option_value_id = '" . (int)$product_option_value['product_option_value_id'] . "', product_option_id = '" . (int)$product_option_id . "', product_id = '" . (int)$product_id . "', option_id = '" . (int)$product_option['option_id'] . "', option_value_id = '" . (int)$product_option_value['option_value_id'] . "', quantity = '" . (int)$product_option_value['quantity'] . "', subtract = '" . (int)$product_option_value['subtract'] . "', price = '" . (float)$product_option_value['price'] . "', special = '" . (float)$product_option_value['special'] . "', date_start = '" . $this->db->escape($product_option_value['date_start']) . "', date_end = '" . $this->db->escape($product_option_value['date_end']) . "', price_prefix = '" . $this->db->escape($product_option_value['price_prefix']) . "', points = '" . (int)$product_option_value['points'] . "', points_prefix = '" . $this->db->escape($product_option_value['points_prefix']) . "', weight = '" . (float)$product_option_value['weight'] . "', weight_prefix = '" . $this->db->escape($product_option_value['weight_prefix']) . "'");
-//BOF Related Options
-			if ((int)$product_option['master_option']) {
-				$this->db->query("UPDATE " . DB_PREFIX . "product_option_value SET master_option_value = '" . (int)$product_option_value['master_option_value'] . "' WHERE product_option_value_id = '" . $this->db->getLastId() . "'");
-			}
-			// EOF Related Options
 						}
 					}
 				} else {
 					$this->db->query("INSERT INTO " . DB_PREFIX . "product_option SET product_option_id = '" . (int)$product_option['product_option_id'] . "', product_id = '" . (int)$product_id . "', option_id = '" . (int)$product_option['option_id'] . "', value = '" . $this->db->escape($product_option['value']) . "', required = '" . (int)$product_option['required'] . "'");
-//BOF Related Options
-			$product_option_id = $this->db->getLastId();
-			$this->db->query("UPDATE " . DB_PREFIX . "product_option SET master_option = '" . (int)$product_option['master_option'] . "', master_option_value = '" . (int)$product_option['master_option_value'] . "' WHERE product_option_id = '" . $this->db->getLastId() . "'");
-			// EOF Related Options
 				}
 			}
 		}
@@ -641,9 +611,6 @@ class ModelCatalogProduct extends Model {
 					'points'                  => $product_option_value['points'],
 					'points_prefix'           => $product_option_value['points_prefix'],
 					'weight'                  => $product_option_value['weight'],
-//BOF Related Options
-			'master_option_value'             => $product_option_value['master_option_value'],
-			// EOF Related Options
 					'weight_prefix'           => $product_option_value['weight_prefix']
 				);
 			}
@@ -655,11 +622,6 @@ class ModelCatalogProduct extends Model {
 				'name'                 => $product_option['name'],
 				'type'                 => $product_option['type'],
 				'value'                => $product_option['value'],
-//BOF Related Options
-			'master_option'             => $product_option['master_option'],
-			'master_option_value'       => $product_option['master_option_value'],
-			'master_option_data'        => $this->getProductOption($product_id, $product_option['master_option']),
-			// EOF Related Options
 				'required'             => $product_option['required']
 			);
 		}
@@ -672,64 +634,6 @@ class ModelCatalogProduct extends Model {
 
 		return $query->row;
 	}
-//BOF Related Options
-			public function getProductOption($product_id, $option_id) {
-				$product_option_data = array();
-
-				$product_option_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "product_option po LEFT JOIN `" . DB_PREFIX . "option` o ON (po.option_id = o.option_id) LEFT JOIN " . DB_PREFIX . "option_description od ON (o.option_id = od.option_id) WHERE po.product_id = '" . (int)$product_id . "' AND od.language_id = '" . (int)$this->config->get('config_language_id') . "' AND po.option_id = '" . (int)$option_id . "' ORDER BY o.sort_order");
-
-				$product_option = $product_option_query->row;
-				if ($product_option) {
-					if ($product_option['type'] == 'select' || $product_option['type'] == 'radio' || $product_option['type'] == 'checkbox' || $product_option['type'] == 'image') {
-						$product_option_value_data = array();
-
-						$product_option_value_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "product_option_value pov LEFT JOIN " . DB_PREFIX . "option_value ov ON (pov.option_value_id = ov.option_value_id) LEFT JOIN " . DB_PREFIX . "option_value_description ovd ON (ov.option_value_id = ovd.option_value_id) WHERE pov.product_option_id = '" . (int)$product_option['product_option_id'] . "' AND ovd.language_id = '" . (int)$this->config->get('config_language_id') . "' ORDER BY ov.sort_order");
-
-						foreach ($product_option_value_query->rows as $product_option_value) {
-							$parent_name = '';
-							if ($product_option_value['master_option_value'] > 0) {
-								$master_value_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "option_value_description WHERE option_value_id = '" . (int)$product_option_value['master_option_value'] . "' AND language_id = '" . (int)$this->config->get('config_language_id') . "'");
-								$parent_name = ' ('.$master_value_query->row['name'].')';
-							}
-							$product_option_value_data[] = array(
-								'product_option_value_id' => $product_option_value['product_option_value_id'],
-								'option_value_id'         => $product_option_value['option_value_id'],
-								'name'                    => $product_option_value['name'] . $parent_name,
-								'image'                   => $product_option_value['image'],
-								'quantity'                => $product_option_value['quantity'],
-								'subtract'                => $product_option_value['subtract'],
-								'price'                   => $product_option_value['price'],
-								'price_prefix'            => $product_option_value['price_prefix'],
-								'points'                  => $product_option_value['points'],
-								'points_prefix'           => $product_option_value['points_prefix'],
-								'weight'                  => $product_option_value['weight'],
-								'weight_prefix'           => $product_option_value['weight_prefix']
-							);
-						}
-
-						$product_option_data = array(
-							'product_option_id'    => $product_option['product_option_id'],
-							'option_id'            => $product_option['option_id'],
-							'name'                 => $product_option['name'],
-							'type'                 => $product_option['type'],
-							'product_option_value' => $product_option_value_data,
-							'required'             => $product_option['required']
-						);
-					} else {
-						$product_option_data = array(
-							'product_option_id' => $product_option['product_option_id'],
-							'option_id'         => $product_option['option_id'],
-							'name'              => $product_option['name'],
-							'type'              => $product_option['type'],
-							'option_value'      => $product_option['value'],
-							'required'          => $product_option['required']
-						);
-					}
-				}
-
-				return $product_option_data;
-			}
-			// EOF Related Options
 
 	public function getProductImages($product_id) {
 		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "product_image WHERE product_id = '" . (int)$product_id . "' ORDER BY sort_order ASC");

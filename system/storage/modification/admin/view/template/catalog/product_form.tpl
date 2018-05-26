@@ -493,15 +493,8 @@
                 <div class="col-sm-2">
                   <ul class="nav nav-pills nav-stacked" id="option">
                     <?php $option_row = 0; ?>
-					  <!--BOF Related Options-->
-					<?php
-					usort($product_options, function($a, $b) {
-						return $a['option_id'] - $b['option_id'];
-					});
-					?>
-						<!--EOF Related Options-->
                     <?php foreach ($product_options as $product_option) { ?>
-                    <li><a href="#tab-option<?php echo $option_row; ?>" data-toggle="tab"><i class="fa fa-minus-circle" onclick="master_option_del(<?php echo $option_row; ?>); $('a[href=\'#tab-option<?php echo $option_row; ?>\']').parent().remove(); $('#tab-option<?php echo $option_row; ?>').remove(); $('#option a:first').tab('show');"></i> <?php echo $product_option['name']; ?></a></li>
+                    <li><a href="#tab-option<?php echo $option_row; ?>" data-toggle="tab"><i class="fa fa-minus-circle" onclick="$('a[href=\'#tab-option<?php echo $option_row; ?>\']').parent().remove(); $('#tab-option<?php echo $option_row; ?>').remove(); $('#option a:first').tab('show');"></i> <?php echo $product_option['name']; ?></a></li>
                     <?php $option_row++; ?>
                     <?php } ?>
                     <li>
@@ -533,48 +526,7 @@
                           </select>
                         </div>
                       </div>
-					  <!--BOF Related Options-->
-						<div class="form-group">
-							<label class="col-sm-2 control-label"><?php echo $entry_master_option; ?></label>
-							<div class="col-sm-10">
-								<select name="product_option[<?php echo $option_row; ?>][master_option]" class="form-control">
-									<option value="0"><?php echo $text_no; ?></option>
-									<?php foreach ($product_options as $product_option1) { ?>
-										<?php if ($product_option1['type'] != 'select' and $product_option1['type'] != 'radio' and $product_option1['type'] != 'checkbox' and $product_option1['type'] != 'image') continue; ?>
-										<?php if ($product_option1['option_id'] != $product_option['option_id']) { ?>
-											<?php if ($product_option1['option_id'] == $product_option['master_option']) { ?>
-												<option value="<?php echo $product_option1['option_id']; ?>" selected="selected"><?php echo $product_option1['name']; ?></option>
-											<?php } else { ?>
-												<option value="<?php echo $product_option1['option_id']; ?>"><?php echo $product_option1['name']; ?></option>
-											<?php } ?>
-										<?php } ?>
-									<?php } ?>
-								</select>
-							</div>
-						</div>
-						<!--EOF Related Options-->
                       <?php if ($product_option['type'] == 'text') { ?>
-	<!--BOF Related Options-->
-						<div class="form-group">
-							<label class="col-sm-2 control-label"><?php echo $entry_master_option_value; ?></label>
-							<div class="col-sm-10 col-master-<?php echo $option_row; ?>" data-col="<?php echo $option_row; ?>" data-row="0">
-								<?php if ($product_option['master_option']) { ?>
-									<select name="product_option[<?php echo $option_row; ?>][master_option_value]" value="<?php echo $product_option['value']; ?>" class="form-control">
-										<option value="0"><?php echo $text_no; ?></option>
-										<?php foreach ($product_option['master_option_data']['product_option_value'] as $master_option_value) { ?>
-											<?php if ($master_option_value['option_value_id'] == $product_option['master_option_value']) { ?>
-												<option value="<?php echo $master_option_value['option_value_id']; ?>" selected="selected"><?php echo $master_option_value['name']; ?></option>
-											<?php } else { ?>
-												<option value="<?php echo $master_option_value['option_value_id']; ?>"><?php echo $master_option_value['name']; ?></option>
-											<?php } ?>
-										<?php } ?>
-									</select>
-								<?php } else { ?>
-									- <input type="hidden" name="product_option[<?php echo $option_row; ?>][master_option_value]" value="0">
-								<?php }?>
-							</div>
-						</div>
-			<!--EOF Related Options-->
                       <div class="form-group">
                         <label class="col-sm-2 control-label" for="input-value<?php echo $option_row; ?>"><?php echo $entry_option_value; ?></label>
                         <div class="col-sm-10">
@@ -583,27 +535,6 @@
                       </div>
                       <?php } ?>
                       <?php if ($product_option['type'] == 'textarea') { ?>
-	<!--BOF Related Options-->
-						<div class="form-group">
-							<label class="col-sm-2 control-label"><?php echo $entry_master_option_value; ?></label>
-							<div class="col-sm-10 col-master-<?php echo $option_row; ?>" data-col="<?php echo $option_row; ?>" data-row="0">
-								<?php if ($product_option['master_option']) { ?>
-									<select name="product_option[<?php echo $option_row; ?>][master_option_value]" value="<?php echo $product_option['option_value']; ?>" class="form-control">
-										<option value="0"><?php echo $text_no; ?></option>
-										<?php foreach ($product_option['master_option_data']['product_option_value'] as $master_option_value) { ?>
-											<?php if ($master_option_value['option_value_id'] == $product_option['master_option_value']) { ?>
-												<option value="<?php echo $master_option_value['option_value_id']; ?>" selected="selected"><?php echo $master_option_value['name']; ?></option>
-											<?php } else { ?>
-												<option value="<?php echo $master_option_value['option_value_id']; ?>"><?php echo $master_option_value['name']; ?></option>
-											<?php } ?>
-										<?php } ?>
-									</select>
-								<?php } else { ?>
-									- <input type="hidden" name="product_option[<?php echo $option_row; ?>][master_option_value]" value="0">
-								<?php }?>
-							</div>
-						</div>
-			<!--EOF Related Options-->
                       <div class="form-group">
                         <label class="col-sm-2 control-label" for="input-value<?php echo $option_row; ?>"><?php echo $entry_option_value; ?></label>
                         <div class="col-sm-10">
@@ -612,27 +543,6 @@
                       </div>
                       <?php } ?>
                       <?php if ($product_option['type'] == 'file') { ?>
-	<!--BOF Related Options-->
-						<div class="form-group">
-							<label class="col-sm-2 control-label"><?php echo $entry_master_option_value; ?></label>
-							<div class="col-sm-10 col-master-<?php echo $option_row; ?>" data-col="<?php echo $option_row; ?>" data-row="0">
-								<?php if ($product_option['master_option']) { ?>
-									<select name="product_option[<?php echo $option_row; ?>][master_option_value]" value="<?php echo $product_option['option_value']; ?>" class="form-control">
-										<option value="0"><?php echo $text_no; ?></option>
-										<?php foreach ($product_option['master_option_data']['product_option_value'] as $master_option_value) { ?>
-											<?php if ($master_option_value['option_value_id'] == $product_option['master_option_value']) { ?>
-												<option value="<?php echo $master_option_value['option_value_id']; ?>" selected="selected"><?php echo $master_option_value['name']; ?></option>
-											<?php } else { ?>
-												<option value="<?php echo $master_option_value['option_value_id']; ?>"><?php echo $master_option_value['name']; ?></option>
-											<?php } ?>
-										<?php } ?>
-									</select>
-								<?php } else { ?>
-									- <input type="hidden" name="product_option[<?php echo $option_row; ?>][master_option_value]" value="0">
-								<?php }?>
-							</div>
-						</div>
-			<!--EOF Related Options-->
                       <div class="form-group" style="display: none;">
                         <label class="col-sm-2 control-label" for="input-value<?php echo $option_row; ?>"><?php echo $entry_option_value; ?></label>
                         <div class="col-sm-10">
@@ -641,27 +551,6 @@
                       </div>
                       <?php } ?>
                       <?php if ($product_option['type'] == 'date') { ?>
-	<!--BOF Related Options-->
-						<div class="form-group">
-							<label class="col-sm-2 control-label"><?php echo $entry_master_option_value; ?></label>
-							<div class="col-sm-10 col-master-<?php echo $option_row; ?>" data-col="<?php echo $option_row; ?>" data-row="0">
-								<?php if ($product_option['master_option']) { ?>
-									<select name="product_option[<?php echo $option_row; ?>][master_option_value]" value="<?php echo $product_option['option_value']; ?>" class="form-control">
-										<option value="0"><?php echo $text_no; ?></option>
-										<?php foreach ($product_option['master_option_data']['product_option_value'] as $master_option_value) { ?>
-											<?php if ($master_option_value['option_value_id'] == $product_option['master_option_value']) { ?>
-												<option value="<?php echo $master_option_value['option_value_id']; ?>" selected="selected"><?php echo $master_option_value['name']; ?></option>
-											<?php } else { ?>
-												<option value="<?php echo $master_option_value['option_value_id']; ?>"><?php echo $master_option_value['name']; ?></option>
-											<?php } ?>
-										<?php } ?>
-									</select>
-								<?php } else { ?>
-									- <input type="hidden" name="product_option[<?php echo $option_row; ?>][master_option_value]" value="0">
-								<?php }?>
-							</div>
-						</div>
-			<!--EOF Related Options-->
                       <div class="form-group">
                         <label class="col-sm-2 control-label" for="input-value<?php echo $option_row; ?>"><?php echo $entry_option_value; ?></label>
                         <div class="col-sm-3">
@@ -674,27 +563,6 @@
                       </div>
                       <?php } ?>
                       <?php if ($product_option['type'] == 'time') { ?>
-	<!--BOF Related Options-->
-						<div class="form-group">
-							<label class="col-sm-2 control-label"><?php echo $entry_master_option_value; ?></label>
-							<div class="col-sm-10 col-master-<?php echo $option_row; ?>" data-col="<?php echo $option_row; ?>" data-row="0">
-								<?php if ($product_option['master_option']) { ?>
-									<select name="product_option[<?php echo $option_row; ?>][master_option_value]" value="<?php echo $product_option['option_value']; ?>" class="form-control">
-										<option value="0"><?php echo $text_no; ?></option>
-										<?php foreach ($product_option['master_option_data']['product_option_value'] as $master_option_value) { ?>
-											<?php if ($master_option_value['option_value_id'] == $product_option['master_option_value']) { ?>
-												<option value="<?php echo $master_option_value['option_value_id']; ?>" selected="selected"><?php echo $master_option_value['name']; ?></option>
-											<?php } else { ?>
-												<option value="<?php echo $master_option_value['option_value_id']; ?>"><?php echo $master_option_value['name']; ?></option>
-											<?php } ?>
-										<?php } ?>
-									</select>
-								<?php } else { ?>
-									- <input type="hidden" name="product_option[<?php echo $option_row; ?>][master_option_value]" value="0">
-								<?php }?>
-							</div>
-						</div>
-			<!--EOF Related Options-->
                       <div class="form-group">
                         <label class="col-sm-2 control-label" for="input-value<?php echo $option_row; ?>"><?php echo $entry_option_value; ?></label>
                         <div class="col-sm-10">
@@ -707,27 +575,6 @@
                       </div>
                       <?php } ?>
                       <?php if ($product_option['type'] == 'datetime') { ?>
-	<!--BOF Related Options-->
-						<div class="form-group">
-							<label class="col-sm-2 control-label"><?php echo $entry_master_option_value; ?></label>
-							<div class="col-sm-10 col-master-<?php echo $option_row; ?>" data-col="<?php echo $option_row; ?>" data-row="0">
-								<?php if ($product_option['master_option']) { ?>
-									<select name="product_option[<?php echo $option_row; ?>][master_option_value]" value="<?php echo $product_option['option_value']; ?>" class="form-control">
-										<option value="0"><?php echo $text_no; ?></option>
-										<?php foreach ($product_option['master_option_data']['product_option_value'] as $master_option_value) { ?>
-											<?php if ($master_option_value['option_value_id'] == $product_option['master_option_value']) { ?>
-												<option value="<?php echo $master_option_value['option_value_id']; ?>" selected="selected"><?php echo $master_option_value['name']; ?></option>
-											<?php } else { ?>
-												<option value="<?php echo $master_option_value['option_value_id']; ?>"><?php echo $master_option_value['name']; ?></option>
-											<?php } ?>
-										<?php } ?>
-									</select>
-								<?php } else { ?>
-									- <input type="hidden" name="product_option[<?php echo $option_row; ?>][master_option_value]" value="0">
-								<?php }?>
-							</div>
-						</div>
-			<!--EOF Related Options-->
                       <div class="form-group">
                         <label class="col-sm-2 control-label" for="input-value<?php echo $option_row; ?>"><?php echo $entry_option_value; ?></label>
                         <div class="col-sm-10">
@@ -750,9 +597,6 @@
                               <td class="text-right"><?php echo $entry_price; ?></td>
                               <td class="text-right"><?php echo $entry_option_points; ?></td>
                               <td class="text-right"><?php echo $entry_weight; ?></td>
-<!--BOF Related Options-->
-							  <td class="text-right"><?php echo $entry_master_option_value; ?></td>
-							  <!--EOF Related Options-->
                               <td></td>
                             </tr>
                           </thead>
@@ -830,47 +674,19 @@
                                   <?php } ?>
                                 </select>
                                 <input type="text" name="product_option[<?php echo $option_row; ?>][product_option_value][<?php echo $option_value_row; ?>][weight]" value="<?php echo $product_option_value['weight']; ?>" placeholder="<?php echo $entry_weight; ?>" class="form-control" /></td>
-<!--BOF Related Options-->
-								<td class="right col-master-<?php echo $option_row; ?>" data-col="<?php echo $option_row; ?>" data-row="<?php echo $option_value_row; ?>">
-									<?php if ($product_option['master_option']) { ?>
-										<select name="product_option[<?php echo $option_row; ?>][product_option_value][<?php echo $option_value_row; ?>][master_option_value]" class="form-control">
-											<?php foreach ($product_option['master_option_data']['product_option_value'] as $master_option_value) { ?>
-												<option value="0"><?php echo $text_no; ?></option>
-												<?php if ($master_option_value['option_value_id'] == $product_option_value['master_option_value']) { ?>
-													<option value="<?php echo $master_option_value['option_value_id']; ?>" selected="selected"><?php echo $master_option_value['name']; ?></option>
-												<?php } else { ?>
-													<option value="<?php echo $master_option_value['option_value_id']; ?>"><?php echo $master_option_value['name']; ?></option>
-												<?php } ?>
-											<?php } ?>
-										</select>
-									<?php } else { ?>
-										<center>-</center>
-										<input type="hidden" name="product_option[<?php echo $option_row; ?>][product_option_value][<?php echo $option_value_row; ?>][master_option_value]" value="0">
-									<?php }?>
-								</td>
-								<!--EOF Related Options-->
-                              <td class="text-left"><button type="button" onclick="$(this).tooltip('destroy');$('#option-value-row<?php echo $option_value_row; ?>').remove(); master_option_ch(<?php echo $option_row; ?>);" data-toggle="tooltip" title="<?php echo $button_remove; ?>" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
+                              <td class="text-left"><button type="button" onclick="$(this).tooltip('destroy');$('#option-value-row<?php echo $option_value_row; ?>').remove();" data-toggle="tooltip" title="<?php echo $button_remove; ?>" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
                             </tr>
                             <?php $option_value_row++; ?>
                             <?php } ?>
                           </tbody>
                           <tfoot>
                             <tr>
-                              <td colspan="7"></td>
+                              <td colspan="6"></td>
                               <td class="text-left"><button type="button" onclick="addOptionValue('<?php echo $option_row; ?>');" data-toggle="tooltip" title="<?php echo $button_option_value_add; ?>" class="btn btn-primary"><i class="fa fa-plus-circle"></i></button></td>
                             </tr>
                           </tfoot>
                         </table>
                       </div>
-						<!--BOF Related Options-->
-			<?php if ($product_option['master_option']) { ?>
-			<select id="master-option-values<?php echo $option_row; ?>" style="display: none;" class="form-control">
-              <?php foreach ($product_option['master_option_data']['product_option_value'] as $master_option_value) { ?>
-              	<option value="<?php echo $master_option_value['option_value_id']; ?>"><?php echo $master_option_value['name']; ?></option>
-              <?php } ?>
-            </select>
-            <?php } ?>
-			<!--EOF Related Options-->
                       <select id="option-values<?php echo $option_row; ?>" style="display: none;">
                         <?php if (isset($option_values[$product_option['option_id']])) { ?>
                         <?php foreach ($option_values[$product_option['option_id']] as $option_value) { ?>
@@ -980,7 +796,7 @@
                   </tbody>
                   <tfoot>
                     <tr>
-                      <td colspan="7"></td>
+                      <td colspan="6"></td>
                       <td class="text-left"><button type="button" onclick="addDiscount();" data-toggle="tooltip" title="<?php echo $button_discount_add; ?>" class="btn btn-primary"><i class="fa fa-plus-circle"></i></button></td>
                     </tr>
                   </tfoot>
@@ -1402,11 +1218,6 @@ $('input[name=\'option\']').autocomplete({
 		});
 	},
 	'select': function(item) {
-
-				if (item['type'] == 'select' || item['type'] == 'radio' || item['type'] == 'checkbox' || item['type'] == 'image') {
-					$('select[name$="[master_option]"]').append('<option value="'+ item['value'] +'">'+ item['label'] +'</option>');
-	            }
-			
 		html  = '<div class="tab-pane" id="tab-option' + option_row + '">';
 		html += '	<input type="hidden" name="product_option[' + option_row + '][product_option_id]" value="" />';
 		html += '	<input type="hidden" name="product_option[' + option_row + '][name]" value="' + item['label'] + '" />';
@@ -1421,27 +1232,6 @@ $('input[name=\'option\']').autocomplete({
 		html += '	  </select></div>';
 		html += '	</div>';
 
-		<!--BOF Related Options-->
-			html += '	  <div class="form-group">';
-			html += '		<label class="col-sm-2 control-label"><?php echo $entry_master_option; ?></label>';
-			html += '       <div class="col-sm-10"><select name="product_option[' + option_row + '][master_option]" class="form-control">';
-			html += '	    <option value="0"><?php echo $text_no; ?></option>';
-			$('input[name$="[option_id]"]').each(function() {
-                var name = $(this).attr('name').split('][');
-                var num = name[0].split('[');
-                num = num[1];
-                html += '<option value="'+ $(this).val() +'">'+ $('input[name="product_option[' + num + '][name]"]').val() +'</option>';
-            });
-			html += '	    </select></div>';
-			html += '     </div>';
-
-			if (item['type'] != 'select' && item['type'] != 'radio' && item['type'] != 'checkbox' && item['type'] != 'image') {
-	            html += '	<div class="form-group">';
-	            html += '	  <label class="col-sm-2 control-label" for="input-value' + option_row + '"><?php echo $entry_master_option_value; ?></label>';
-	            html += '	  <div class="col-sm-10 col-master-' + option_row +'" data-col="' + option_row +'" data-row="0">- <input type="hidden" name="product_option[' + option_row + '][master_option_value]" value="0"></div>';
-	            html += '	</div>';
-	        }
-			<!--EOF Related Options-->
 		if (item['type'] == 'text') {
 			html += '	<div class="form-group">';
 			html += '	  <label class="col-sm-2 control-label" for="input-value' + option_row + '"><?php echo $entry_option_value; ?></label>';
@@ -1494,12 +1284,7 @@ $('input[name=\'option\']').autocomplete({
 			html += '        <td class="text-left"><?php echo $entry_subtract; ?></td>';
 			html += '        <td class="text-right"><?php echo $entry_price; ?></td>';
 			html += '        <td class="text-right"><?php echo $entry_option_points; ?></td>';
-				<!--BOF Related Options-->
-							  html += '        <td class="text-right relate-option"><?php echo $entry_weight; ?></td>';
-	<!--BOF Related Options-->
-							  html += '        <td class="text-right"><?php echo $entry_master_option_value; ?></td>';
-							  <!--EOF Related Options-->
-							  <!--EOF Related Options-->
+			html += '        <td class="text-right"><?php echo $entry_weight; ?></td>';
 			html += '        <td></td>';
 			html += '      </tr>';
 			html += '  	 </thead>';
@@ -1507,7 +1292,7 @@ $('input[name=\'option\']').autocomplete({
 			html += '    </tbody>';
 			html += '    <tfoot>';
 			html += '      <tr>';
-			html += '        <td colspan="7"></td>';
+			html += '        <td colspan="6"></td>';
 			html += '        <td class="text-left"><button type="button" onclick="addOptionValue(' + option_row + ');" data-toggle="tooltip" title="<?php echo $button_option_value_add; ?>" class="btn btn-primary"><i class="fa fa-plus-circle"></i></button></td>';
 			html += '      </tr>';
 			html += '    </tfoot>';
@@ -1526,7 +1311,7 @@ $('input[name=\'option\']').autocomplete({
 
 		$('#tab-option .tab-content').append(html);
 
-		$('#option > li:last-child').before('<li><a href="#tab-option' + option_row + '" data-toggle="tab"><i class="fa fa-minus-circle" onclick="master_option_del(' + option_row + '); $(\'#option a:first\').tab(\'show\');$(\'a[href=\\\'#tab-option' + option_row + '\\\']\').parent().remove(); $(\'#tab-option' + option_row + '\').remove();"></i>' + item['label'] + '</li>');
+		$('#option > li:last-child').before('<li><a href="#tab-option' + option_row + '" data-toggle="tab"><i class="fa fa-minus-circle" onclick=" $(\'#option a:first\').tab(\'show\');$(\'a[href=\\\'#tab-option' + option_row + '\\\']\').parent().remove(); $(\'#tab-option' + option_row + '\').remove();"></i>' + item['label'] + '</li>');
 
 		$('#option a[href=\'#tab-option' + option_row + '\']').tab('show');
 
@@ -1553,92 +1338,6 @@ $('input[name=\'option\']').autocomplete({
 });
 //--></script>
   <script type="text/javascript"><!--
-
-				function master_option(option_num, row, selected) {
-				    var id = $('select[name="product_option['+ option_num  +'][master_option]"]').val();
-                    var type = $('input[name="product_option['+ option_num  +'][type]"]').val();
-
-				    if (id == 0) {
-				        $('.col-master-' + option_num).each(function() {
-				            if (typeof(row) == 'undefined' || row == $(this).data('row')) {
-                                if (type == 'select' || type == 'radio' || type == 'checkbox' || type == 'image') {
-                                    $(this).html('<center>-</center><input type="hidden" name="product_option[' + $(this).data('col') + '][product_option_value][' + $(this).data('row') + '][master_option_value]" value="0">');
-                                } else {
-                                    $(this).html('- <input type="hidden" name="product_option[' + $(this).data('col') + '][master_option_value]" value="0">');
-                                }
-				            }
-				        });
-				    } else {
-				        $('.col-master-' + option_num).each(function() {
-				            if (typeof(row) == 'undefined' || row == $(this).data('row')) {
-                                if (type == 'select' || type == 'radio' || type == 'checkbox' || type == 'image') {
-                                    var select = '<select class="form-control" name="product_option[' + $(this).data('col') + '][product_option_value][' + $(this).data('row') + '][master_option_value]">';
-                                } else {
-                                    var select = '<select class="form-control" name="product_option[' + $(this).data('col') + '][master_option_value]">';
-                                }
-				                select += '<option value="0">---</option>';
-				                var name_opt = $('input[name$="[option_id]"][value='+ id +']').attr('name').split('][');
-				                var num_opt = name_opt[0].split('[');
-				                num_opt = num_opt[1];
-								var type_val = $('input[name="product_option['+ num_opt  +'][type]"]').val();
-                                if (type_val == 'select' || type_val == 'radio' || type_val == 'checkbox' || type_val == 'image') {
-                                    $('select[name^="product_option['+ num_opt +'][product_option_value]"][name$="[option_value_id]"]').each(function() {
-                                        var parent_opt_name = $(this).parent().parent().find('select[name^="product_option['+ num_opt +'][product_option_value]"][name$="[master_option_value]"]').find('option:selected').text();
-										if (parent_opt_name!='') {
-											parent_opt_name = ' ('+ parent_opt_name +')';
-										}
-    				                    select += '<option value="'+ $(this).val() +'" '+ ((typeof(selected) != 'undefined' && selected == $(this).val()) ? ' selected="selected"' : '') +'>'+ $(this).find('option:selected').text() + parent_opt_name +'</option>';
-    				                });
-                                } else {
-                                    $('input[name="product_option['+ num_opt +'][value]"]').each(function() {
-    				                    select += '<option value="'+ $(this).val() +'" '+ ((typeof(selected) != 'undefined' && selected == $(this).val()) ? ' selected="selected"' : '') +'>'+ $(this).val() +'</option>';
-    				                });
-                                }
-				                select += '</select>';
-				                $(this).html(select);
-				            }
-				        });
-				    }
-				}
-				$('#form-product').delegate('select[name$="[master_option]"]', "change", function() {
-				    var name = $(this).attr('name').split('][');
-				    var num = name[0].split('[');
-				    master_option(num[1]);
-				});
-
-				function master_option_ch(option_row) {
-				    var option_id = $('input[name="product_option['+ option_row +'][option_id]"]').val();
-				    $('select[name$="[master_option]"]').each(function() {
-				        if ($(this).val() == option_id) {
-				            var name_1 = $(this).attr('name').split('][');
-				            var num_1 = name_1[0].split('[');
-
-				            $('.col-master-' + num_1[1]).each(function() {
-				                master_option($(this).data('col'), $(this).data('row'), $(this).find('select').val());
-				            });
-				        }
-				    });
-				}
-				function master_option_del(option_row) {
-				    var option_id = $('input[name="product_option['+ option_row +'][option_id]"]').val();
-				    $('select[name$="[master_option]"]').each(function() {
-				        if ($(this).val() == option_id) {
-				            $(this).val(0);
-				            var name_1 = $(this).attr('name').split('][');
-				            var num_1 = name_1[0].split('[');
-				            $('.col-master-' + num_1[1]).each(function() {
-				                master_option($(this).data('col'));
-				            });
-				        }
-						$(this).find('option[value='+ option_id +']').remove();
-				    });
-				}
-				$('#form-product').delegate('select[name$="[option_value_id]"]', "change", function() {
-				    var name = $(this).attr('name').split('][');
-				    var num = name[0].split('[');
-				    master_option_ch(num[1]);
-				});
-			
 var option_value_row = <?php echo $option_value_row; ?>;
 
 function addOptionValue(option_row) {
@@ -1669,26 +1368,11 @@ function addOptionValue(option_row) {
 	html += '    <option value="-">-</option>';
 	html += '  </select>';
 	html += '  <input type="text" name="product_option[' + option_row + '][product_option_value][' + option_value_row + '][weight]" value="" placeholder="<?php echo $entry_weight; ?>" class="form-control" /></td>';
-
-				<!--BOF Related Options-->
-				if ($('#master-option-values' + option_row).size() > 0) {
-					html += '    <td class="right col-master-' + option_row +'" data-col="' + option_row +'" data-row="' + option_value_row +'"><select name="product_option[' + option_row + '][product_option_value][' + option_value_row + '][master_option_value]">';
-					html += $('#master-option-values' + option_row).html();
-					html += '    </select></td>';
-				} else {
-					html += '<td class="right col-master-' + option_row +'" data-col="' + option_row +'" data-row="' + option_value_row +'"><center>-</center><input type="hidden" name="product_option[' + option_row + '][product_option_value][' + option_value_row + '][master_option_value]" value="0"></td>';
-				}
-				<!--EOF Related Options-->
-			
-	html += '  <td class="text-left"><button type="button" onclick="$(this).tooltip(\'destroy\');$(\'#option-value-row' + option_value_row + '\').remove(); master_option_ch('+option_row+');" data-toggle="tooltip" rel="tooltip" title="<?php echo $button_remove; ?>" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+	html += '  <td class="text-left"><button type="button" onclick="$(this).tooltip(\'destroy\');$(\'#option-value-row' + option_value_row + '\').remove();" data-toggle="tooltip" rel="tooltip" title="<?php echo $button_remove; ?>" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
 	html += '</tr>';
 
 	$('#option-value' + option_row + ' tbody').append(html);
 	$('[rel=tooltip]').tooltip();
-
-				master_option(option_row, option_value_row);
-			    master_option_ch(option_row);
-			
 
 	option_value_row++;
 }

@@ -384,9 +384,6 @@ class ModelCatalogProduct extends Model {
 		$product_option_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "product_option po LEFT JOIN `" . DB_PREFIX . "option` o ON (po.option_id = o.option_id) LEFT JOIN " . DB_PREFIX . "option_description od ON (o.option_id = od.option_id) WHERE po.product_id = '" . (int)$product_id . "' AND od.language_id = '" . (int)$this->config->get('config_language_id') . "' ORDER BY o.sort_order");
 
 		foreach ($product_option_query->rows as $product_option) {
-				//BOF Related Options
-				if ($product_option['type'] == 'select' || $product_option['type'] == 'radio' || $product_option['type'] == 'checkbox' || $product_option['type'] == 'image') {
-				// EOF Related Options
 			$product_option_value_data = array();
 
 			$product_option_value_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "product_option_value pov LEFT JOIN " . DB_PREFIX . "option_value ov ON (pov.option_value_id = ov.option_value_id) LEFT JOIN " . DB_PREFIX . "option_value_description ovd ON (ov.option_value_id = ovd.option_value_id) WHERE pov.product_id = '" . (int)$product_id . "' AND pov.product_option_id = '" . (int)$product_option['product_option_id'] . "' AND ovd.language_id = '" . (int)$this->config->get('config_language_id') . "' ORDER BY ov.sort_order");
@@ -405,9 +402,6 @@ class ModelCatalogProduct extends Model {
 					'date_end'                => $product_option_value['date_end'],
 					'price_prefix'            => $product_option_value['price_prefix'],
 					'weight'                  => $product_option_value['weight'],
-//BOF Related Options
-			'master_option_value'             => $product_option_value['master_option_value'],
-			// EOF Related Options
 					'weight_prefix'           => $product_option_value['weight_prefix']
 				);
 			}
@@ -419,30 +413,10 @@ class ModelCatalogProduct extends Model {
 				'name'                 => $product_option['name'],
 				'type'                 => $product_option['type'],
 				'value'                => $product_option['value'],
-				//BOF Related Options
-				'master_option'          => $product_option['master_option'],
-				// EOF Related Options
 				'required'             => $product_option['required']
 			);
 		}
 
-				//BOF Related Options
-				else {
-				$product_option_data[] = array(
-					'product_option_id' => $product_option['product_option_id'],
-					'option_id'         => $product_option['option_id'],
-					'name'              => $product_option['name'],
-					'type'              => $product_option['type'],
-					'value'      => $product_option['value'],
-					//BOF Related Options
-					'master_option'          => $product_option['master_option'],
-					'master_option_value'    => $product_option['master_option_value'],
-					// EOF Related Options
-					'required'          => $product_option['required']
-				);
-			}
-		}
-				// EOF Related Options
 		return $product_option_data;
 	}
 

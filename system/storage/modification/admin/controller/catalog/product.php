@@ -574,14 +574,6 @@ class ControllerCatalogProduct extends Controller {
 
 		$data['token'] = $this->session->data['token'];
 
-//BOF Related Options
-
-			//text
-			$this->load->language('catalog/related_options');
-			$data['entry_master_option'] = $this->language->get('entry_master_option');
-			$data['entry_master_option_value'] = $this->language->get('entry_master_option_value');
-
-			//EOF Related Options
 		if (isset($this->error['warning'])) {
 			$data['error_warning'] = $this->error['warning'];
 		} else {
@@ -882,14 +874,6 @@ class ControllerCatalogProduct extends Controller {
 		$data['tab_design'] = $this->language->get('tab_design');
 		$data['tab_openbay'] = $this->language->get('tab_openbay');
 
-//BOF Related Options
-
-			//text
-			$this->load->language('catalog/related_options');
-			$data['entry_master_option'] = $this->language->get('entry_master_option');
-			$data['entry_master_option_value'] = $this->language->get('entry_master_option_value');
-
-			//EOF Related Options
 		if (isset($this->error['warning'])) {
 			$data['error_warning'] = $this->error['warning'];
 		} else {
@@ -1395,26 +1379,6 @@ class ControllerCatalogProduct extends Controller {
 		foreach ($product_options as $product_option) {
 			$product_option_value_data = array();
 
-//BOF Related Options
-				$master_option_data = array();
-				if (isset($product_option['master_option_data'])) {
-					$master_option_data = $product_option['master_option_data'];
-				} else {
-					if (!empty($product_option['master_option'])) {
-						foreach ($product_options as $product_option1) {
-							if ($product_option1['option_id'] == $product_option['master_option']) {
-								foreach ($product_option1['product_option_value'] as $key_option => $val_option) {
-									$option_name = $this->model_catalog_option->getOptionValue($val_option['option_value_id']);
-									$product_option1['product_option_value'][$key_option]['name'] = $option_name['name'];
-								}
-								$master_option_data = $product_option1;
-							}
-						}
-					}
-				}
-
-			  if ($product_option['type'] == 'select' || $product_option['type'] == 'radio' || $product_option['type'] == 'checkbox' || $product_option['type'] == 'image') {
-			  // EOF Related Options
 			if (isset($product_option['product_option_value'])) {
 				foreach ($product_option['product_option_value'] as $product_option_value) {
 					$product_option_value_data[] = array(
@@ -1430,9 +1394,6 @@ class ControllerCatalogProduct extends Controller {
 						'points'                  => $product_option_value['points'],
 						'points_prefix'           => $product_option_value['points_prefix'],
 						'weight'                  => $product_option_value['weight'],
-//BOF Related Options
-			'master_option_value'             => $product_option_value['master_option_value'],
-			//EOF Related Options
 						'weight_prefix'           => $product_option_value['weight_prefix']
 					);
 				}
@@ -1445,32 +1406,10 @@ class ControllerCatalogProduct extends Controller {
 				'name'                 => $product_option['name'],
 				'type'                 => $product_option['type'],
 				'value'                => isset($product_option['value']) ? $product_option['value'] : '',
-//BOF Related Options
-			'master_option'             => $product_option['master_option'],
-			'master_option_data'		=> $master_option_data,
-			//EOF Related Options
 				'required'             => $product_option['required']
 			);
 		}
 
-//BOF Related Options
-						 else {
-				$data['product_options'][] = array(
-					'product_option_id' => $product_option['product_option_id'],
-					'option_id'         => $product_option['option_id'],
-					'name'              => $product_option['name'],
-					'type'              => $product_option['type'],
-					'value'      => $product_option['value'],
-					//BOF Related Options
-					'master_option'             => $product_option['master_option'],
-					'master_option_data'		=> $master_option_data,
-					'master_option_value'		=> isset($product_option['master_option_value']) ? $product_option['master_option_value'] : 0,
-					//EOF Related Options
-					'required'          => $product_option['required']
-				);
-			}
-		}
-		// EOF Related Options
 		$data['option_values'] = array();
 
 		foreach ($data['product_options'] as $product_option) {
@@ -1777,11 +1716,6 @@ class ControllerCatalogProduct extends Controller {
 							'name'                 => $option_info['name'],
 							'type'                 => $option_info['type'],
 							'value'                => $product_option['value'],
-//BOF Related Options
-			'master_option'             => $product_option['master_option'],
-			'master_option_data'		=> isset($product_option['master_option_data']) ? $product_option['master_option_data'] : array(),
-			'master_option_value'		=> isset($product_option['master_option_value']) ? $product_option['master_option_value'] : 0,
-			//EOF Related Options
 							'required'             => $product_option['required']
 						);
 					}
