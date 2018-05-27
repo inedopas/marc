@@ -204,9 +204,6 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 
 			    <div class="col-sm-<?php echo $product_center_grid; ?> product-center clearfix">
 			     <?php if ($price) { ?>
-
-				<?php if (isset($custom_partner_price)) echo $custom_partner_price ?>
-			
 			      <div class="price">
 			      	<span class="textprice">Цена</span>
 			        <?php if($theme_options->get( 'display_specials_countdown' ) == '1' && $special) { $countdown = rand(0, 5000)*rand(0, 5000);
@@ -254,103 +251,6 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			      <div class="options2">
 			        <?php foreach ($product_options_center as $module) { echo $module; } ?>
 
-			
-					
-					<?php if(!empty($colors)){ ?>
-					<div id="color_options">
-					<div class="heading"><?php echo $colors_title?></div>
-					<?php foreach($colors as $color){ ?>
-						<?php if($color['product_id'] == $product_id) { ?>
-							<div class="color_option active <?php echo $color['tpl']?> <?php echo $color['quantity']?>" style="<?php if($colors_cfg['name']!=1){ ?>padding:0;<?php } ?>">
-								<?php if(isset($color['quantity'])){ ?>
-									<div class="hideQuantity">Нет в наличии</div>
-								<?php } ?>
-								<?php if($color['tpl'] == 'color'){ ?>
-									<div class="color_block" style="background:<?php echo $color['color'] ?>"></div>
-								<?php } elseif($color['tpl'] == 'photos'){ ?>
-									<div class="image_block"><img src="<?php echo $color['ico_photo'] ?>" /></div>
-								<?php } else { ?>
-									<div class="image_block"><img src="<?php echo $color['ico_color'] ?>" /></div>
-								<?php } ?>
-								<?php if($colors_cfg['name']==1){ ?>
-									<div class="color_name"><?php echo $color['color_name'] ?></div> 
-								<?php } ?>
-								
-							</div>
-						<?php } else {  ?>
-							<div class="color_option <?php echo $color['tpl']?> <?php echo $color['quantity']?>">
-								<?php if(isset($color['quantity'])){ ?>
-									<div class="hideQuantity">Нет в наличии</div>
-								<?php } ?>
-								<a href="<?php echo $color['href'] ?>">
-								
-									<?php if($color['tpl'] == 'color'){ ?>
-										<div class="color_block" style="background:<?php echo $color['color'] ?>;<?php if($colors_cfg['name']!=1){ ?>padding:0;<?php } ?>"></div>
-									<?php } elseif($color['tpl'] == 'photos'){ ?>
-										<div class="image_block"><img src="<?php echo $color['ico_photo'] ?>" /></div>
-										<div class="preview-block">
-										    <img src="<?php echo $color['preview_photo']?>" />
-										    <div class="name"><?php echo $color['name']?></div>
-										    <div class="price"><?php echo "от " . $color['price'] . " ₽"?></div>
-										</div>
-									<?php } else { ?>
-										<div class="image_block"><img src="<?php echo $color['ico_color'] ?>" /></div>
-									<?php } ?>
-
-									<?php if($colors_cfg['name']==1){ ?>
-										<div class="color_name"><?php echo $color['color_name'] ?></div> 
-									<?php } ?>
-								</a>
-							</div>
-						<?php } ?>	
-					<?php } ?>
-
-					<?php if($colors_cfg['enable_popup'] === '0'){ ?>
-					<a class="colors fancybox.ajax" href="index.php?route=product/colorkits&c_product_id=<?php echo $product_id ?>">All colors</a>
-					<script type="text/javascript">
-					$(document).ready(function() {
-						
-						$(".colors").fancybox({
-							openEffect : 'elastic',
-							closeEffect : 'elastic',
-							fitToView   : false,
-							autoSize    : true,
-							closeClick  : false							
-						});
-					});
-					</script>
-					<?php } ?>
-					</div>
-				<?php } ?>
-				
-
-			<!--BOF Product Series -->	 
-			<!--if this is a master then load list of slave products, if this is a slave product then load other slave products under the same master -->
-			<?php if(sizeof($pds) > 0) { ?>
-				<div class="price pds">
-					<?php if($display_add_to_cart){ ?>	
-						<?php echo $text_in_the_same_series; ?><br/>
-					<?php } else { ?>
-						<?php echo $no_add_to_cart_message; ?><br/>
-					<?php } ?>
-					<?php foreach ($pds as $p) { ?>
-						<a class="<?php echo $pds_enable_preview ? 'preview' : ''?> <?php echo ($p['product_id'] == $product_id) ? 'pds-current' : '' ?>"
-						title="<?php echo $p['product_name']; ?>"
-						href="<?php echo $p['product_link']; ?>"
-						rel="<?php echo $p['product_main_image']; ?>">
-							<img src="<?php echo $p['product_pds_image']; ?>" alt="<?php echo $p['product_name']; ?>" />
-						</a>
-					<?php } ?>
-				</div>
-			<?php } ?>
-			<?php if(!$display_add_to_cart){ ?>
-				<style>
-					/*Hide cart and options*/
-					#content .cart, .options, .buttons-cart, .input-qty, #product_buy, #product_options, #button-cart, .form-group {display: none !important;}
-					.price {margin-bottom: 15px}
-				</style>
-			<?php } ?>
-			<!--EOF Product Series -->
 			        <?php if ($options) { ?>
                     <div class="options">
                          <h2><?php echo $text_option; ?></h2>
@@ -632,6 +532,39 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 
 			      <div class="cart">
                         <div class="add-to-cart clearfix">
+
+												<div class="add-to-cart clearfix">
+							<button data-toggle="modal" data-target="#how-to-size">Как узнать размер?</button>
+
+												<div class="modal fade" id="how-to-size" style="display: none;">
+														<div class="modal-dialog b-popup-howsize">
+																<div class="modal-content">
+																		<div class="modal-header">
+																				<h3>Как узнать размер кольца</h3>
+																				<button class="close close-icon" data-dismiss="modal" aria-hidden="true"></button>
+																		</div>
+																		<div class="modal-body">
+																				<div class="b-popup-howsize__text">
+																						<div class="b-popup-howsize__row">
+																								 <img src="/image/howsize-thread.svg" alt=""/>
+																								<div>Обмотайте нужный палец ниткой, шнурком или бумажной лентой</div>
+																						</div>
+																						<div class="b-popup-howsize__row">
+																										<img src="/nedopas.com/image/howsize-ruler.svg" alt="" />
+																								<div>Линейкой замерьте полученную длину нитки</div>
+																						</div>
+																						<input type="number" class="js-howsize">
+																						<span>Введите результат в&nbsp;миллиметрах</span>
+																				</div>
+																		</div>
+																		<div class="modal-footer">
+																				<span>Размер кольца</span>
+																				<div class="result-size"></div>
+																		</div>
+																</div>
+														</div>
+												</div>
+
 			          <?php
 			          $product_enquiry = $modules_old_opencart->getModules('product_enquiry');
 			          if( count($product_enquiry) ) {
@@ -640,7 +573,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			          	}
 			          } else { ?>
 			          <div style="padding:10px 0;width: 100%;float:right;" class="col-sm-6">
-     			          <!-- <p><?php echo $entry_qty; ?></p> -->
+								   <!-- <p><?php echo $entry_qty; ?></p> -->
 						  <input type="hidden" name="product_id" size="2" value="<?php echo $product_id; ?>" />
      			          <input type="button" value="<?php echo $button_cart; ?>" id="button-cart" rel="<?php echo $product_id; ?>" data-loading-text="<?php echo $text_loading; ?>" class="button" />
 						  <div class="quantity">
@@ -858,16 +791,6 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 					  </tr>
 					  <tr>
 						<td colspan="2"><p><?php echo $review['text']; ?></p>
-
-			<?php if ($review['answer']) { ?>
-			<hr>
-			  <div class="answer_admin">
-				<p><strong><?php echo $review['admin_author']; ?></strong> - <?php echo $entry_admin_author; ?></p>
-				<p><?php echo $review['answer']; ?></p>
-			  </div>
-			<?php } ?>
-			</div>
-		
 						  <?php for ($i = 1; $i <= 5; $i++) { ?>
 						  <?php if ($review['rating'] < $i) { ?>
 						  <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
@@ -1032,6 +955,101 @@ $('select[name=\'recurring_id\'], input[name="quantity"]').change(function(){
 //--></script>
 
 <script type="text/javascript"><!--
+
+window.howSizeRing = function(){
+	    var val='';
+	    $('.js-howsize').keyup( function(e){
+	        var $this = $(this);
+	        if($this.val().length>0){
+	            if($this.val().indexOf(',')!==-1 || $this.val().indexOf('.')!==-1){
+	                $this.val($this.val().substr(0, 4))
+	            }
+	            else{
+	                $this.val($this.val().substr(0, 2))
+	            }
+	            val=$(this).val();
+	        }else{
+	            if(e.keyCode!==8 && e.keyCode!==46){
+	                $this.val(val);
+	            }
+	            else{
+	                val=''
+	            }
+	        }
+	        /*расчет размера кольца*/
+	        setTimeout(function(){
+	            var valueInput=Number($('.js-howsize').val());
+	            var size1 = (valueInput/3.14).toFixed(2);
+	            var size2 = ((valueInput/3.14).toFixed(2)%(valueInput/3.14).toFixed(0)).toFixed(2);
+	            if(valueInput>30 && valueInput<80){
+	                if(size2<=0.25 || size2>=0.75){
+	                    size1=(valueInput/3.14).toFixed(0)
+	                }
+	                if(size2>0.25 && size2<0.75){
+	                    size1=Number((valueInput/3.14).toFixed(0))+0.5
+	                }
+	                $('.result-size').text(size1)
+	            }
+	            else{
+	                $('.result-size').text('__')
+	            }
+	        },100)
+	    });
+	};
+	howSizeRing();
+
+$(document).ready(function() {
+	    var sizes_popup = 0;
+	    $(".js-select-size-main").find("input[name=size]").on('click', function(){
+	        //console.log($(this));
+	        var weight = $(this).data("weight");
+	        if(weight>0){
+	            $('#item-weight').html(weight);
+	        }
+
+	    });
+	    $('#popup-size-info').on('show.bs.modal', function(){
+	        if ($('#popup-gift-size').css('display') == 'block') {
+	            $('#popup-gift-size').modal('hide');
+	            $(this).addClass('by_gist_size_modal');
+	        }
+	    });
+	    $('#popup-size-info').on('hide.bs.modal', function(){
+	        if ($(this).hasClass('by_gist_size_modal')) {
+	            $('#popup-gift-size').modal('show');
+	        }
+	    });
+
+	    $('.js-select-size-main [name="size"]').on('change', function() {
+	        $('#js-size-selecting-link').attr('data-target', '#popup-gift-add');
+			$('#js-select-size-submit').removeAttr("disabled");
+		});
+
+	    $('#js-select-size-submit').on('click', function() {
+	        $('#popup-gift-size').modal('hide');
+	        //$('#popup-gift-added').modal('show');
+	        $('#popup-gift').modal('show');
+	        sizes_popup = 1;
+	    });
+
+	    $('.js-sizes-in-popup').on('click', function() {
+	        $('#popup-gift-size').modal('hide');
+	        $('#popup-size-info').modal('show');
+	        sizes_popup = 1;
+	    });
+
+	    $('#popup-size-info').on('hidden.bs.modal', function (e) {
+	        if (sizes_popup == 1) {
+	            $('#popup-gift-size').modal('show');
+	            sizes_popup = 0;
+	        }
+	    })
+
+	});
+
+
+
+
 $('#button-cart').on('click', function() {
  var $input = $(this).parent().find('#quantity_wanted');
  var count = parseInt($input.val());
@@ -1860,86 +1878,4 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
 				}
 				</script>
 
-
-				<script type="application/ld+json">
-				{
-				"@context": "http://schema.org",
-                "@type": "BreadcrumbList",
-                "itemListElement":
-                [
-				<?php $home = array_shift($breadcrumbs); ?>
-				{
-                "@type": "ListItem",
-                "position": 1,
-                "item":
-                {
-                  "@id": "<?php echo $base; ?>",
-                  "name": "<?php echo $store_name; ?>"
-                }
-				},
-				<?php for($i = 0; $i < count($breadcrumbs); ++$i) { 
-				if ( strpos($breadcrumbs[$i]['href'], '?route=') == false ) {
-				   $breadcrumb_url = explode("?", $breadcrumbs[$i]['href']);
-				} else { $breadcrumb_url = explode("&", $breadcrumbs[$i]['href']); }
-				?>
-                {
-                "@type": "ListItem",
-                "position": <?php echo $i+2; ?>,
-                "item":
-                {
-                  "@id": "<?php echo $breadcrumb_url[0]; ?>",
-                  "name": "<?php echo $breadcrumbs[$i]['text']; ?>"
-                }
-                }<?php echo($i !== (count($breadcrumbs)-1) ? ',' : ''); ?>
-                <?php } ?>
-				]
-				}
-				</script>
-                
-
-                <?php if($video_status){  ?>
-                    <script type="text/javascript">
-                       jQuery('a[data-video]:not([data-video=""])').each(function(index,element) {
-                            jQuery(this).attr('href', $(this).attr('data-video'));
-                            jQuery(this).attr('target','_blank');
-                            jQuery(this).css({'background-repeat':'no-repeat','background-position':'center center', 'background-size': '100%', 'background-image': 'url("/image/play.png")'}).find('img').css({ opacity: 0.6 });
-                        });
-                    
-                        jQuery('a[data-video][data-video_role="video_main"]:not([data-video=""])').css({ 'background-image': 'none' });
-
-                        jQuery('a[data-video]').magnificPopup({
-                                    type: 'iframe',
-                                    mainClass: 'mfp-fade',
-                                    removalDelay: 160,
-                                    preloader: false,
-                                    fixedContentPos: false,
-                                    iframe: {
-                                      patterns: {
-                                          youtube: {
-                                              index: 'youtube.com/', 
-                                              id: function(url) {        
-                                                  var m = url.match(/[\\?\\&]v=([^\\?\\&]+)/);
-                                                  if ( !m || !m[1] ) return null;
-                                                  return m[1];
-                                              },
-                                              src: '//www.youtube.com/embed/%id%?autoplay=1'
-                                          },
-                                          vimeo: {
-                                              index: 'vimeo.com/', 
-                                              id: function(url) {        
-                                                  var m = url.match(/(https?:\/\/)?(www.)?(player.)?vimeo.com\/([a-z]*\/)*([0-9]{6,11})[?]?.*/);
-                                                  if ( !m || !m[5] ) return null;
-                                                  return m[5];
-                                              },
-                                              src: '//player.vimeo.com/video/%id%?autoplay=1'
-                                          }
-                                      }
-                                  }
-                        });
-                        jQuery('a[data-video]:not([data-video=""]').click(function () {
-                            return false;
-                        });
-                    </script>
-                <?php } ?>
-            
 <?php echo $footer; ?>

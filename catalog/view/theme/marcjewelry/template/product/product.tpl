@@ -532,6 +532,37 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 
 			      <div class="cart">
                         <div class="add-to-cart clearfix">
+												<button data-toggle="modal" data-target="#how-to-size">Как узнать размер?</button>
+												<div class="modal fade" id="how-to-size" style="display: none;">
+    <div class="modal-dialog b-popup-howsize">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Как узнать размер кольца</h3>
+                <button class="close close-icon" data-dismiss="modal" aria-hidden="true"></button>
+            </div>
+            <div class="modal-body">
+                <div class="b-popup-howsize__text">
+                    <div class="b-popup-howsize__row">
+                         <img src="/image/howsize-thread.svg" alt=""/>
+                        <div>Обмотайте нужный палец ниткой, шнурком или бумажной лентой</div>
+                    </div>
+                    <div class="b-popup-howsize__row">
+                        		<img src="/image/howsize-ruler.svg" alt="" />
+                        <div>Линейкой замерьте полученную длину нитки</div>
+                    </div>
+                    <input type="number" class="js-howsize">
+                    <span>Введите результат в&nbsp;миллиметрах</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span>Размер кольца</span>
+                <div class="result-size"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 			          <?php
 			          $product_enquiry = $modules_old_opencart->getModules('product_enquiry');
 			          if( count($product_enquiry) ) {
@@ -922,6 +953,100 @@ $('select[name=\'recurring_id\'], input[name="quantity"]').change(function(){
 //--></script>
 
 <script type="text/javascript"><!--
+
+
+window.howSizeRing = function(){
+	    var val='';
+	    $('.js-howsize').keyup( function(e){
+	        var $this = $(this);
+	        if($this.val().length>0){
+	            if($this.val().indexOf(',')!==-1 || $this.val().indexOf('.')!==-1){
+	                $this.val($this.val().substr(0, 4))
+	            }
+	            else{
+	                $this.val($this.val().substr(0, 2))
+	            }
+	            val=$(this).val();
+	        }else{
+	            if(e.keyCode!==8 && e.keyCode!==46){
+	                $this.val(val);
+	            }
+	            else{
+	                val=''
+	            }
+	        }
+	        /*расчет размера кольца*/
+	        setTimeout(function(){
+	            var valueInput=Number($('.js-howsize').val());
+	            var size1 = (valueInput/3.14).toFixed(2);
+	            var size2 = ((valueInput/3.14).toFixed(2)%(valueInput/3.14).toFixed(0)).toFixed(2);
+	            if(valueInput>30 && valueInput<80){
+	                if(size2<=0.25 || size2>=0.75){
+	                    size1=(valueInput/3.14).toFixed(0)
+	                }
+	                if(size2>0.25 && size2<0.75){
+	                    size1=Number((valueInput/3.14).toFixed(0))+0.5
+	                }
+	                $('.result-size').text(size1)
+	            }
+	            else{
+	                $('.result-size').text('__')
+	            }
+	        },100)
+	    });
+	};
+	howSizeRing();
+
+$(document).ready(function() {
+	    var sizes_popup = 0;
+	    $(".js-select-size-main").find("input[name=size]").on('click', function(){
+	        //console.log($(this));
+	        var weight = $(this).data("weight");
+	        if(weight>0){
+	            $('#item-weight').html(weight);
+	        }
+
+	    });
+	    $('#popup-size-info').on('show.bs.modal', function(){
+	        if ($('#popup-gift-size').css('display') == 'block') {
+	            $('#popup-gift-size').modal('hide');
+	            $(this).addClass('by_gist_size_modal');
+	        }
+	    });
+	    $('#popup-size-info').on('hide.bs.modal', function(){
+	        if ($(this).hasClass('by_gist_size_modal')) {
+	            $('#popup-gift-size').modal('show');
+	        }
+	    });
+
+	    $('.js-select-size-main [name="size"]').on('change', function() {
+	        $('#js-size-selecting-link').attr('data-target', '#popup-gift-add');
+			$('#js-select-size-submit').removeAttr("disabled");
+		});
+
+	    $('#js-select-size-submit').on('click', function() {
+	        $('#popup-gift-size').modal('hide');
+	        //$('#popup-gift-added').modal('show');
+	        $('#popup-gift').modal('show');
+	        sizes_popup = 1;
+	    });
+
+	    $('.js-sizes-in-popup').on('click', function() {
+	        $('#popup-gift-size').modal('hide');
+	        $('#popup-size-info').modal('show');
+	        sizes_popup = 1;
+	    });
+
+	    $('#popup-size-info').on('hidden.bs.modal', function (e) {
+	        if (sizes_popup == 1) {
+	            $('#popup-gift-size').modal('show');
+	            sizes_popup = 0;
+	        }
+	    })
+
+	});
+
+
 $('#button-cart').on('click', function() {
  var $input = $(this).parent().find('#quantity_wanted');
  var count = parseInt($input.val());
