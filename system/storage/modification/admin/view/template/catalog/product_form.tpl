@@ -38,6 +38,9 @@
             <li><a href="#tab-image" data-toggle="tab"><?php echo $tab_image; ?></a></li>
             <li><a href="#tab-reward" data-toggle="tab"><?php echo $tab_reward; ?></a></li>
             <li><a href="#tab-design" data-toggle="tab"><?php echo $tab_design; ?></a></li>
+<!--BOF Product Series-->
+            <li><a href="#tab-product-series" data-toggle="tab"><?php echo $tab_product_series; ?></a></li>
+			<!--EOF Product Series-->
           </ul>
           <div class="tab-content">
             <div class="tab-pane active" id="tab-general">
@@ -944,6 +947,88 @@
                 </table>
               </div>
             </div>
+<!--BOF Product Series -->
+			<div class="tab-pane" id="tab-product-series">
+				
+				<div class="form-group">
+					<label class="col-sm-2 control-label" for="color_series_type"><?php echo $entry_this_product; ?></label>
+					<div class="col-sm-10">
+						<input type="radio" name="color_series_type" value="singleItem" id="color_series_type"
+						<?php echo $is_single_item ? 'checked' : ''; ?> 
+						<?php echo $is_linked_product_series_master ? 'disabled="disabled"' : ''; ?>/>
+						<?php echo $text_is_single_item; ?><br/>
+						<input type="radio" name="color_series_type" value="colorSeriesMaster"
+						<?php echo $is_product_series_master ? 'checked' : ''; ?>/>
+						<?php echo $text_is_product_series_master; ?><br/>
+						<input type="radio" name="color_series_type" value="colorSeriesSlave"
+						<?php echo $is_product_series_slave ? 'checked' : ''; ?> 
+						<?php echo $is_linked_product_series_master ? 'disabled="disabled"' : ''; ?>/>
+						<?php echo $text_is_product_series_slave; ?><br/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label" for="product_series_image"><span data-toggle="tooltip" title="<?php echo $text_help_product_series_image; ?>"><?php echo $entry_product_series_image; ?></span></label>
+					<div class="col-sm-10">
+						<a href="" id="product_series_thumb" data-toggle="image" class="img-thumbnail"><img src="<?php echo $product_series_thumb; ?>" alt="" title="" data-placeholder="<?php echo $placeholder; ?>" /></a>
+						<input type="hidden" name="product_series_image" value="<?php echo $product_series_image; ?>" id="product_series_image" />
+					</div>
+				</div>
+				<div class="form-group" id="tbl_product_series_link">
+					<label class="col-sm-2 control-label" for="master_product"><?php echo $entry_link_to_a_product_series; ?></label>
+					<div class="col-sm-10">
+						<?php if($is_product_series_master){ ?>
+							<?php echo $text_is_a_product_series_master; ?>
+						<?php } ?>
+						<select name="master_product" id="master_product" class="form-control"><!--Load list of product that can be set as master product (master products are not link to any other master product, only master products will be visible on listing pages)-->
+							<?php foreach($all_master_product as $m_product){
+								if($m_product['product_id'] != $product_id)
+								{
+							?>
+							<option value="<?php echo $m_product['product_id']; ?>" <?php echo isset($master_product) && $master_product == $m_product['product_id'] ? 'selected' : ''; ?>><?php echo $m_product['product_name']; ?></option>
+							<?php }
+							} ?>
+						</select>
+						<?php if ($error_master_product) { ?>
+						<span class="error"><?php echo $error_master_product; ?></span>
+						<?php } ?>
+					</div>
+				</div>
+				
+				<?php if(isset($color_linked_products) && $color_linked_products) { ?>
+				<fieldset id="wrp_linked_products">
+					<legend><?php echo $text_product_under_same_product_series; ?></legend>
+					<div class="table-responsive">
+						<table class="table table-bordered table-hover">
+						  <thead>
+							<tr>
+							  <td class="text-left"><?php echo $column_name; ?> (<?php echo $column_model; ?>)</td>
+							  <td class="text-left"><?php echo $column_image; ?></td>
+							  <td class="text-left"><?php echo $column_action; ?></td>
+							</tr>
+						  </thead>
+						  <tbody>							
+							<?php foreach($color_linked_products as $l_product) { ?>
+							<tr>
+							  <td class="text-left">
+								<?php echo $l_product['product_name']; ?> (<?php echo $l_product['product_model']; ?>)
+							  </td>
+							  <td class="text-left">
+								<img alt="<?php echo $l_product['product_name']; ?>" src="<?php echo $l_product['product_series_thumb']; ?>" />
+							  </td>
+							  <td class="text-right">
+								<?php if($l_product['product_id'] != $product_id) { ?>
+									[<a targer="_blank" href="<?php echo $l_product['edit_href']; ?>" title="<?php echo $l_product['color_name']; ?>"><?php echo $text_edit; ?></a>]
+								<?php } ?>
+							  </td>
+							</tr>
+							<?php } ?>
+						  </tbody>
+						</table>
+					</div>
+				</fieldset>
+				<?php } ?>
+			</div>
+			<!--EOF Product Series -->
             <div class="tab-pane" id="tab-design">
               <div class="table-responsive">
                 <table class="table table-bordered table-hover">
@@ -1537,4 +1622,59 @@ $('.datetime').datetimepicker({
 $('#language a:first').tab('show');
 $('#option a:first').tab('show');
 //--></script></div>
+<!--BOF Product Series -->
+			<script type="text/javascript"><!--
+
+			function initColorSeriesTypeChanged()
+			{
+				$("input[name='color_series_type']").click(function()
+				{
+					onColorSeriesTypeChanged($(this).val());
+				});
+			}
+
+			function onColorSeriesTypeChanged(colorSeriesType)
+			{
+				if(colorSeriesType == 'singleItem') //is single item
+				{
+					$('#tbl_product_series_link').hide();
+					$('#wrp_linked_products').hide();
+					
+					//colorNotAvailable is for single item only	
+					$rbtcolorNotAvailable = $('input[name="color_option"]:eq(0)');
+					$rbtcolorNotAvailable.removeAttr('disabled');
+				}
+				else
+				{
+					if(colorSeriesType == 'colorSeriesMaster') //is a Product Series master
+					{
+						$('#tbl_product_series_link').hide();
+						$('#wrp_linked_products').show();
+					}
+					else //is a Product Series slave
+					{
+						$('#tbl_product_series_link').show();
+						$('#wrp_linked_products').show();
+					}
+					
+					//colorNotAvailable is for single item only		
+					$rbtcolorNotAvailable = $('input[name="color_option"]:eq(0)');
+					$rbtcolorNotAvailable.attr('disabled', 'disabled');
+					
+					if($rbtcolorNotAvailable.is(':checked'))
+					{
+						$('input[name="color_option"]:eq(1)').attr('checked', 'checked');
+					}
+				}
+			}
+
+			$(document).ready(
+				function()
+				{
+					onColorSeriesTypeChanged($("input[name='color_series_type']:checked").val());
+					initColorSeriesTypeChanged();
+				}
+			);
+			//--></script> 
+			<!--EOF Product Series -->
 <?php echo $footer; ?>

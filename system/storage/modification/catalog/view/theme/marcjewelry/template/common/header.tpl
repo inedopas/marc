@@ -421,6 +421,55 @@ function colorListRollover() {
 }
 </script>
 
+<!--BOF Product Series-->
+			<style>	
+				.pds a, .pds a:hover, .pds a:visited
+				{
+					text-decoration: none;
+				}
+			
+				.pds a.preview
+				{
+					display: inline-block;
+				}
+				
+				.pds a.preview.pds-current, .pds a.pds-current
+				{
+					border-bottom: 3px solid orange;
+				}
+				
+				#preview{
+					position: absolute;
+					border: 1px solid #DBDEE1;
+					background: #F8F8F8;
+					padding: 5px;
+					display: none;
+					color: #333;
+					z-index: 1000000;
+				}
+			</style>
+			<script type="text/javascript" src="catalog/view/javascript/imagepreview/imagepreview.js"></script>
+			<script type="text/javascript">
+				$(document).ready(function(){
+					pdsListRollover();
+				});
+				
+				function pdsListRollover()
+				{
+					$('.pds a.pds-thumb-rollover').hover(function(){
+						//on hover
+						$this = $(this);
+						var hoverImage = $this.attr('rel');
+						$this.parents('.product-thumb').find('.image a img').attr('src', hoverImage);
+					}, function(){
+						//on unhover
+						$this = $(this);
+						var masterImage = $this.attr('master-image');
+						$this.parents('.product-thumb').find('.image a img').attr('src', masterImage);
+					});
+				}
+			</script>
+			<!--EOF Product Series-->
 </head>	
 <body class="<?php echo $class; ?> <?php if($theme_options->get( 'page_width' ) == 2 && $theme_options->get( 'max_width' ) > 1400) { echo 'body-full-width'; } ?> <?php if($theme_options->get( 'product_list_type' ) > 0) { echo 'product-list-type-' . $theme_options->get( 'product_list_type' ); } ?> <?php if($theme_options->get( 'product_grid_type' ) > 0) { echo 'product-grid-type-' . $theme_options->get( 'product_grid_type' ); } ?> <?php if($theme_options->get( 'dropdown_menu_type' ) > 0) { echo 'dropdown-menu-type-' . $theme_options->get( 'dropdown_menu_type' ); } ?> <?php if($theme_options->get( 'products_buttons_action' ) > 0) { echo 'products-buttons-action-type-' . $theme_options->get( 'products_buttons_action' ); } ?> <?php if($theme_options->get( 'buttons_prev_next_in_slider' ) > 0) { echo 'buttons-prev-next-type-' . $theme_options->get( 'buttons_prev_next_in_slider' ); } ?> <?php if($theme_options->get( 'inputs_type' ) > 0) { echo 'inputs-type-' . $theme_options->get( 'inputs_type' ); } ?> <?php if($theme_options->get( 'cart_block_type' ) > 0) { echo 'cart-block-type-' . $theme_options->get( 'cart_block_type' ); } ?> <?php if($theme_options->get( 'my_account_type' ) > 0) { echo 'my-account-type-' . $theme_options->get( 'my_account_type' ); } ?> <?php if($theme_options->get( 'top_bar_type' ) > 0) { echo 'top-bar-type-' . $theme_options->get( 'top_bar_type' ); } ?> <?php if($theme_options->get( 'show_vertical_menu_category_page' ) > 0) { echo 'show-vertical-megamenu-category-page'; } ?> <?php if($theme_options->get( 'show_vertical_menu_product_page' ) > 0) { echo 'show-vertical-megamenu-product-page'; } ?> <?php if($theme_options->get( 'show_vertical_menu' ) > 0) { echo 'show-vertical-megamenu'; } ?> <?php if($theme_options->get( 'product_page_type' ) > 0) { echo 'product-page-type-' . $theme_options->get( 'product_page_type' ); } ?> <?php if($theme_options->get( 'megamenu_type' ) > 0) { echo 'megamenu-type-' . $theme_options->get( 'megamenu_type' ); } ?> <?php if($theme_options->get( 'search_type_in_header' ) > 0) { echo 'search-type-' . $theme_options->get( 'search_type_in_header' ); } ?> <?php if($theme_options->get( 'megamenu_label_type' ) > 0) { echo 'megamenu-label-type-' . $theme_options->get( 'megamenu_label_type' ); } ?> <?php if($theme_options->get( 'box_type' ) == 7) { echo 'box-type-4'; } else { echo 'no-box-type-7'; } ?> <?php if($theme_options->get( 'box_type' ) > 0) { echo 'box-type-' . $theme_options->get( 'box_type' ); } ?> <?php if($theme_options->get( 'header_margin_top' ) > 0) { echo 'header-margin-top-' . $theme_options->get( 'header_margin_top' ); } ?> <?php if($theme_options->get( 'sale_new_type' ) > 0) { echo 'sale-new-type-' . $theme_options->get( 'sale_new_type' ); } ?> <?php if($theme_options->get( 'button_type' ) > 0) { echo 'button-body-type-' . $theme_options->get( 'button_type' ); } ?> <?php if($theme_options->get( 'countdown_special' ) > 0) { echo 'countdown-special-type-' . $theme_options->get( 'countdown_special' ); } ?> <?php if($theme_options->get( 'footer_type' ) > 0) { echo 'footer-type-' . $theme_options->get( 'footer_type' ); } ?> <?php if($theme_options->get( 'breadcrumb_style' ) > 0) { echo 'breadcrumb-style-' . $theme_options->get( 'breadcrumb_style' ); } ?> <?php if($theme_options->get( 'border_width' ) == '1') { echo 'border-width-1'; } else { echo 'border-width-0'; } ?> <?php if(($theme_options->get( 'body_background_color' ) == '#ffffff' || ($theme_options->get( 'main_content_background_color' ) == $theme_options->get( 'body_background_color' ) && $theme_options->get( 'body_background_color' ) != '') || $theme_options->get( 'main_content_background_color' ) == 'none') && $theme_options->get( 'colors_status' ) == '1') { echo 'body-white'; } else { echo 'body-other'; } ?> <?php if($theme_options->get( 'main_content_background_color' ) == 'none' && $theme_options->get( 'colors_status' ) == '1') { echo 'body-white-type-2'; } ?> <?php if($theme_options->get( 'main_content_background_color' ) == 'none' && $theme_options->get( 'box_with_products_background_color' ) == '#ffffff' && $theme_options->get( 'colors_status' ) == '1') { echo 'body-white-type-3'; } ?> <?php if($theme_options->get( 'hover_effect' ) == '1') { echo 'banners-effect-' . $theme_options->get( 'hover_effect_type' ); } ?> body-header-type-<?php echo $theme_options->get( 'header_type' ); ?>">
 <?php if($theme_options->get( 'widget_facebook_status' ) == 1) { ?>

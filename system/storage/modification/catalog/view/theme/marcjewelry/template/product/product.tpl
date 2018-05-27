@@ -10,7 +10,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			$('#q_down').click(function () {
 			var $input = $(this).parent().find('#quantity_wanted');
 			var count = parseInt($input.val()) - 1;
-			count = count < 1 ? 1 : count;
+			count = count <style 1 ? 1 : count;
 			$input.val(count);
 			$input.change();
 			return false;
@@ -200,7 +200,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			     <?php if ($price) { ?>
 
 				<?php if (isset($custom_partner_price)) echo $custom_partner_price ?>
-			
+
 			      <div class="price">
 			      	<span class="textprice">Цена</span>
 			        <?php if($theme_options->get( 'display_specials_countdown' ) == '1' && $special) { $countdown = rand(0, 5000)*rand(0, 5000);
@@ -248,8 +248,8 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			      <div class="options2">
 			        <?php foreach ($product_options_center as $module) { echo $module; } ?>
 
-			
-					
+
+
 					<?php if(!empty($colors)){ ?>
 					<div id="color_options">
 					<div class="heading"><?php echo $colors_title?></div>
@@ -267,9 +267,9 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 									<div class="image_block"><img src="<?php echo $color['ico_color'] ?>" /></div>
 								<?php } ?>
 								<?php if($colors_cfg['name']==1){ ?>
-									<div class="color_name"><?php echo $color['color_name'] ?></div> 
+									<div class="color_name"><?php echo $color['color_name'] ?></div>
 								<?php } ?>
-								
+
 							</div>
 						<?php } else {  ?>
 							<div class="color_option <?php echo $color['tpl']?> <?php echo $color['quantity']?>">
@@ -277,7 +277,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 									<div class="hideQuantity">Нет в наличии</div>
 								<?php } ?>
 								<a href="<?php echo $color['href'] ?>">
-								
+
 									<?php if($color['tpl'] == 'color'){ ?>
 										<div class="color_block" style="background:<?php echo $color['color'] ?>;<?php if($colors_cfg['name']!=1){ ?>padding:0;<?php } ?>"></div>
 									<?php } elseif($color['tpl'] == 'photos'){ ?>
@@ -292,31 +292,59 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 									<?php } ?>
 
 									<?php if($colors_cfg['name']==1){ ?>
-										<div class="color_name"><?php echo $color['color_name'] ?></div> 
+										<div class="color_name"><?php echo $color['color_name'] ?></div>
 									<?php } ?>
 								</a>
 							</div>
-						<?php } ?>	
+						<?php } ?>
 					<?php } ?>
 
 					<?php if($colors_cfg['enable_popup'] === '0'){ ?>
 					<a class="colors fancybox.ajax" href="index.php?route=product/colorkits&c_product_id=<?php echo $product_id ?>">All colors</a>
 					<script type="text/javascript">
 					$(document).ready(function() {
-						
+
 						$(".colors").fancybox({
 							openEffect : 'elastic',
 							closeEffect : 'elastic',
 							fitToView   : false,
 							autoSize    : true,
-							closeClick  : false							
+							closeClick  : false
 						});
 					});
 					</script>
 					<?php } ?>
 					</div>
 				<?php } ?>
-				
+
+
+			<!--BOF Product Series -->
+			<!--if this is a master then load list of slave products, if this is a slave product then load other slave products under the same master -->
+			<?php if(sizeof($pds) > 0) { ?>
+				<div class="price pds">
+					<?php if($display_add_to_cart){ ?>
+						<span style=" font-size: 22px;"><?php echo $text_in_the_same_series; ?></span></span><br/>
+					<?php } else { ?>
+						<?php echo $no_add_to_cart_message; ?><br/>
+					<?php } ?>
+					<?php foreach ($pds as $p) { ?>
+						<a class="<?php echo $pds_enable_preview ? 'preview' : ''?> <?php echo ($p['product_id'] == $product_id) ? 'pds-current' : '' ?>"
+						title="<?php echo $p['product_name']; ?>"
+						href="<?php echo $p['product_link']; ?>"
+						rel="<?php echo $p['product_main_image']; ?>">
+							<img src="<?php echo $p['product_pds_image']; ?>" alt="<?php echo $p['product_name']; ?>" />
+						</a>
+					<?php } ?>
+				</div>
+			<?php } ?>
+			<?php if(!$display_add_to_cart){ ?>
+				<style>
+					/*Hide cart and options*/
+					#content .cart, .options, .buttons-cart, .input-qty, #product_buy, #product_options, #button-cart, .form-group {display: none !important;}
+					.price {margin-bottom: 15px}
+				</style>
+			<?php } ?>
+			<!--EOF Product Series -->
 			        <?php if ($options) { ?>
                     <div class="options">
                          <h2><?php echo $text_option; ?></h2>
@@ -590,7 +618,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
  										      <div class="visible">
 										        <h2 style="text-align:center">Уважаемый покупатель!</h2>
  										          <div class="content">
-									            <p></p>Извините у нас в наличии только <span id="qv"></span> штук. Можете связаться с менеджером для заказа большего количество.</p>
+									            <p></p>Извините у нас в наличии только <span id="qv"></span> шт. Можете связаться с менеджером для заказа большего количество.</p>
  										          </div>
 									        <button type="submit"class="button" onClick="getElementById('win').style.display='none';">закрыть</button>
  										    </div>
@@ -833,7 +861,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			  </div>
 			<?php } ?>
 			</div>
-		
+
 						  <?php for ($i = 1; $i <= 5; $i++) { ?>
 						  <?php if ($review['rating'] < $i) { ?>
 						  <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
@@ -1839,7 +1867,7 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
                   "name": "<?php echo $store_name; ?>"
                 }
 				},
-				<?php for($i = 0; $i < count($breadcrumbs); ++$i) { 
+				<?php for($i = 0; $i < count($breadcrumbs); ++$i) {
 				if ( strpos($breadcrumbs[$i]['href'], '?route=') == false ) {
 				   $breadcrumb_url = explode("?", $breadcrumbs[$i]['href']);
 				} else { $breadcrumb_url = explode("&", $breadcrumbs[$i]['href']); }
@@ -1857,7 +1885,7 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
 				]
 				}
 				</script>
-                
+
 
                 <?php if($video_status){  ?>
                     <script type="text/javascript">
@@ -1866,7 +1894,7 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
                             jQuery(this).attr('target','_blank');
                             jQuery(this).css({'background-repeat':'no-repeat','background-position':'center center', 'background-size': '100%', 'background-image': 'url("/image/play.png")'}).find('img').css({ opacity: 0.6 });
                         });
-                    
+
                         jQuery('a[data-video][data-video_role="video_main"]:not([data-video=""])').css({ 'background-image': 'none' });
 
                         jQuery('a[data-video]').magnificPopup({
@@ -1878,8 +1906,8 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
                                     iframe: {
                                       patterns: {
                                           youtube: {
-                                              index: 'youtube.com/', 
-                                              id: function(url) {        
+                                              index: 'youtube.com/',
+                                              id: function(url) {
                                                   var m = url.match(/[\\?\\&]v=([^\\?\\&]+)/);
                                                   if ( !m || !m[1] ) return null;
                                                   return m[1];
@@ -1887,8 +1915,8 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
                                               src: '//www.youtube.com/embed/%id%?autoplay=1'
                                           },
                                           vimeo: {
-                                              index: 'vimeo.com/', 
-                                              id: function(url) {        
+                                              index: 'vimeo.com/',
+                                              id: function(url) {
                                                   var m = url.match(/(https?:\/\/)?(www.)?(player.)?vimeo.com\/([a-z]*\/)*([0-9]{6,11})[?]?.*/);
                                                   if ( !m || !m[5] ) return null;
                                                   return m[5];
@@ -1903,5 +1931,5 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
                         });
                     </script>
                 <?php } ?>
-            
+
 <?php echo $footer; ?>

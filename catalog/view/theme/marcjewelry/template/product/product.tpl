@@ -518,7 +518,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
  										      <div class="visible">
 										        <h2 style="text-align:center">Уважаемый покупатель!</h2>
  										          <div class="content">
-									            <p></p>Извините у нас в наличии только <span id="qv"></span> штук. Можете связаться с менеджером для заказа большего количество.</p>
+									            <p></p>Извините у нас в наличии только <span id="qv"></span> шт. Можете связаться с менеджером для заказа большего количество.</p>
  										          </div>
 									        <button type="submit"class="button" onClick="getElementById('win').style.display='none';">закрыть</button>
  										    </div>

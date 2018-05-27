@@ -134,6 +134,55 @@ function colorListRollover() {
 }
 </script>
 
+<!--BOF Product Series-->
+			<style>	
+				.pds a, .pds a:hover, .pds a:visited
+				{
+					text-decoration: none;
+				}
+			
+				.pds a.preview
+				{
+					display: inline-block;
+				}
+				
+				.pds a.preview.pds-current, .pds a.pds-current
+				{
+					border-bottom: 3px solid orange;
+				}
+				
+				#preview{
+					position: absolute;
+					border: 1px solid #DBDEE1;
+					background: #F8F8F8;
+					padding: 5px;
+					display: none;
+					color: #333;
+					z-index: 1000000;
+				}
+			</style>
+			<script type="text/javascript" src="catalog/view/javascript/imagepreview/imagepreview.js"></script>
+			<script type="text/javascript">
+				$(document).ready(function(){
+					pdsListRollover();
+				});
+				
+				function pdsListRollover()
+				{
+					$('.pds a.pds-thumb-rollover').hover(function(){
+						//on hover
+						$this = $(this);
+						var hoverImage = $this.attr('rel');
+						$this.parents('.product-thumb').find('.image a img').attr('src', hoverImage);
+					}, function(){
+						//on unhover
+						$this = $(this);
+						var masterImage = $this.attr('master-image');
+						$this.parents('.product-thumb').find('.image a img').attr('src', masterImage);
+					});
+				}
+			</script>
+			<!--EOF Product Series-->
 </head>
 <body class="<?php echo $class; ?>">
 <nav id="top">

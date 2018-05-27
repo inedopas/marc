@@ -782,6 +782,53 @@ $data['video_status'] = $this->config->get('video_status');
 
 			$data['recurrings'] = $this->model_catalog_product->getProfiles($this->request->get['product_id']);
 
+//BOF Product Series 
+			//get link of linked products + colors
+			$pds_allow_buying_series = $this->getData('pds_allow_buying_series', 0);
+			
+			$this->load->model('catalog/product_master');
+			$results = $this->model_catalog_product_master->getLinkedProducts($this->request->get['product_id'], '2', $pds_allow_buying_series); //'2' is Image
+			
+			$data['pds'] = array();
+			
+			$pds_detail_thumbnail_width = $this->getData('pds_detail_thumbnail_width', 50);
+			$pds_detail_thumbnail_height = $this->getData('pds_detail_thumbnail_height', 50);
+			$pds_preview_width = $this->getData('pds_preview_width', 200);
+			$pds_preview_height = $this->getData('pds_preview_height', 200);
+			$data['pds_enable_preview'] = $this->getData('pds_enable_preview', 1);
+			
+			foreach ($results as $result)
+			{
+				$product_pds_image = ($result['special_attribute_value'] != '' && strtolower($result['special_attribute_value']) != 'no_image.png')
+					? $this->model_tool_image->resize($result['special_attribute_value'], $pds_detail_thumbnail_width, $pds_detail_thumbnail_height)
+					: $this->model_tool_image->resize($result['image'], $pds_detail_thumbnail_width, $pds_detail_thumbnail_height);
+				
+				$product_main_image = ($result['image'] != '' && strtolower($result['image']) != 'no_image.png')
+					? $this->model_tool_image->resize($result['image'], $pds_preview_width, $pds_preview_height) //user default main image
+					: $this->model_tool_image->resize($result['special_attribute_value'], $pds_preview_width, $pds_preview_height); // use series image
+			
+				$data['pds'][] = array(
+					'product_id' => $result['product_id'],
+					'product_link' => $this->url->link('product/product', $url . '&product_id=' . $result['product_id']),
+					'product_name' => $result['name'],
+					'product_pds_image' => $product_pds_image,
+					'product_main_image' => $product_main_image
+				);
+			}
+			
+			$this->load->model('catalog/product_master');
+			$this->load->language('product/pds');
+			
+			if(!isset($data['display_add_to_cart']))
+			{
+				$is_master = $this->model_catalog_product_master->isMaster($this->request->get['product_id'], '2'); //2 is Image
+				$pds_allow_buying_series = $this->getData('pds_allow_buying_series', 0);
+				$data['display_add_to_cart'] = !$is_master || $pds_allow_buying_series;
+				$data['no_add_to_cart_message'] = $this->language->get('text_select_series_item');
+			}
+			
+			$data['text_in_the_same_series'] = $this->language->get('text_in_the_same_series');
+			//EOF Product Series 
 			$this->model_catalog_product->updateViewed($this->request->get['product_id']);
 
 			$data['column_left'] = $this->load->controller('common/column_left');

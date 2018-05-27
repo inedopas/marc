@@ -557,27 +557,25 @@ $modules_old_opencart = new Modules($registry); ?>
 			          </div>
 			      </div>
 			      <?php } ?>
-				  <?php if ($option['option_id'] == '11') { ?>
+				  <?php if ($option['option_id'] == '11') { $tab='tab'; ?>
 			      <div class="form-group checked-options" style="background-color: #f9f9f9;margin-top: 5px;">
 			            <div class="heading">Выбрано</div>
 			            <table cellpadding="10">
                             <tr class="opt-heading">
-                                <td width="25%">Вставка</td>
                                 <td width="15%">Размер</td>
                                 <td width="15%">Вес</td>
                                 <td width="15%">В наличии</td>
                                 <td width="15%">Цена</td>
                             </tr>
                             <tr class="opt-value">
-                                <td option="14" class="opt-name"></td>
                                 <td option="11" class="opt-name"></td>
                                 <td option="11" class="opt-weight"></td>
-                                <td option="11" class="opt-quantity"></td>
+                                <td id="<?php echo $tab;?>" option="11" class="opt-quantity"></td>
                                 <td class="opt-price"></td>
                             </tr>
                         </table>
                 </div>
-				<?php } else if ($option['option_id'] == '14') { ?>
+				<?php } else if ($option['option_id'] == '14') { $tab='tab'; ?>
 <div class="form-group checked-options" style="background-color: #f9f9f9;margin-top: 5px;">
 			            <div class="heading">Выбрано</div>
 			            <table cellpadding="10">
@@ -590,12 +588,24 @@ $modules_old_opencart = new Modules($registry); ?>
                             <tr class="opt-value">
                                 <td option="14" class="opt-name"></td>
                                 <td option="14" class="opt-weight"></td>
-                                <td option="14" class="opt-quantity"></td>
-                                <td class="opt-price"><span class="opt-newprice"></span><span class="opt-oldprice"></span></td>
+                                <td id="<?php echo $tab;?>" option="14" class="opt-quantity"></td>
+                                <td class="opt-price"></td>
                             </tr>
                         </table>
                 </div>
 <?php } ?>
+
+<div id="win" style="display:none;">
+					 <div class="overlay"></div>
+							<div class="visible">
+								<h2 style="text-align:center">Уважаемый покупатель!</h2>
+									<div class="content">
+									<p></p>Извините у нас в наличии только <span id="qv"></span> шт. Можете связаться с менеджером для заказа большего количество.</p>
+									</div>
+							<button type="submit"class="button" onClick="getElementById('win').style.display='none';">закрыть</button>
+						</div>
+				</div>
+
 			      <div class="cart">
                         <div class="add-to-cart clearfix">
 			          <?php
@@ -700,7 +710,7 @@ $modules_old_opencart = new Modules($registry); ?>
   </div>
 </div>
 
-<?php if($theme_options->get( 'custom_block', 'product_page', $config->get( 'config_language_id' ), 'status' ) == 1 { ?>
+<?php if($theme_options->get( 'custom_block', 'product_page', $config->get( 'config_language_id' ), 'status' ) == 1) { ?>
     	<div class="col-md-3 col-sm-12">
     	     <?php if($theme_options->get( 'custom_block', 'product_page', $config->get( 'config_language_id' ), 'status' ) == 1) { ?>
     		<div class="product-block">
@@ -972,6 +982,16 @@ $('select[name=\'recurring_id\'], input[name="quantity"]').change(function(){
 //--></script>
 <script type="text/javascript"><!--
 $('#button-cart').on('click', function() {
+	var $input = $(this).parent().find('#quantity_wanted');
+	var count = parseInt($input.val());
+ var sht = document.getElementById('tab');
+ var tor =(sht.innerHTML);
+	kil= parseInt(tor.replace(/\D+/g,""));
+	if (count>kil){
+	document.getElementById('qv').innerHTML=kil;
+	document.getElementById("win").style.display = null;
+ return;
+ }
 	$.ajax({
 		url: 'index.php?route=checkout/cart/add',
 		type: 'post',
