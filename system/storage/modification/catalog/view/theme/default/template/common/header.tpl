@@ -56,42 +56,6 @@
 <?php echo $analytic; ?>
 <?php } ?>
 
-				<?php if ($class == 'common-home') { ?>
-				<script type="application/ld+json">
-                {
-                 "@context": "http://schema.org",
-                 "@type": "WebSite",
-                 "url": "<?php echo $base; ?>",
-				 "name" : "<?php echo $store_name; ?>",
-                 "potentialAction": {
-                   "@type": "SearchAction",
-                   "target": "<?php echo $base; ?>index.php?route=product/search&search={q}",
-                   "query-input": "required name=q"
-                 }
-                }
-                </script>
-				<script type="application/ld+json">
-                { "@context" : "http://schema.org",
-                  "@type" : "Organization",
-                  <?php if ($logo) { ?>
-                  "logo" : "<?php echo $logo; ?>",
-                  <?php } ?>
-				  <?php if (!empty($support)) { ?>
-                  "contactPoint" : [
-                  { "@type" : "ContactPoint",
-                    "telephone" : "<?php echo $support; ?>",
-                    "contactType" : "customer service"
-                  } ],
-				  <?php } ?>
-				  <?php if (!empty($social)) { ?>
-				  "sameAs" : [<?php echo $social; ?>],
-				  <?php } ?>
-				  "url" : "<?php echo $base; ?>"
-				}
-				</script>
-				<?php } ?>
-                
-
 				<script type="text/javascript">
 $(document).ready(function() {
     colorListRollover();
@@ -183,6 +147,42 @@ function colorListRollover() {
 				}
 			</script>
 			<!--EOF Product Series-->
+
+				<?php if ($class == 'common-home') { ?>
+				<script type="application/ld+json">
+                {
+                 "@context": "http://schema.org",
+                 "@type": "WebSite",
+                 "url": "<?php echo $base; ?>",
+				 "name" : "<?php echo $store_name; ?>",
+                 "potentialAction": {
+                   "@type": "SearchAction",
+                   "target": "<?php echo $base; ?>index.php?route=product/search&search={q}",
+                   "query-input": "required name=q"
+                 }
+                }
+                </script>
+				<script type="application/ld+json">
+                { "@context" : "http://schema.org",
+                  "@type" : "Organization",
+                  <?php if ($logo) { ?>
+                  "logo" : "<?php echo $logo; ?>",
+                  <?php } ?>
+				  <?php if (!empty($support)) { ?>
+                  "contactPoint" : [
+                  { "@type" : "ContactPoint",
+                    "telephone" : "<?php echo $support; ?>",
+                    "contactType" : "customer service"
+                  } ],
+				  <?php } ?>
+				  <?php if (!empty($social)) { ?>
+				  "sameAs" : [<?php echo $social; ?>],
+				  <?php } ?>
+				  "url" : "<?php echo $base; ?>"
+				}
+				</script>
+				<?php } ?>
+                
 </head>
 <body class="<?php echo $class; ?>">
 <nav id="top">

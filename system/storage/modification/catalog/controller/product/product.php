@@ -5,15 +5,8 @@ class ControllerProductProduct extends Controller {
 
 				protected function getReviewsFirstPage($product_id) {
 					$this->load->language('product/product');
-
-          $this->load->model('module/statistics');
-        $this->model_module_statistics->validateTransitions();
-      
 					$this->load->model('catalog/review');
 					$data['text_no_reviews'] = $this->language->get('text_no_reviews');
-
-			$data['entry_admin_author'] = $this->config->get('config_name');
-		
 					
 					$page = 1;
 					$data['reviews'] = array();
@@ -21,10 +14,6 @@ class ControllerProductProduct extends Controller {
 					$results = $this->model_catalog_review->getReviewsByProductId($product_id, 0, $review_total);
 					foreach ($results as $result) {
 						$data['reviews'][] = array(
-
-			'admin_author'       => $result['admin_author'],
-			'answer'       => $result['answer'],			
-		
 							'author'     => $result['author'],
 							'text'       => nl2br($result['text']),
 							'rating'     => (int)$result['rating'],
@@ -214,7 +203,6 @@ class ControllerProductProduct extends Controller {
 		$product_info = $this->model_catalog_product->getProduct($product_id);
 
 		if ($product_info) {
-$data['video_status'] = $this->config->get('video_status');
 
 		$viewed_products = array();
         if (isset($this->request->cookie['viewed'])) {
@@ -226,6 +214,7 @@ $data['video_status'] = $this->config->get('video_status');
 		$viewed_products = array_shift( $viewed_products );
 		setcookie( 'viewed', implode( ',', $viewed_products), time() + 60 * 60 * 24 * 30, '/', $this->request->server['HTTP_HOST'] );
 			
+$data['video_status'] = $this->config->get('video_status');
 			$url = '';
 
 			if (isset($this->request->get['path'])) {

@@ -1988,42 +1988,6 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
 				</script>
 
 
-				<script type="application/ld+json">
-				{
-				"@context": "http://schema.org",
-                "@type": "BreadcrumbList",
-                "itemListElement":
-                [
-				<?php $home = array_shift($breadcrumbs); ?>
-				{
-                "@type": "ListItem",
-                "position": 1,
-                "item":
-                {
-                  "@id": "<?php echo $base; ?>",
-                  "name": "<?php echo $store_name; ?>"
-                }
-				},
-				<?php for($i = 0; $i < count($breadcrumbs); ++$i) { 
-				if ( strpos($breadcrumbs[$i]['href'], '?route=') == false ) {
-				   $breadcrumb_url = explode("?", $breadcrumbs[$i]['href']);
-				} else { $breadcrumb_url = explode("&", $breadcrumbs[$i]['href']); }
-				?>
-                {
-                "@type": "ListItem",
-                "position": <?php echo $i+2; ?>,
-                "item":
-                {
-                  "@id": "<?php echo $breadcrumb_url[0]; ?>",
-                  "name": "<?php echo $breadcrumbs[$i]['text']; ?>"
-                }
-                }<?php echo($i !== (count($breadcrumbs)-1) ? ',' : ''); ?>
-                <?php } ?>
-				]
-				}
-				</script>
-                
-
                 <?php if($video_status){  ?>
                     <script type="text/javascript">
                        jQuery('a[data-video]:not([data-video=""])').each(function(index,element) {
@@ -2069,4 +2033,40 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
                     </script>
                 <?php } ?>
             
+
+				<script type="application/ld+json">
+				{
+				"@context": "http://schema.org",
+                "@type": "BreadcrumbList",
+                "itemListElement":
+                [
+				<?php $home = array_shift($breadcrumbs); ?>
+				{
+                "@type": "ListItem",
+                "position": 1,
+                "item":
+                {
+                  "@id": "<?php echo $base; ?>",
+                  "name": "<?php echo $store_name; ?>"
+                }
+				},
+				<?php for($i = 0; $i < count($breadcrumbs); ++$i) { 
+				if ( strpos($breadcrumbs[$i]['href'], '?route=') == false ) {
+				   $breadcrumb_url = explode("?", $breadcrumbs[$i]['href']);
+				} else { $breadcrumb_url = explode("&", $breadcrumbs[$i]['href']); }
+				?>
+                {
+                "@type": "ListItem",
+                "position": <?php echo $i+2; ?>,
+                "item":
+                {
+                  "@id": "<?php echo $breadcrumb_url[0]; ?>",
+                  "name": "<?php echo $breadcrumbs[$i]['text']; ?>"
+                }
+                }<?php echo($i !== (count($breadcrumbs)-1) ? ',' : ''); ?>
+                <?php } ?>
+				]
+				}
+				</script>
+                
 <?php echo $footer; ?>
