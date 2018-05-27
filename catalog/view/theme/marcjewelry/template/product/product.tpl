@@ -532,7 +532,8 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 
 			      <div class="cart">
                         <div class="add-to-cart clearfix">
-												<button data-toggle="modal" data-target="#how-to-size">Как узнать размер?</button>
+
+
 												<div class="modal fade" id="how-to-size" style="display: none;">
     <div class="modal-dialog b-popup-howsize">
         <div class="modal-content">
@@ -551,7 +552,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
                         <div>Линейкой замерьте полученную длину нитки</div>
                     </div>
                     <input type="number" class="js-howsize">
-                    <span>Введите результат в&nbsp;миллиметрах</span>
+                    <span >Введите результат в&nbsp;миллиметрах</span>
                 </div>
             </div>
             <div class="modal-footer">
@@ -592,6 +593,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			        </div>
 			         </div>
 			        <div class="links clearfix">
+							<input type="button" data-toggle="modal" data-target="#how-to-size" value="Как узнать размер?" class="button"/>
 			        	<a onclick="wishlist.add('<?php echo $product_id; ?>');"><?php if($theme_options->get( 'add_to_wishlist_text', $config->get( 'config_language_id' ) ) != '') { echo $theme_options->get( 'add_to_wishlist_text', $config->get( 'config_language_id' ) ); } else { echo 'Add to wishlist'; } ?></a>
 			        	<a onclick="compare.add('<?php echo $product_id; ?>');"><?php if($theme_options->get( 'add_to_compare_text', $config->get( 'config_language_id' ) ) != '') { echo $theme_options->get( 'add_to_compare_text', $config->get( 'config_language_id' ) ); } else { echo 'Add to compare'; } ?></a>
 			        </div>

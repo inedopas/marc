@@ -82,13 +82,17 @@
 .b-popup-howsize__text input::-webkit-inner-spin-button {
   display: none;
 }
-.b-popup-howsize__text input + span {
-  display: inline-block;
+.b-popup-howsize__text span {
+  display: inline;
   vertical-align: middle;
-  width: -webkit-calc(100% - 105px);
-  width: calc(100% - 105px);
   padding-left: 5px;
-  text-align: left;
+
+}
+.b-popup-howsize__text input {
+  display: inline;
+  vertical-align: middle;
+  padding-left: 5px;
+
 }
 .b-popup-howsize__row {
   margin-bottom: 25px;
