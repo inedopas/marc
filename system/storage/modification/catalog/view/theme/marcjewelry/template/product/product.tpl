@@ -10,7 +10,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			$('#q_down').click(function () {
 			var $input = $(this).parent().find('#quantity_wanted');
 			var count = parseInt($input.val()) - 1;
-			count = count <style 1 ? 1 : count;
+			count = count < 1 ? 1 : count;
 			$input.val(count);
 			$input.change();
 			return false;
@@ -109,16 +109,19 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			      <div class="row">
 			      	  <?php if (($images || $theme_options->get( 'product_image_zoom' ) != 2) && $theme_options->get( 'position_image_additional' ) == 2) { ?>
 			      	  <div class="col-sm-2">
-						<div class="thumbnails thumbnails-left clearfix">
-							<ul>
-							  <?php if($theme_options->get( 'product_image_zoom' ) != 2 && $thumb) { ?>
-						      <li><p><a href="<?php echo $popup; ?>" class="popup-image" data-image="<?php echo $thumb; ?>" data-zoom-image="<?php echo $popup; ?>"><img src="<?php echo $theme_options->productImageThumb($product_id, $config->get($config->get('config_theme') . '_image_additional_width'), $config->get($config->get('config_theme') . '_image_additional_height')); ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a></p></li>
-							  <?php } ?>
-						      <?php foreach ($images as $image) { ?>
-						      <li><p><a <?php if($image['video']){?> data-video="<?php echo $image['video']; ?>" <?php } ?> href="<?php echo $image['popup']; ?>" class="popup-image" data-image="<?php echo $image['popup']; ?>" data-zoom-image="<?php echo $image['popup']; ?>"><img src="<?php echo $image['thumb']; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a></p></li>
-						      <?php } ?>
-						  </ul>
-						</div>
+								<div class="thumbnails thumbnails-left clearfix">
+									<ul>
+									  <?php if($theme_options->get( 'product_image_zoom' ) != 2 && $thumb) { ?>
+								      <li><p><a href="<?php echo $popup; ?>" class="popup-image" data-image="<?php echo $thumb; ?>" data-zoom-image="<?php echo $popup; ?>"><img src="<?php echo $theme_options->productImageThumb($product_id, $config->get($config->get('config_theme') . '_image_additional_width'), $config->get($config->get('config_theme') . '_image_additional_height')); ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a></p></li>
+									  <?php } ?>
+								      <?php foreach ($images as $image) { if($image['video']){ $str=$image['video']; $result = substr($str, strpos($str, '=') + 1, strlen($str));
+											$pre="https://img.youtube.com/vi/"; $post="/default.jpg"; $posthq="/maxresdefault.jpg"; $link=$pre.$result.$post; $linkhq=$pre.$result.$posthq; }
+											 ?>
+								      <li><p><a <?php if($image['video']){?> data-video="<?php echo $image['video']; ?>" <?php } ?> href="<?php echo $image['video']; ?>" class="popup-image" data-image="<?php echo $linkhq; ?>" data-zoom-image="<?php echo $linkhq; ?>">
+											<img src="<?php echo $link; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a></p></li>
+								      <?php } ?>
+								  </ul>
+								</div>
 			      	  </div>
 			      	  <?php } ?>
 
@@ -156,10 +159,13 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 				           <div class="overflow-thumbnails-carousel clearfix">
      					      <div class="thumbnails-carousel owl-carousel">
      					      	<?php if($theme_options->get( 'product_image_zoom' ) != 2 && $thumb) { ?>
-     					      	     <div class="item"><a href="<?php echo $popup; ?>" class="popup-image" data-image="<?php echo $thumb; ?>" data-zoom-image="<?php echo $popup; ?>"><img src="<?php echo $theme_options->productImageThumb($product_id, $config->get($config->get('config_theme') . '_image_additional_width'), $config->get($config->get('config_theme') . '_image_additional_height')); ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a></div>
+     					      	     <div class="item"><a href="<?php echo $popup; ?>" class="popup-image" data-image="<?php echo $thumb; ?>"
+													 data-zoom-image="<?php echo $popup; ?>"><img src="<?php echo $theme_options->productImageThumb($product_id, $config->get($config->get('config_theme') . '_image_additional_width'), $config->get($config->get('config_theme') . '_image_additional_height')); ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a></div>
      					      	<?php } ?>
-     						     <?php foreach ($images as $image) { ?>
-     						         <div class="item"><a <?php if($image['video']){?> data-video="<?php echo $image['video']; ?>" <?php } ?> href="<?php echo $image['popup']; ?>" class="popup-image" data-image="<?php echo $image['popup']; ?>" data-zoom-image="<?php echo $image['popup']; ?>"><img src="<?php echo $image['thumb']; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a></div>
+     						     <?php foreach ($images as $image) {  if($image['video']){ $str=$image['video']; $result = substr($str, strpos($str, '=') + 1, strlen($str));
+										 $pre="https://img.youtube.com/vi/"; $post="/default.jpg"; $posthq="/maxresdefault.jpg"; $link=$pre.$result.$post; $linkhq=$pre.$result.$posthq; } ?>
+     						         <div class="item"><a <?php if($image['video']){?> data-video="<?php echo $image['video']; ?>" <?php } ?> href="<?php echo $image['video']; ?>"
+												  class="popup-image" data-image="<?php echo $linkhq; ?>" data-zoom-image="<?php echo $linkhq; ?>"><img src="<?php echo $link; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a></div>
      						     <?php } ?>
      					      </div>
 					      </div>
@@ -317,34 +323,6 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 					</div>
 				<?php } ?>
 
-
-			<!--BOF Product Series -->
-			<!--if this is a master then load list of slave products, if this is a slave product then load other slave products under the same master -->
-			<?php if(sizeof($pds) > 0) { ?>
-				<div class="price pds">
-					<?php if($display_add_to_cart){ ?>
-						<span style=" font-size: 22px;"><?php echo $text_in_the_same_series; ?></span></span><br/>
-					<?php } else { ?>
-						<?php echo $no_add_to_cart_message; ?><br/>
-					<?php } ?>
-					<?php foreach ($pds as $p) { ?>
-						<a class="<?php echo $pds_enable_preview ? 'preview' : ''?> <?php echo ($p['product_id'] == $product_id) ? 'pds-current' : '' ?>"
-						title="<?php echo $p['product_name']; ?>"
-						href="<?php echo $p['product_link']; ?>"
-						rel="<?php echo $p['product_main_image']; ?>">
-							<img src="<?php echo $p['product_pds_image']; ?>" alt="<?php echo $p['product_name']; ?>" />
-						</a>
-					<?php } ?>
-				</div>
-			<?php } ?>
-			<?php if(!$display_add_to_cart){ ?>
-				<style>
-					/*Hide cart and options*/
-					#content .cart, .options, .buttons-cart, .input-qty, #product_buy, #product_options, #button-cart, .form-group {display: none !important;}
-					.price {margin-bottom: 15px}
-				</style>
-			<?php } ?>
-			<!--EOF Product Series -->
 			        <?php if ($options) { ?>
                     <div class="options">
                          <h2><?php echo $text_option; ?></h2>
@@ -1247,7 +1225,11 @@ $(document).ready(function() {
 			preload: [0,1] // Will preload 0 - before current, and 1 after the current image
 		},
 		image: {
+			catch{
 			tError: '<a href="%url%">The image #%curr%</a> could not be loaded.',
+		}
+		try(err) {		
+		}
 			titleSrc: function(item) {
 				return item.el.attr('title');
 			}
@@ -1892,7 +1874,7 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
                        jQuery('a[data-video]:not([data-video=""])').each(function(index,element) {
                             jQuery(this).attr('href', $(this).attr('data-video'));
                             jQuery(this).attr('target','_blank');
-                            jQuery(this).css({'background-repeat':'no-repeat','background-position':'center center', 'background-size': '100%', 'background-image': 'url("/image/play.png")'}).find('img').css({ opacity: 0.6 });
+                            jQuery(this).css({'background-repeat':'no-repeat','background-position':'center center', 'background-size': '100%', 'background-image': 'url("<?php echo $link ?>")'}).find('img').css({ opacity: 0.6 });
                         });
 
                         jQuery('a[data-video][data-video_role="video_main"]:not([data-video=""])').css({ 'background-image': 'none' });

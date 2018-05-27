@@ -272,34 +272,6 @@
 					</div>
 				<?php } ?>
 				
-
-			<!--BOF Product Series -->	 
-			<!--if this is a master then load list of slave products, if this is a slave product then load other slave products under the same master -->
-			<?php if(sizeof($pds) > 0) { ?>
-				<div class="price pds">
-					<?php if($display_add_to_cart){ ?>	
-						<?php echo $text_in_the_same_series; ?><br/>
-					<?php } else { ?>
-						<?php echo $no_add_to_cart_message; ?><br/>
-					<?php } ?>
-					<?php foreach ($pds as $p) { ?>
-						<a class="<?php echo $pds_enable_preview ? 'preview' : ''?> <?php echo ($p['product_id'] == $product_id) ? 'pds-current' : '' ?>"
-						title="<?php echo $p['product_name']; ?>"
-						href="<?php echo $p['product_link']; ?>"
-						rel="<?php echo $p['product_main_image']; ?>">
-							<img src="<?php echo $p['product_pds_image']; ?>" alt="<?php echo $p['product_name']; ?>" />
-						</a>
-					<?php } ?>
-				</div>
-			<?php } ?>
-			<?php if(!$display_add_to_cart){ ?>
-				<style>
-					/*Hide cart and options*/
-					#content .cart, .options, .buttons-cart, .input-qty, #product_buy, #product_options, #button-cart, .form-group {display: none !important;}
-					.price {margin-bottom: 15px}
-				</style>
-			<?php } ?>
-			<!--EOF Product Series -->
             <?php if ($options) { ?>
             <hr>
             <h3><?php echo $text_option; ?></h3>
