@@ -23,6 +23,8 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			});
 			});
 		</script>
+
+
 		<input type="button" onclick="history.back();" value="Назад" style="        border: none;
     padding: 2px 10px 2px 10px;
     font-size: 16px;
@@ -113,7 +115,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 						      <li><p><a href="<?php echo $popup; ?>" class="popup-image" data-image="<?php echo $thumb; ?>" data-zoom-image="<?php echo $popup; ?>"><img src="<?php echo $theme_options->productImageThumb($product_id, $config->get($config->get('config_theme') . '_image_additional_width'), $config->get($config->get('config_theme') . '_image_additional_height')); ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a></p></li>
 							  <?php } ?>
 						      <?php foreach ($images as $image) { ?>
-						      <li><p><a href="<?php echo $image['popup']; ?>" class="popup-image" data-image="<?php echo $image['popup']; ?>" data-zoom-image="<?php echo $image['popup']; ?>"><img src="<?php echo $image['thumb']; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a></p></li>
+						      <li><p><a <?php if($image['video']){?> data-video="<?php echo $image['video']; ?>" <?php } ?> href="<?php echo $image['popup']; ?>" class="popup-image" data-image="<?php echo $image['popup']; ?>" data-zoom-image="<?php echo $image['popup']; ?>"><img src="<?php echo $image['thumb']; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a></p></li>
 						      <?php } ?>
 						  </ul>
 						</div>
@@ -157,7 +159,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
      					      	     <div class="item"><a href="<?php echo $popup; ?>" class="popup-image" data-image="<?php echo $thumb; ?>" data-zoom-image="<?php echo $popup; ?>"><img src="<?php echo $theme_options->productImageThumb($product_id, $config->get($config->get('config_theme') . '_image_additional_width'), $config->get($config->get('config_theme') . '_image_additional_height')); ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a></div>
      					      	<?php } ?>
      						     <?php foreach ($images as $image) { ?>
-     						         <div class="item"><a href="<?php echo $image['popup']; ?>" class="popup-image" data-image="<?php echo $image['popup']; ?>" data-zoom-image="<?php echo $image['popup']; ?>"><img src="<?php echo $image['thumb']; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a></div>
+     						         <div class="item"><a <?php if($image['video']){?> data-video="<?php echo $image['video']; ?>" <?php } ?> href="<?php echo $image['popup']; ?>" class="popup-image" data-image="<?php echo $image['popup']; ?>" data-zoom-image="<?php echo $image['popup']; ?>"><img src="<?php echo $image['thumb']; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a></div>
      						     <?php } ?>
      					      </div>
 					      </div>
@@ -196,6 +198,9 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 
 			    <div class="col-sm-<?php echo $product_center_grid; ?> product-center clearfix">
 			     <?php if ($price) { ?>
+
+				<?php if (isset($custom_partner_price)) echo $custom_partner_price ?>
+			
 			      <div class="price">
 			      	<span class="textprice">Цена</span>
 			        <?php if($theme_options->get( 'display_specials_countdown' ) == '1' && $special) { $countdown = rand(0, 5000)*rand(0, 5000);
@@ -243,6 +248,75 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			      <div class="options2">
 			        <?php foreach ($product_options_center as $module) { echo $module; } ?>
 
+			
+					
+					<?php if(!empty($colors)){ ?>
+					<div id="color_options">
+					<div class="heading"><?php echo $colors_title?></div>
+					<?php foreach($colors as $color){ ?>
+						<?php if($color['product_id'] == $product_id) { ?>
+							<div class="color_option active <?php echo $color['tpl']?> <?php echo $color['quantity']?>" style="<?php if($colors_cfg['name']!=1){ ?>padding:0;<?php } ?>">
+								<?php if(isset($color['quantity'])){ ?>
+									<div class="hideQuantity">Нет в наличии</div>
+								<?php } ?>
+								<?php if($color['tpl'] == 'color'){ ?>
+									<div class="color_block" style="background:<?php echo $color['color'] ?>"></div>
+								<?php } elseif($color['tpl'] == 'photos'){ ?>
+									<div class="image_block"><img src="<?php echo $color['ico_photo'] ?>" /></div>
+								<?php } else { ?>
+									<div class="image_block"><img src="<?php echo $color['ico_color'] ?>" /></div>
+								<?php } ?>
+								<?php if($colors_cfg['name']==1){ ?>
+									<div class="color_name"><?php echo $color['color_name'] ?></div> 
+								<?php } ?>
+								
+							</div>
+						<?php } else {  ?>
+							<div class="color_option <?php echo $color['tpl']?> <?php echo $color['quantity']?>">
+								<?php if(isset($color['quantity'])){ ?>
+									<div class="hideQuantity">Нет в наличии</div>
+								<?php } ?>
+								<a href="<?php echo $color['href'] ?>">
+								
+									<?php if($color['tpl'] == 'color'){ ?>
+										<div class="color_block" style="background:<?php echo $color['color'] ?>;<?php if($colors_cfg['name']!=1){ ?>padding:0;<?php } ?>"></div>
+									<?php } elseif($color['tpl'] == 'photos'){ ?>
+										<div class="image_block"><img src="<?php echo $color['ico_photo'] ?>" /></div>
+										<div class="preview-block">
+										    <img src="<?php echo $color['preview_photo']?>" />
+										    <div class="name"><?php echo $color['name']?></div>
+										    <div class="price"><?php echo "от " . $color['price'] . " ₽"?></div>
+										</div>
+									<?php } else { ?>
+										<div class="image_block"><img src="<?php echo $color['ico_color'] ?>" /></div>
+									<?php } ?>
+
+									<?php if($colors_cfg['name']==1){ ?>
+										<div class="color_name"><?php echo $color['color_name'] ?></div> 
+									<?php } ?>
+								</a>
+							</div>
+						<?php } ?>	
+					<?php } ?>
+
+					<?php if($colors_cfg['enable_popup'] === '0'){ ?>
+					<a class="colors fancybox.ajax" href="index.php?route=product/colorkits&c_product_id=<?php echo $product_id ?>">All colors</a>
+					<script type="text/javascript">
+					$(document).ready(function() {
+						
+						$(".colors").fancybox({
+							openEffect : 'elastic',
+							closeEffect : 'elastic',
+							fitToView   : false,
+							autoSize    : true,
+							closeClick  : false							
+						});
+					});
+					</script>
+					<?php } ?>
+					</div>
+				<?php } ?>
+				
 			        <?php if ($options) { ?>
                     <div class="options">
                          <h2><?php echo $text_option; ?></h2>
@@ -457,7 +531,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 
 			      <?php } ?>
 
-						<?php if ($recurrings) { ?>
+			      <?php if ($recurrings) { ?>
 			      <div class="options">
 			          <h2><?php echo $text_payment_recurring ?></h2>
 			          <div class="form-group required">
@@ -471,7 +545,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			          </div>
 			      </div>
 			      <?php } ?>
-				  <?php if ($option['option_id'] == '11') { ?>
+				  <?php if ($option['option_id'] == '11') { $tab='tab'; ?>
 			      <div class="form-group checked-options" style="background-color: #f9f9f9;margin-top: 5px;">
 			            <div class="heading">Выбрано</div>
 			            <table cellpadding="10">
@@ -486,12 +560,30 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
                                 <!--   <td option="14" class="opt-name"></td>-->
                                 <td option="11" class="opt-name"></td>
                                 <td option="11" class="opt-weight"></td>
-                                <td id="tab" option="11" class="opt-quantity"></td>
+                                <td id="<?php echo $tab;?>" option="11" class="opt-quantity"></td>
                                 <td class="opt-price"></td>
                             </tr>
                         </table>
                 </div>
-				<?php } ?>
+				<?php } else if ($option['option_id'] == '14') { $tab='tab'; ?>
+	<div class="form-group checked-options" style="background-color: #f9f9f9;margin-top: 5px;">
+									<div class="heading">Выбрано</div>
+									<table cellpadding="10">
+														<tr class="opt-heading">
+																<td width="25%">Вставка</td>
+																<td width="15%">Вес</td>
+																<td width="20%">В наличии</td>
+																<td width="20%">Цена</td>
+														</tr>
+														<tr class="opt-value">
+																<td option="14" class="opt-name"></td>
+																<td option="14" class="opt-weight"></td>
+																<td id="<?php echo $tab;?>" option="14" class="opt-quantity"></td>
+																<td class="opt-price"><span class="opt-newprice"></span><span class="opt-oldprice"></span></td>
+														</tr>
+												</table>
+								</div>
+	<?php } ?>
 
             <div id="win" style="display:none;">
  										   <div class="overlay"></div>
@@ -732,6 +824,16 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 					  </tr>
 					  <tr>
 						<td colspan="2"><p><?php echo $review['text']; ?></p>
+
+			<?php if ($review['answer']) { ?>
+			<hr>
+			  <div class="answer_admin">
+				<p><strong><?php echo $review['admin_author']; ?></strong> - <?php echo $entry_admin_author; ?></p>
+				<p><?php echo $review['answer']; ?></p>
+			  </div>
+			<?php } ?>
+			</div>
+		
 						  <?php for ($i = 1; $i <= 5; $i++) { ?>
 						  <?php if ($review['rating'] < $i) { ?>
 						  <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
@@ -894,13 +996,14 @@ $('select[name=\'recurring_id\'], input[name="quantity"]').change(function(){
 	});
 });
 //--></script>
+
 <script type="text/javascript"><!--
 $('#button-cart').on('click', function() {
  var $input = $(this).parent().find('#quantity_wanted');
  var count = parseInt($input.val());
 var sht = document.getElementById('tab');
-var tor=(sht.innerHTML);
-var kil= parseInt(tor.replace(/\D+/g,""));
+var tor =(sht.innerHTML);
+ kil= parseInt(tor.replace(/\D+/g,""));
  if (count>kil){
  document.getElementById('qv').innerHTML=kil;
  document.getElementById("win").style.display = null;
@@ -1719,4 +1822,86 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
 				}
 				</script>
 
+
+				<script type="application/ld+json">
+				{
+				"@context": "http://schema.org",
+                "@type": "BreadcrumbList",
+                "itemListElement":
+                [
+				<?php $home = array_shift($breadcrumbs); ?>
+				{
+                "@type": "ListItem",
+                "position": 1,
+                "item":
+                {
+                  "@id": "<?php echo $base; ?>",
+                  "name": "<?php echo $store_name; ?>"
+                }
+				},
+				<?php for($i = 0; $i < count($breadcrumbs); ++$i) { 
+				if ( strpos($breadcrumbs[$i]['href'], '?route=') == false ) {
+				   $breadcrumb_url = explode("?", $breadcrumbs[$i]['href']);
+				} else { $breadcrumb_url = explode("&", $breadcrumbs[$i]['href']); }
+				?>
+                {
+                "@type": "ListItem",
+                "position": <?php echo $i+2; ?>,
+                "item":
+                {
+                  "@id": "<?php echo $breadcrumb_url[0]; ?>",
+                  "name": "<?php echo $breadcrumbs[$i]['text']; ?>"
+                }
+                }<?php echo($i !== (count($breadcrumbs)-1) ? ',' : ''); ?>
+                <?php } ?>
+				]
+				}
+				</script>
+                
+
+                <?php if($video_status){  ?>
+                    <script type="text/javascript">
+                       jQuery('a[data-video]:not([data-video=""])').each(function(index,element) {
+                            jQuery(this).attr('href', $(this).attr('data-video'));
+                            jQuery(this).attr('target','_blank');
+                            jQuery(this).css({'background-repeat':'no-repeat','background-position':'center center', 'background-size': '100%', 'background-image': 'url("/image/play.png")'}).find('img').css({ opacity: 0.6 });
+                        });
+                    
+                        jQuery('a[data-video][data-video_role="video_main"]:not([data-video=""])').css({ 'background-image': 'none' });
+
+                        jQuery('a[data-video]').magnificPopup({
+                                    type: 'iframe',
+                                    mainClass: 'mfp-fade',
+                                    removalDelay: 160,
+                                    preloader: false,
+                                    fixedContentPos: false,
+                                    iframe: {
+                                      patterns: {
+                                          youtube: {
+                                              index: 'youtube.com/', 
+                                              id: function(url) {        
+                                                  var m = url.match(/[\\?\\&]v=([^\\?\\&]+)/);
+                                                  if ( !m || !m[1] ) return null;
+                                                  return m[1];
+                                              },
+                                              src: '//www.youtube.com/embed/%id%?autoplay=1'
+                                          },
+                                          vimeo: {
+                                              index: 'vimeo.com/', 
+                                              id: function(url) {        
+                                                  var m = url.match(/(https?:\/\/)?(www.)?(player.)?vimeo.com\/([a-z]*\/)*([0-9]{6,11})[?]?.*/);
+                                                  if ( !m || !m[5] ) return null;
+                                                  return m[5];
+                                              },
+                                              src: '//player.vimeo.com/video/%id%?autoplay=1'
+                                          }
+                                      }
+                                  }
+                        });
+                        jQuery('a[data-video]:not([data-video=""]').click(function () {
+                            return false;
+                        });
+                    </script>
+                <?php } ?>
+            
 <?php echo $footer; ?>

@@ -1,7 +1,7 @@
 <?php
 // HTTP
-define('HTTP_SERVER', 'https://nedopas.com/admin/');
-define('HTTP_CATALOG', 'https://nedopas.com/');
+define('HTTP_SERVER', 'http://nedopas.com/admin/');
+define('HTTP_CATALOG', 'http://nedopas.com/');
 
 // HTTPS
 define('HTTPS_SERVER', 'https://nedopas.com/admin/');
@@ -29,3 +29,4 @@ define('DB_PASSWORD', 'qwasxz');
 define('DB_DATABASE', 'nedopasc_marksite');
 define('DB_PORT', '3306');
 define('DB_PREFIX', 'oc_');
+?>

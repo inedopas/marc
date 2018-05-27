@@ -23,6 +23,8 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			});
 			});
 		</script>
+
+
 		<input type="button" onclick="history.back();" value="Назад" style="        border: none;
     padding: 2px 10px 2px 10px;
     font-size: 16px;
@@ -471,7 +473,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			          </div>
 			      </div>
 			      <?php } ?>
-				  <?php if ($option['option_id'] == '11') { ?>
+				  <?php if ($option['option_id'] == '11') { $tab='tab'; ?>
 			      <div class="form-group checked-options" style="background-color: #f9f9f9;margin-top: 5px;">
 			            <div class="heading">Выбрано</div>
 			            <table cellpadding="10">
@@ -486,12 +488,30 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
                                 <!--   <td option="14" class="opt-name"></td>-->
                                 <td option="11" class="opt-name"></td>
                                 <td option="11" class="opt-weight"></td>
-                                <td id="tab" option="11" class="opt-quantity"></td>
+                                <td id="<?php echo $tab;?>" option="11" class="opt-quantity"></td>
                                 <td class="opt-price"></td>
                             </tr>
                         </table>
                 </div>
-				<?php } ?>
+				<?php } else if ($option['option_id'] == '14') { $tab='tab'; ?>
+	<div class="form-group checked-options" style="background-color: #f9f9f9;margin-top: 5px;">
+									<div class="heading">Выбрано</div>
+									<table cellpadding="10">
+														<tr class="opt-heading">
+																<td width="25%">Вставка</td>
+																<td width="15%">Вес</td>
+																<td width="20%">В наличии</td>
+																<td width="20%">Цена</td>
+														</tr>
+														<tr class="opt-value">
+																<td option="14" class="opt-name"></td>
+																<td option="14" class="opt-weight"></td>
+																<td id="<?php echo $tab;?>" option="14" class="opt-quantity"></td>
+																<td class="opt-price"><span class="opt-newprice"></span><span class="opt-oldprice"></span></td>
+														</tr>
+												</table>
+								</div>
+	<?php } ?>
 
             <div id="win" style="display:none;">
  										   <div class="overlay"></div>
@@ -894,13 +914,14 @@ $('select[name=\'recurring_id\'], input[name="quantity"]').change(function(){
 	});
 });
 //--></script>
+
 <script type="text/javascript"><!--
 $('#button-cart').on('click', function() {
  var $input = $(this).parent().find('#quantity_wanted');
  var count = parseInt($input.val());
 var sht = document.getElementById('tab');
-var tor=(sht.innerHTML);
-var kil= parseInt(tor.replace(/\D+/g,""));
+var tor =(sht.innerHTML);
+ kil= parseInt(tor.replace(/\D+/g,""));
  if (count>kil){
  document.getElementById('qv').innerHTML=kil;
  document.getElementById("win").style.display = null;

@@ -452,6 +452,21 @@
                   </div>
                 </div>
               </div>
+
+<div class="form-group">
+	<label class="col-sm-2 control-label" for="input-related-category"><span data-toggle="tooltip" title="Оставьте пустым, чтобы показывать<br>товары из этой же категории">Сопутствующие товары из категорий</span></label>
+    <div class="col-sm-10">
+		<input type="text" name="related-category" value="" placeholder="Сопутствующие категории" id="input-related-category" class="form-control" />
+		<div id="category-related" class="well well-sm" style="height: 150px; overflow: auto;">
+			<?php foreach ($related_categories as $related_category) { ?>
+				<div id="related-category<?php echo $related_category['category_id']; ?>"><i class="fa fa-minus-circle"></i> <?php echo $related_category['name']; ?>
+				<input type="hidden" name="related_category[]" value="<?php echo $related_category['category_id']; ?>" />
+				</div>
+			<?php } ?>
+		</div>
+	</div>
+</div>
+
             </div>
             <div class="tab-pane" id="tab-attribute">
               <div class="table-responsive">
@@ -876,6 +891,7 @@
                   <thead>
                     <tr>
                       <td class="text-left"><?php echo $entry_additional_image; ?></td>
+<td class="text-left">Видео</td>
                       <td class="text-right"><?php echo $entry_sort_order; ?></td>
                       <td></td>
                     </tr>
@@ -885,6 +901,7 @@
                     <?php foreach ($product_images as $product_image) { ?>
                     <tr id="image-row<?php echo $image_row; ?>">
                       <td class="text-left"><a href="" id="thumb-image<?php echo $image_row; ?>" data-toggle="image" class="img-thumbnail"><img src="<?php echo $product_image['thumb']; ?>" alt="" title="" data-placeholder="<?php echo $placeholder; ?>" /></a><input type="hidden" name="product_image[<?php echo $image_row; ?>][image]" value="<?php echo $product_image['image']; ?>" id="input-image<?php echo $image_row; ?>" /></td>
+<td class="text-right"><input type="text" name="product_image[<?php echo $image_row; ?>][video]" value="<?php echo $product_image['video']; ?>" placeholder="Ссылка на видео c Youtube, Vimeo" class="form-control" /></td>
                       <td class="text-right"><input type="text" name="product_image[<?php echo $image_row; ?>][sort_order]" value="<?php echo $product_image['sort_order']; ?>" placeholder="<?php echo $entry_sort_order; ?>" class="form-control" /></td>
                       <td class="text-left"><button type="button" onclick="$('#image-row<?php echo $image_row; ?>').remove();" data-toggle="tooltip" title="<?php echo $button_remove; ?>" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
                     </tr>
@@ -894,6 +911,7 @@
                   <tfoot>
                     <tr>
                       <td colspan="2"></td>
+<td></td>
                       <td class="text-left"><button type="button" onclick="addImage();" data-toggle="tooltip" title="<?php echo $button_image_add; ?>" class="btn btn-primary"><i class="fa fa-plus-circle"></i></button></td>
                     </tr>
                   </tfoot>
@@ -1119,7 +1137,33 @@ $('#product-download').delegate('.fa-minus-circle', 'click', function() {
 });
 
 // Related
+
+$('input[name=\'related-category\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/category/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',			
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['category_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'related-category\']').val('');
+		$('#category-related' + item['value']).remove();
+		$('#category-related').append('<div id="category-related' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="related_category[]" value="' + item['value'] + '" /></div>');	
+	}	
+});
+$('#category-related').delegate('.fa-minus-circle', 'click', function() {
+	$(this).parent().remove();
+});
 $('input[name=\'related\']').autocomplete({
+
 	'source': function(request, response) {
 		$.ajax({
 			url: 'index.php?route=catalog/product/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
@@ -1436,6 +1480,7 @@ var image_row = <?php echo $image_row; ?>;
 function addImage() {
 	html  = '<tr id="image-row' + image_row + '">';
 	html += '  <td class="text-left"><a href="" id="thumb-image' + image_row + '"data-toggle="image" class="img-thumbnail"><img src="<?php echo $placeholder; ?>" alt="" title="" data-placeholder="<?php echo $placeholder; ?>" /></a><input type="hidden" name="product_image[' + image_row + '][image]" value="" id="input-image' + image_row + '" /></td>';
+html += '  <td class="text-right"><input type="text" name="product_image[' + image_row + '][video]" value="" placeholder="Ссылка на видео c Youtube, Vimeo" class="form-control" /></td>';
 	html += '  <td class="text-right"><input type="text" name="product_image[' + image_row + '][sort_order]" value="" placeholder="<?php echo $entry_sort_order; ?>" class="form-control" /></td>';
 	html += '  <td class="text-left"><button type="button" onclick="$(\'#image-row' + image_row  + '\').remove();" data-toggle="tooltip" title="<?php echo $button_remove; ?>" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
 	html += '</tr>';

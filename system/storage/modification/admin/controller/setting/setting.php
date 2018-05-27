@@ -3,6 +3,13 @@ class ControllerSettingSetting extends Controller {
 	private $error = array();
 
 	public function index() {
+	$query = $this->db->query("SELECT `setting_id` FROM `" . DB_PREFIX . "setting` WHERE `key` = 'config_seo_related_limit' LIMIT 1");
+	if (!$query->num_rows) {
+		$this->db->query("ALTER TABLE `" . DB_PREFIX . "product` ADD `related_category` varchar(255) NOT NULL");
+		$this->db->query("INSERT INTO `" . DB_PREFIX . "setting` (`store_id`, `code`, `key`, `value`, `serialized`) VALUES
+			(0, 'config', 'config_seo_related_limit', '4', 0);");
+		header('Refresh: 0');
+	}
 		$this->load->language('setting/setting');
 
 		$this->document->setTitle($this->language->get('heading_title'));
@@ -703,7 +710,12 @@ class ControllerSettingSetting extends Controller {
 			$data['config_limit_admin'] = $this->config->get('config_limit_admin');
 		}
 
-		if (isset($this->request->post['config_product_count'])) {
+		if (isset($this->request->post['config_seo_related_limit'])) {
+	$data['config_seo_related_limit'] = $this->request->post['config_seo_related_limit'];
+} else {
+	$data['config_seo_related_limit'] = $this->config->get('config_seo_related_limit');
+}
+if (isset($this->request->post['config_product_count'])) {
 			$data['config_product_count'] = $this->request->post['config_product_count'];
 		} else {
 			$data['config_product_count'] = $this->config->get('config_product_count');

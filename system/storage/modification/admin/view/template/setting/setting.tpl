@@ -39,6 +39,7 @@
             <li><a href="#tab-ftp" data-toggle="tab"><?php echo $tab_ftp; ?></a></li>
             <li><a href="#tab-mail" data-toggle="tab"><?php echo $tab_mail; ?></a></li>
             <li><a href="#tab-server" data-toggle="tab"><?php echo $tab_server; ?></a></li>
+<li><a href="#tab-seo-essentials" data-toggle="tab">Сопут.товары</a></li>
             <li><a href="#tab-sms" data-toggle="tab"><?php echo $tab_sms; ?></a></li>
           </ul>
           <div class="tab-content">
@@ -1326,7 +1327,15 @@
                 </div>
               </fieldset>
             </div>
-            <div class="tab-pane" id="tab-server">
+            <div class="tab-pane" id="tab-seo-essentials">
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span data-toggle="tooltip" title="Лимит авто-сопутствующих товаров из категории.">Количество товаров</span></label>
+		<div class="col-sm-3">
+			<input type="text" name="config_seo_related_limit" value="<?php echo $config_seo_related_limit; ?>" placeholder="Лимит" class="form-control" />
+		</div>
+	</div>
+</div>
+<div class="tab-pane" id="tab-server">
               <fieldset>
                 <legend><?php echo $text_general; ?></legend>
                 <div class="form-group">

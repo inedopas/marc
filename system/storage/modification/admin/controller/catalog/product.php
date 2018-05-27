@@ -66,6 +66,13 @@ class ControllerCatalogProduct extends Controller {
 		$this->load->model('catalog/product');
 
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
+if (isset($this->request->post['related_category'])) {
+	$related_categories = $this->request->post['related_category'];
+	$this->request->post['related_category'] = implode(',', $related_categories);
+}
+else {
+	$this->request->post['related_category'] = '';
+}
 			$this->model_catalog_product->addProduct($this->request->post);
 
 			$this->session->data['success'] = $this->language->get('text_success');
@@ -134,7 +141,14 @@ class ControllerCatalogProduct extends Controller {
 		$this->load->model('catalog/product');
 
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
-			$this->model_catalog_product->editProduct($this->request->get['product_id'], $this->request->post);
+			if (isset($this->request->post['related_category'])) {
+	$related_categories = $this->request->post['related_category'];
+	$this->request->post['related_category'] = implode(',', $related_categories);
+}
+else {
+	$this->request->post['related_category'] = '';
+}
+$this->model_catalog_product->editProduct($this->request->get['product_id'], $this->request->post);
 
 			$this->session->data['success'] = $this->language->get('text_success');
 
@@ -498,6 +512,24 @@ class ControllerCatalogProduct extends Controller {
 		$results = $this->model_catalog_product->getProducts($filter_data);
 
 		$this->load->model('catalog/category');
+if (isset($this->request->post['related_category']) && isset($this->error) && !empty($this->error)) {
+	$related_categories = $this->request->post['related_category'];
+} elseif (isset($this->request->get['product_id'])) {		
+	$related_categories = $this->model_catalog_product->getRelatedCategory($this->request->get['product_id']);
+	$related_categories = explode(',', $related_categories);
+} else {
+	$related_categories = array();
+}
+$data['related_categories'] = array();
+foreach ($related_categories as $category_id) {
+	$category_info = $this->model_catalog_category->getCategory($category_id);
+	if ($category_info) {
+		$data['related_categories'][] = array(
+			'category_id' => $category_info['category_id'],
+			'name'        => ($category_info['path'] ? $category_info['path'] . ' &gt; ' : '') . $category_info['name']
+		);
+	}
+}
 
 		$filter_data = array(
 			'sort'        => 'name',
@@ -1289,6 +1321,24 @@ class ControllerCatalogProduct extends Controller {
 
 		// Categories
 		$this->load->model('catalog/category');
+if (isset($this->request->post['related_category']) && isset($this->error) && !empty($this->error)) {
+	$related_categories = $this->request->post['related_category'];
+} elseif (isset($this->request->get['product_id'])) {		
+	$related_categories = $this->model_catalog_product->getRelatedCategory($this->request->get['product_id']);
+	$related_categories = explode(',', $related_categories);
+} else {
+	$related_categories = array();
+}
+$data['related_categories'] = array();
+foreach ($related_categories as $category_id) {
+	$category_info = $this->model_catalog_category->getCategory($category_id);
+	if ($category_info) {
+		$data['related_categories'][] = array(
+			'category_id' => $category_info['category_id'],
+			'name'        => ($category_info['path'] ? $category_info['path'] . ' &gt; ' : '') . $category_info['name']
+		);
+	}
+}
 
 		$filter_data = array(
 			'sort'        => 'name',
@@ -1509,6 +1559,7 @@ class ControllerCatalogProduct extends Controller {
 			$data['product_images'][] = array(
 				'image'      => $image,
 				'thumb'      => $this->model_tool_image->resize($thumb, 100, 100),
+'video' => $product_image['video'],
 				'sort_order' => $product_image['sort_order']
 			);
 		}

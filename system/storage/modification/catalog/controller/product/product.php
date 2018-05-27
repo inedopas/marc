@@ -214,6 +214,7 @@ class ControllerProductProduct extends Controller {
 		$product_info = $this->model_catalog_product->getProduct($product_id);
 
 		if ($product_info) {
+$data['video_status'] = $this->config->get('video_status');
 
 		$viewed_products = array();
         if (isset($this->request->cookie['viewed'])) {
@@ -495,6 +496,7 @@ class ControllerProductProduct extends Controller {
 			foreach ($results as $result) {
 				$data['images'][] = array(
 					'popup' => $this->model_tool_image->resize($result['image'], $this->config->get($this->config->get('config_theme') . '_image_popup_width'), $this->config->get($this->config->get('config_theme') . '_image_popup_height')),
+'video' => $result['video'],
 					'thumb' => $this->model_tool_image->resize($result['image'], $this->config->get($this->config->get('config_theme') . '_image_additional_width'), $this->config->get($this->config->get('config_theme') . '_image_additional_height'))
 				);
 			}
@@ -717,7 +719,8 @@ class ControllerProductProduct extends Controller {
 				
 			$data['products'] = array();
 
-			$results = $this->model_catalog_product->getProductRelated($this->request->get['product_id']);
+			$results = $this->model_catalog_product->getRelatedByCategory($this->request->get['product_id']);
+//$results = $this->model_catalog_product->getProductRelated($this->request->get['product_id']);
 
 			foreach ($results as $result) {
 				if ($result['image']) {
