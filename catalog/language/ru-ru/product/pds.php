@@ -1,5 +1,5 @@
 <?php
 // Text 
 $_['text_select_series_item'] = 'Выберите модель';
-$_['text_in_the_same_series'] = 'Доступные модели';
+$_['text_in_the_same_series'] = 'С другими вставками';
 ?>
