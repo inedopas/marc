@@ -102,6 +102,21 @@
             <div>
               <div class="caption">
                 <h4><a href="<?php echo $product['href']; ?>"><?php echo $product['name']; ?></a></h4>
+<!--BOF Product Series-->
+			<?php if(sizeof($product['pds']) > 0) { ?>
+				<div class="pds">
+					<?php foreach ($product['pds'] as $pds) { ?>
+						<a title="<?php echo $pds['product_name']; ?>" href="<?php echo $pds['product_link']; ?>"
+							master-image="<?php echo $pds['product_master_image']; ?>"
+							rel="<?php echo $pds['product_pds_image_hover']; ?>"
+							class="<?php echo $pds['pds_list_thumbnail_class']; ?>"
+						>
+							<img src="<?php echo $pds['product_pds_image']; ?>" alt="<?php echo $pds['product_name']; ?>" />
+						</a>
+					<?php } ?>
+				</div>
+			<?php } ?>
+			<!--EOF Product Series-->
                 <p><?php echo $product['description']; ?></p>
                 <?php if ($product['price']) { ?>
                 <p class="price">

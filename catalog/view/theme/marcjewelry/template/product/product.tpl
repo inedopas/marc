@@ -105,65 +105,71 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			      		echo $module;
 			      	}
 			      } ?>
+        <!--bof video link -->
+						<div class="row">
+							 <?php if (($images || $theme_options->get( 'product_image_zoom' ) != 2) && $theme_options->get( 'position_image_additional' ) == 2) { ?>
+							 <div class="col-sm-2">
+							 <div class="thumbnails thumbnails-left clearfix">
+								 <ul>
+									 <?php if($theme_options->get( 'product_image_zoom' ) != 2 && $thumb) { ?>
+										 <li><p><a href="<?php echo $popup; ?>" class="popup-image" data-image="<?php echo $thumb; ?>" data-zoom-image="<?php echo $popup; ?>"><img src="<?php echo $theme_options->productImageThumb($product_id, $config->get($config->get('config_theme') . '_image_additional_width'), $config->get($config->get('config_theme') . '_image_additional_height')); ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a></p></li>
+									 <?php } ?>
+										 <?php foreach ($images as $image) { if($image['video']){ $str=$image['video']; $result = substr($str, strpos($str, '=') + 1, strlen($str));
+										 $pre="https://img.youtube.com/vi/"; $post="/default.jpg"; $posthq="/maxresdefault.jpg"; $link=$pre.$result.$post; $linkhq=$pre.$result.$posthq; }
+											?>
+										 <li><p><a <?php if($image['video']){?> data-video="<?php echo $image['video']; ?>" <?php } ?> href="<?php echo $image['video']; ?>" class="popup-image" data-image="<?php echo $linkhq; ?>" data-zoom-image="<?php echo $linkhq; ?>">
+										 <img src="<?php echo $link; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a></p></li>
+										 <?php } ?>
+								 </ul>
+							 </div>
+							 </div>
+							 <?php } ?>
 
-			      <div class="row">
-			      	  <?php if (($images || $theme_options->get( 'product_image_zoom' ) != 2) && $theme_options->get( 'position_image_additional' ) == 2) { ?>
-			      	  <div class="col-sm-2">
-						<div class="thumbnails thumbnails-left clearfix">
-							<ul>
-							  <?php if($theme_options->get( 'product_image_zoom' ) != 2 && $thumb) { ?>
-						      <li><p><a href="<?php echo $popup; ?>" class="popup-image" data-image="<?php echo $thumb; ?>" data-zoom-image="<?php echo $popup; ?>"><img src="<?php echo $theme_options->productImageThumb($product_id, $config->get($config->get('config_theme') . '_image_additional_width'), $config->get($config->get('config_theme') . '_image_additional_height')); ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a></p></li>
-							  <?php } ?>
-						      <?php foreach ($images as $image) { ?>
-						      <li><p><a href="<?php echo $image['popup']; ?>" class="popup-image" data-image="<?php echo $image['popup']; ?>" data-zoom-image="<?php echo $image['popup']; ?>"><img src="<?php echo $image['thumb']; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a></p></li>
-						      <?php } ?>
-						  </ul>
-						</div>
-			      	  </div>
-			      	  <?php } ?>
+						 <div class="col-sm-<?php if($theme_options->get( 'position_image_additional' ) == 2) { echo 10; } else { echo 12; } ?>">
+							 <?php if ($thumb) { ?>
+							 <div class="product-image <?php if($theme_options->get( 'product_image_zoom' ) != 2) { if($theme_options->get( 'product_image_zoom' ) == 1) { echo 'inner-cloud-zoom'; } else { echo 'cloud-zoom'; } } ?>">
+									<?php if($special && $theme_options->get( 'display_text_sale' ) != '0') { ?>
+									 <?php $text_sale = 'Sale';
+									 if($theme_options->get( 'sale_text', $config->get( 'config_language_id' ) ) != '') {
+										 $text_sale = $theme_options->get( 'sale_text', $config->get( 'config_language_id' ) );
+									 } ?>
+									 <?php if($theme_options->get( 'type_sale' ) == '1') { ?>
+									 <?php $product_detail = $theme_options->getDataProduct( $product_id );
+									 $roznica_ceny = $product_detail['price']-$product_detail['special'];
+									 $procent = ($roznica_ceny*100)/$product_detail['price']; ?>
+									 <div class="sale">-<?php echo round($procent); ?>%</div>
+									 <?php } else { ?>
+									 <div class="sale"><?php echo $text_sale; ?></div>
+									 <?php } ?>
+									<?php } elseif($theme_options->get( 'display_text_new' ) != '0' && $theme_options->isLatestProduct( $product_id )) { ?>
+												<div class="new"><?php if($theme_options->get( 'new_text', $config->get( 'config_language_id' ) ) != '') { echo $theme_options->get( 'new_text', $config->get( 'config_language_id' ) ); } else { echo 'New'; } ?></div>
+									<?php } ?>
 
-				      <div class="col-sm-<?php if($theme_options->get( 'position_image_additional' ) == 2) { echo 10; } else { echo 12; } ?>">
-				      	<?php if ($thumb) { ?>
-					      <div class="product-image <?php if($theme_options->get( 'product_image_zoom' ) != 2) { if($theme_options->get( 'product_image_zoom' ) == 1) { echo 'inner-cloud-zoom'; } else { echo 'cloud-zoom'; } } ?>">
-					      	 <?php if($special && $theme_options->get( 'display_text_sale' ) != '0') { ?>
-					      	 	<?php $text_sale = 'Sale';
-					      	 	if($theme_options->get( 'sale_text', $config->get( 'config_language_id' ) ) != '') {
-					      	 		$text_sale = $theme_options->get( 'sale_text', $config->get( 'config_language_id' ) );
-					      	 	} ?>
-					      	 	<?php if($theme_options->get( 'type_sale' ) == '1') { ?>
-					      	 	<?php $product_detail = $theme_options->getDataProduct( $product_id );
-					      	 	$roznica_ceny = $product_detail['price']-$product_detail['special'];
-					      	 	$procent = ($roznica_ceny*100)/$product_detail['price']; ?>
-					      	 	<div class="sale">-<?php echo round($procent); ?>%</div>
-					      	 	<?php } else { ?>
-					      	 	<div class="sale"><?php echo $text_sale; ?></div>
-					      	 	<?php } ?>
-					      	 <?php } elseif($theme_options->get( 'display_text_new' ) != '0' && $theme_options->isLatestProduct( $product_id )) { ?>
-     					      	 <div class="new"><?php if($theme_options->get( 'new_text', $config->get( 'config_language_id' ) ) != '') { echo $theme_options->get( 'new_text', $config->get( 'config_language_id' ) ); } else { echo 'New'; } ?></div>
-					      	 <?php } ?>
+								<a href="<?php echo $popup; ?>" title="<?php echo $heading_title; ?>" id="ex1" <?php if($theme_options->get( 'product_image_zoom' ) == 2) { ?>class="popup-image"<?php } else { echo 'class="open-popup-image"'; } ?>><img src="<?php echo $thumb; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" id="image" itemprop="image" data-zoom-image="<?php echo $popup; ?>" /></a>
+							 </div>
+							<?php } else { ?>
+							<div class="product-image">
+								<img src="image/no_image.jpg" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" id="image" itemprop="image" />
+							</div>
+							<?php } ?>
+						 </div>
 
-					     	 <a href="<?php echo $popup; ?>" title="<?php echo $heading_title; ?>" id="ex1" <?php if($theme_options->get( 'product_image_zoom' ) == 2) { ?>class="popup-image"<?php } else { echo 'class="open-popup-image"'; } ?>><img src="<?php echo $thumb; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" id="image" itemprop="image" data-zoom-image="<?php echo $popup; ?>" /></a>
-					      </div>
-					  	 <?php } else { ?>
-					  	 <div class="product-image">
-					  	 	 <img src="image/no_image.jpg" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" id="image" itemprop="image" />
-					  	 </div>
-					  	 <?php } ?>
-				      </div>
-
-				      <?php if (($images || $theme_options->get( 'product_image_zoom' ) != 2) && $theme_options->get( 'position_image_additional' ) != 2) { ?>
-				      <div class="col-sm-12">
-				           <div class="overflow-thumbnails-carousel clearfix">
-     					      <div class="thumbnails-carousel owl-carousel">
-     					      	<?php if($theme_options->get( 'product_image_zoom' ) != 2 && $thumb) { ?>
-     					      	     <div class="item"><a href="<?php echo $popup; ?>" class="popup-image" data-image="<?php echo $thumb; ?>" data-zoom-image="<?php echo $popup; ?>"><img src="<?php echo $theme_options->productImageThumb($product_id, $config->get($config->get('config_theme') . '_image_additional_width'), $config->get($config->get('config_theme') . '_image_additional_height')); ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a></div>
-     					      	<?php } ?>
-     						     <?php foreach ($images as $image) { ?>
-     						         <div class="item"><a href="<?php echo $image['popup']; ?>" class="popup-image" data-image="<?php echo $image['popup']; ?>" data-zoom-image="<?php echo $image['popup']; ?>"><img src="<?php echo $image['thumb']; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a></div>
-     						     <?php } ?>
-     					      </div>
-					      </div>
-
+						 <?php if (($images || $theme_options->get( 'product_image_zoom' ) != 2) && $theme_options->get( 'position_image_additional' ) != 2) { ?>
+						 <div class="col-sm-12">
+									<div class="overflow-thumbnails-carousel clearfix">
+										 <div class="thumbnails-carousel owl-carousel">
+											 <?php if($theme_options->get( 'product_image_zoom' ) != 2 && $thumb) { ?>
+														<div class="item"><a href="<?php echo $popup; ?>" class="popup-image" data-image="<?php echo $thumb; ?>"
+													data-zoom-image="<?php echo $popup; ?>"><img src="<?php echo $theme_options->productImageThumb($product_id, $config->get($config->get('config_theme') . '_image_additional_width'), $config->get($config->get('config_theme') . '_image_additional_height')); ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a></div>
+											 <?php } ?>
+											<?php foreach ($images as $image) {  if($image['video']){ $str=$image['video']; $result = substr($str, strpos($str, '=') + 1, strlen($str));
+										$pre="https://img.youtube.com/vi/"; $post="/default.jpg"; $posthq="/maxresdefault.jpg"; $link=$pre.$result.$post; $linkhq=$pre.$result.$posthq; } ?>
+													<div class="item"><a <?php if($image['video']){?> data-video="<?php echo $image['video']; ?>" <?php } ?> href="<?php echo $image['video']; ?>"
+												 class="popup-image" data-image="<?php echo $linkhq; ?>" data-zoom-image="<?php echo $linkhq; ?>"><img src="<?php echo $link; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a></div>
+											<?php } ?>
+										 </div>
+							 </div>
+							 <!--EOF Video link -->
 					      <script type="text/javascript">
 					           $(document).ready(function() {
 					             $(".thumbnails-carousel").owlCarousel({
@@ -1137,7 +1143,11 @@ $(document).ready(function() {
 			preload: [0,1] // Will preload 0 - before current, and 1 after the current image
 		},
 		image: {
+			catch{
 			tError: '<a href="%url%">The image #%curr%</a> could not be loaded.',
+		}
+		try(err) {
+		}
 			titleSrc: function(item) {
 				return item.el.attr('title');
 			}

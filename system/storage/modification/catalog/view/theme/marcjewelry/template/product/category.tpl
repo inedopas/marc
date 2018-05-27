@@ -143,6 +143,21 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
   			
   			<div class="name-actions col-sm-4">
   			     <div class="name"><a href="<?php echo $product['href']; ?>"><?php echo $product['name']; ?></a></div>
+<!--BOF Product Series-->
+			<?php if(sizeof($product['pds']) > 0) { ?>
+				<div class="pds">
+					<?php foreach ($product['pds'] as $pds) { ?>
+						<a title="<?php echo $pds['product_name']; ?>" href="<?php echo $pds['product_link']; ?>"
+							master-image="<?php echo $pds['product_master_image']; ?>"
+							rel="<?php echo $pds['product_pds_image_hover']; ?>"
+							class="<?php echo $pds['pds_list_thumbnail_class']; ?>"
+						>
+							<img src="<?php echo $pds['product_pds_image']; ?>" alt="<?php echo $pds['product_name']; ?>" />
+						</a>
+					<?php } ?>
+				</div>
+			<?php } ?>
+			<!--EOF Product Series-->
   			     <?php if($theme_options->get( 'product_list_type' ) == '4') { ?>
   			     <?php $product_detail = $theme_options->getDataProduct( $product['product_id'] ); ?>
   			     <div class="brand"><?php echo $product_detail['manufacturer']; ?></div>

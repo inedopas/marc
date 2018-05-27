@@ -105,71 +105,71 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			      		echo $module;
 			      	}
 			      } ?>
+        <!--bof video link -->
+						<div class="row">
+							 <?php if (($images || $theme_options->get( 'product_image_zoom' ) != 2) && $theme_options->get( 'position_image_additional' ) == 2) { ?>
+							 <div class="col-sm-2">
+							 <div class="thumbnails thumbnails-left clearfix">
+								 <ul>
+									 <?php if($theme_options->get( 'product_image_zoom' ) != 2 && $thumb) { ?>
+										 <li><p><a href="<?php echo $popup; ?>" class="popup-image" data-image="<?php echo $thumb; ?>" data-zoom-image="<?php echo $popup; ?>"><img src="<?php echo $theme_options->productImageThumb($product_id, $config->get($config->get('config_theme') . '_image_additional_width'), $config->get($config->get('config_theme') . '_image_additional_height')); ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a></p></li>
+									 <?php } ?>
+										 <?php foreach ($images as $image) { if($image['video']){ $str=$image['video']; $result = substr($str, strpos($str, '=') + 1, strlen($str));
+										 $pre="https://img.youtube.com/vi/"; $post="/default.jpg"; $posthq="/maxresdefault.jpg"; $link=$pre.$result.$post; $linkhq=$pre.$result.$posthq; }
+											?>
+										 <li><p><a <?php if($image['video']){?> data-video="<?php echo $image['video']; ?>" <?php } ?> href="<?php echo $image['video']; ?>" class="popup-image" data-image="<?php echo $linkhq; ?>" data-zoom-image="<?php echo $linkhq; ?>">
+										 <img src="<?php echo $link; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a></p></li>
+										 <?php } ?>
+								 </ul>
+							 </div>
+							 </div>
+							 <?php } ?>
 
-			      <div class="row">
-			      	  <?php if (($images || $theme_options->get( 'product_image_zoom' ) != 2) && $theme_options->get( 'position_image_additional' ) == 2) { ?>
-			      	  <div class="col-sm-2">
-								<div class="thumbnails thumbnails-left clearfix">
-									<ul>
-									  <?php if($theme_options->get( 'product_image_zoom' ) != 2 && $thumb) { ?>
-								      <li><p><a href="<?php echo $popup; ?>" class="popup-image" data-image="<?php echo $thumb; ?>" data-zoom-image="<?php echo $popup; ?>"><img src="<?php echo $theme_options->productImageThumb($product_id, $config->get($config->get('config_theme') . '_image_additional_width'), $config->get($config->get('config_theme') . '_image_additional_height')); ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a></p></li>
-									  <?php } ?>
-								      <?php foreach ($images as $image) { if($image['video']){ $str=$image['video']; $result = substr($str, strpos($str, '=') + 1, strlen($str));
-											$pre="https://img.youtube.com/vi/"; $post="/default.jpg"; $posthq="/maxresdefault.jpg"; $link=$pre.$result.$post; $linkhq=$pre.$result.$posthq; }
-											 ?>
-								      <li><p><a <?php if($image['video']){?> data-video="<?php echo $image['video']; ?>" <?php } ?> href="<?php echo $image['video']; ?>" class="popup-image" data-image="<?php echo $linkhq; ?>" data-zoom-image="<?php echo $linkhq; ?>">
-											<img src="<?php echo $link; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a></p></li>
-								      <?php } ?>
-								  </ul>
-								</div>
-			      	  </div>
-			      	  <?php } ?>
+						 <div class="col-sm-<?php if($theme_options->get( 'position_image_additional' ) == 2) { echo 10; } else { echo 12; } ?>">
+							 <?php if ($thumb) { ?>
+							 <div class="product-image <?php if($theme_options->get( 'product_image_zoom' ) != 2) { if($theme_options->get( 'product_image_zoom' ) == 1) { echo 'inner-cloud-zoom'; } else { echo 'cloud-zoom'; } } ?>">
+									<?php if($special && $theme_options->get( 'display_text_sale' ) != '0') { ?>
+									 <?php $text_sale = 'Sale';
+									 if($theme_options->get( 'sale_text', $config->get( 'config_language_id' ) ) != '') {
+										 $text_sale = $theme_options->get( 'sale_text', $config->get( 'config_language_id' ) );
+									 } ?>
+									 <?php if($theme_options->get( 'type_sale' ) == '1') { ?>
+									 <?php $product_detail = $theme_options->getDataProduct( $product_id );
+									 $roznica_ceny = $product_detail['price']-$product_detail['special'];
+									 $procent = ($roznica_ceny*100)/$product_detail['price']; ?>
+									 <div class="sale">-<?php echo round($procent); ?>%</div>
+									 <?php } else { ?>
+									 <div class="sale"><?php echo $text_sale; ?></div>
+									 <?php } ?>
+									<?php } elseif($theme_options->get( 'display_text_new' ) != '0' && $theme_options->isLatestProduct( $product_id )) { ?>
+												<div class="new"><?php if($theme_options->get( 'new_text', $config->get( 'config_language_id' ) ) != '') { echo $theme_options->get( 'new_text', $config->get( 'config_language_id' ) ); } else { echo 'New'; } ?></div>
+									<?php } ?>
 
-				      <div class="col-sm-<?php if($theme_options->get( 'position_image_additional' ) == 2) { echo 10; } else { echo 12; } ?>">
-				      	<?php if ($thumb) { ?>
-					      <div class="product-image <?php if($theme_options->get( 'product_image_zoom' ) != 2) { if($theme_options->get( 'product_image_zoom' ) == 1) { echo 'inner-cloud-zoom'; } else { echo 'cloud-zoom'; } } ?>">
-					      	 <?php if($special && $theme_options->get( 'display_text_sale' ) != '0') { ?>
-					      	 	<?php $text_sale = 'Sale';
-					      	 	if($theme_options->get( 'sale_text', $config->get( 'config_language_id' ) ) != '') {
-					      	 		$text_sale = $theme_options->get( 'sale_text', $config->get( 'config_language_id' ) );
-					      	 	} ?>
-					      	 	<?php if($theme_options->get( 'type_sale' ) == '1') { ?>
-					      	 	<?php $product_detail = $theme_options->getDataProduct( $product_id );
-					      	 	$roznica_ceny = $product_detail['price']-$product_detail['special'];
-					      	 	$procent = ($roznica_ceny*100)/$product_detail['price']; ?>
-					      	 	<div class="sale">-<?php echo round($procent); ?>%</div>
-					      	 	<?php } else { ?>
-					      	 	<div class="sale"><?php echo $text_sale; ?></div>
-					      	 	<?php } ?>
-					      	 <?php } elseif($theme_options->get( 'display_text_new' ) != '0' && $theme_options->isLatestProduct( $product_id )) { ?>
-     					      	 <div class="new"><?php if($theme_options->get( 'new_text', $config->get( 'config_language_id' ) ) != '') { echo $theme_options->get( 'new_text', $config->get( 'config_language_id' ) ); } else { echo 'New'; } ?></div>
-					      	 <?php } ?>
+								<a href="<?php echo $popup; ?>" title="<?php echo $heading_title; ?>" id="ex1" <?php if($theme_options->get( 'product_image_zoom' ) == 2) { ?>class="popup-image"<?php } else { echo 'class="open-popup-image"'; } ?>><img src="<?php echo $thumb; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" id="image" itemprop="image" data-zoom-image="<?php echo $popup; ?>" /></a>
+							 </div>
+							<?php } else { ?>
+							<div class="product-image">
+								<img src="image/no_image.jpg" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" id="image" itemprop="image" />
+							</div>
+							<?php } ?>
+						 </div>
 
-					     	 <a href="<?php echo $popup; ?>" title="<?php echo $heading_title; ?>" id="ex1" <?php if($theme_options->get( 'product_image_zoom' ) == 2) { ?>class="popup-image"<?php } else { echo 'class="open-popup-image"'; } ?>><img src="<?php echo $thumb; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" id="image" itemprop="image" data-zoom-image="<?php echo $popup; ?>" /></a>
-					      </div>
-					  	 <?php } else { ?>
-					  	 <div class="product-image">
-					  	 	 <img src="image/no_image.jpg" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" id="image" itemprop="image" />
-					  	 </div>
-					  	 <?php } ?>
-				      </div>
-
-				      <?php if (($images || $theme_options->get( 'product_image_zoom' ) != 2) && $theme_options->get( 'position_image_additional' ) != 2) { ?>
-				      <div class="col-sm-12">
-				           <div class="overflow-thumbnails-carousel clearfix">
-     					      <div class="thumbnails-carousel owl-carousel">
-     					      	<?php if($theme_options->get( 'product_image_zoom' ) != 2 && $thumb) { ?>
-     					      	     <div class="item"><a href="<?php echo $popup; ?>" class="popup-image" data-image="<?php echo $thumb; ?>"
-													 data-zoom-image="<?php echo $popup; ?>"><img src="<?php echo $theme_options->productImageThumb($product_id, $config->get($config->get('config_theme') . '_image_additional_width'), $config->get($config->get('config_theme') . '_image_additional_height')); ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a></div>
-     					      	<?php } ?>
-     						     <?php foreach ($images as $image) {  if($image['video']){ $str=$image['video']; $result = substr($str, strpos($str, '=') + 1, strlen($str));
-										 $pre="https://img.youtube.com/vi/"; $post="/default.jpg"; $posthq="/maxresdefault.jpg"; $link=$pre.$result.$post; $linkhq=$pre.$result.$posthq; } ?>
-     						         <div class="item"><a <?php if($image['video']){?> data-video="<?php echo $image['video']; ?>" <?php } ?> href="<?php echo $image['video']; ?>"
-												  class="popup-image" data-image="<?php echo $linkhq; ?>" data-zoom-image="<?php echo $linkhq; ?>"><img src="<?php echo $link; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a></div>
-     						     <?php } ?>
-     					      </div>
-					      </div>
-
+						 <?php if (($images || $theme_options->get( 'product_image_zoom' ) != 2) && $theme_options->get( 'position_image_additional' ) != 2) { ?>
+						 <div class="col-sm-12">
+									<div class="overflow-thumbnails-carousel clearfix">
+										 <div class="thumbnails-carousel owl-carousel">
+											 <?php if($theme_options->get( 'product_image_zoom' ) != 2 && $thumb) { ?>
+														<div class="item"><a href="<?php echo $popup; ?>" class="popup-image" data-image="<?php echo $thumb; ?>"
+													data-zoom-image="<?php echo $popup; ?>"><img src="<?php echo $theme_options->productImageThumb($product_id, $config->get($config->get('config_theme') . '_image_additional_width'), $config->get($config->get('config_theme') . '_image_additional_height')); ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a></div>
+											 <?php } ?>
+											<?php foreach ($images as $image) {  if($image['video']){ $str=$image['video']; $result = substr($str, strpos($str, '=') + 1, strlen($str));
+										$pre="https://img.youtube.com/vi/"; $post="/default.jpg"; $posthq="/maxresdefault.jpg"; $link=$pre.$result.$post; $linkhq=$pre.$result.$posthq; } ?>
+													<div class="item"><a <?php if($image['video']){?> data-video="<?php echo $image['video']; ?>" <?php } ?> href="<?php echo $image['video']; ?>"
+												 class="popup-image" data-image="<?php echo $linkhq; ?>" data-zoom-image="<?php echo $linkhq; ?>"><img src="<?php echo $link; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a></div>
+											<?php } ?>
+										 </div>
+							 </div>
+							 <!--EOF Video link -->
 					      <script type="text/javascript">
 					           $(document).ready(function() {
 					             $(".thumbnails-carousel").owlCarousel({
@@ -206,7 +206,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			     <?php if ($price) { ?>
 
 				<?php if (isset($custom_partner_price)) echo $custom_partner_price ?>
-
+			
 			      <div class="price">
 			      	<span class="textprice">Цена</span>
 			        <?php if($theme_options->get( 'display_specials_countdown' ) == '1' && $special) { $countdown = rand(0, 5000)*rand(0, 5000);
@@ -254,8 +254,8 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			      <div class="options2">
 			        <?php foreach ($product_options_center as $module) { echo $module; } ?>
 
-
-
+			
+					
 					<?php if(!empty($colors)){ ?>
 					<div id="color_options">
 					<div class="heading"><?php echo $colors_title?></div>
@@ -273,9 +273,9 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 									<div class="image_block"><img src="<?php echo $color['ico_color'] ?>" /></div>
 								<?php } ?>
 								<?php if($colors_cfg['name']==1){ ?>
-									<div class="color_name"><?php echo $color['color_name'] ?></div>
+									<div class="color_name"><?php echo $color['color_name'] ?></div> 
 								<?php } ?>
-
+								
 							</div>
 						<?php } else {  ?>
 							<div class="color_option <?php echo $color['tpl']?> <?php echo $color['quantity']?>">
@@ -283,7 +283,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 									<div class="hideQuantity">Нет в наличии</div>
 								<?php } ?>
 								<a href="<?php echo $color['href'] ?>">
-
+								
 									<?php if($color['tpl'] == 'color'){ ?>
 										<div class="color_block" style="background:<?php echo $color['color'] ?>;<?php if($colors_cfg['name']!=1){ ?>padding:0;<?php } ?>"></div>
 									<?php } elseif($color['tpl'] == 'photos'){ ?>
@@ -298,31 +298,59 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 									<?php } ?>
 
 									<?php if($colors_cfg['name']==1){ ?>
-										<div class="color_name"><?php echo $color['color_name'] ?></div>
+										<div class="color_name"><?php echo $color['color_name'] ?></div> 
 									<?php } ?>
 								</a>
 							</div>
-						<?php } ?>
+						<?php } ?>	
 					<?php } ?>
 
 					<?php if($colors_cfg['enable_popup'] === '0'){ ?>
 					<a class="colors fancybox.ajax" href="index.php?route=product/colorkits&c_product_id=<?php echo $product_id ?>">All colors</a>
 					<script type="text/javascript">
 					$(document).ready(function() {
-
+						
 						$(".colors").fancybox({
 							openEffect : 'elastic',
 							closeEffect : 'elastic',
 							fitToView   : false,
 							autoSize    : true,
-							closeClick  : false
+							closeClick  : false							
 						});
 					});
 					</script>
 					<?php } ?>
 					</div>
 				<?php } ?>
+				
 
+			<!--BOF Product Series -->	 
+			<!--if this is a master then load list of slave products, if this is a slave product then load other slave products under the same master -->
+			<?php if(sizeof($pds) > 0) { ?>
+				<div class="price pds">
+					<?php if($display_add_to_cart){ ?>	
+						<?php echo $text_in_the_same_series; ?><br/>
+					<?php } else { ?>
+						<?php echo $no_add_to_cart_message; ?><br/>
+					<?php } ?>
+					<?php foreach ($pds as $p) { ?>
+						<a class="<?php echo $pds_enable_preview ? 'preview' : ''?> <?php echo ($p['product_id'] == $product_id) ? 'pds-current' : '' ?>"
+						title="<?php echo $p['product_name']; ?>"
+						href="<?php echo $p['product_link']; ?>"
+						rel="<?php echo $p['product_main_image']; ?>">
+							<img src="<?php echo $p['product_pds_image']; ?>" alt="<?php echo $p['product_name']; ?>" />
+						</a>
+					<?php } ?>
+				</div>
+			<?php } ?>
+			<?php if(!$display_add_to_cart){ ?>
+				<style>
+					/*Hide cart and options*/
+					#content .cart, .options, .buttons-cart, .input-qty, #product_buy, #product_options, #button-cart, .form-group {display: none !important;}
+					.price {margin-bottom: 15px}
+				</style>
+			<?php } ?>
+			<!--EOF Product Series -->
 			        <?php if ($options) { ?>
                     <div class="options">
                          <h2><?php echo $text_option; ?></h2>
@@ -839,7 +867,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			  </div>
 			<?php } ?>
 			</div>
-
+		
 						  <?php for ($i = 1; $i <= 5; $i++) { ?>
 						  <?php if ($review['rating'] < $i) { ?>
 						  <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
@@ -1228,7 +1256,7 @@ $(document).ready(function() {
 			catch{
 			tError: '<a href="%url%">The image #%curr%</a> could not be loaded.',
 		}
-		try(err) {		
+		try(err) {
 		}
 			titleSrc: function(item) {
 				return item.el.attr('title');
@@ -1849,7 +1877,7 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
                   "name": "<?php echo $store_name; ?>"
                 }
 				},
-				<?php for($i = 0; $i < count($breadcrumbs); ++$i) {
+				<?php for($i = 0; $i < count($breadcrumbs); ++$i) { 
 				if ( strpos($breadcrumbs[$i]['href'], '?route=') == false ) {
 				   $breadcrumb_url = explode("?", $breadcrumbs[$i]['href']);
 				} else { $breadcrumb_url = explode("&", $breadcrumbs[$i]['href']); }
@@ -1867,16 +1895,16 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
 				]
 				}
 				</script>
-
+                
 
                 <?php if($video_status){  ?>
                     <script type="text/javascript">
                        jQuery('a[data-video]:not([data-video=""])').each(function(index,element) {
                             jQuery(this).attr('href', $(this).attr('data-video'));
                             jQuery(this).attr('target','_blank');
-                            jQuery(this).css({'background-repeat':'no-repeat','background-position':'center center', 'background-size': '100%', 'background-image': 'url("<?php echo $link ?>")'}).find('img').css({ opacity: 0.6 });
+                            jQuery(this).css({'background-repeat':'no-repeat','background-position':'center center', 'background-size': '100%', 'background-image': 'url("/image/play.png")'}).find('img').css({ opacity: 0.6 });
                         });
-
+                    
                         jQuery('a[data-video][data-video_role="video_main"]:not([data-video=""])').css({ 'background-image': 'none' });
 
                         jQuery('a[data-video]').magnificPopup({
@@ -1888,8 +1916,8 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
                                     iframe: {
                                       patterns: {
                                           youtube: {
-                                              index: 'youtube.com/',
-                                              id: function(url) {
+                                              index: 'youtube.com/', 
+                                              id: function(url) {        
                                                   var m = url.match(/[\\?\\&]v=([^\\?\\&]+)/);
                                                   if ( !m || !m[1] ) return null;
                                                   return m[1];
@@ -1897,8 +1925,8 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
                                               src: '//www.youtube.com/embed/%id%?autoplay=1'
                                           },
                                           vimeo: {
-                                              index: 'vimeo.com/',
-                                              id: function(url) {
+                                              index: 'vimeo.com/', 
+                                              id: function(url) {        
                                                   var m = url.match(/(https?:\/\/)?(www.)?(player.)?vimeo.com\/([a-z]*\/)*([0-9]{6,11})[?]?.*/);
                                                   if ( !m || !m[5] ) return null;
                                                   return m[5];
@@ -1913,5 +1941,5 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
                         });
                     </script>
                 <?php } ?>
-
+            
 <?php echo $footer; ?>

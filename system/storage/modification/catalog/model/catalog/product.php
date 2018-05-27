@@ -103,7 +103,30 @@ public function getProduct($product_id) {
 			$sql .= " FROM " . DB_PREFIX . "product p";
 		}
 
-		$sql .= " LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id) LEFT JOIN " . DB_PREFIX . "product_to_store p2s ON (p.product_id = p2s.product_id) WHERE pd.language_id = '" . (int)$this->config->get('config_language_id') . "' AND p.status = '1' AND p.date_available <= NOW() AND p2s.store_id = '" . (int)$this->config->get('config_store_id') . "'";
+		$sql .= " LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id) LEFT JOIN " . DB_PREFIX . "product_to_store p2s ON (p.product_id = p2s.product_id) LEFT JOIN " . DB_PREFIX . "product_master pm "
+			. " ON pm.product_id = p.product_id "
+			. " WHERE (pm.master_product_id = -1 "; //do not change
+
+			if($this->config->get('pds_hide_from_list_view'))
+				$pds_hide_from_list_view = $this->config->get('pds_hide_from_list_view');
+			else
+				$pds_hide_from_list_view = 'items';
+			
+			if($pds_hide_from_list_view == 'series')
+			{
+				$sql .= " OR pm.master_product_id > 0 "; //= 0: master, > 0: slave
+			}
+			elseif($pds_hide_from_list_view == 'none')
+			{
+				$sql .= " OR pm.master_product_id > 0 ";
+				$sql .= " OR pm.master_product_id = 0 ";
+			}
+			else //'item' or default
+			{
+				$sql .= " OR pm.master_product_id = 0 ";
+			}
+			
+			$sql .= " OR pm.master_product_id IS NULL) AND pd.language_id = '" . (int)$this->config->get('config_language_id') . "' AND p.status = '1' AND p.date_available <= NOW() AND p2s.store_id = '" . (int)$this->config->get('config_store_id') . "'";
 
 		if (!empty($data['filter_category_id'])) {
 			if (!empty($data['filter_sub_category'])) {
@@ -503,7 +526,30 @@ public function getProduct($product_id) {
 			$sql .= " FROM " . DB_PREFIX . "product p";
 		}
 
-		$sql .= " LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id) LEFT JOIN " . DB_PREFIX . "product_to_store p2s ON (p.product_id = p2s.product_id) WHERE pd.language_id = '" . (int)$this->config->get('config_language_id') . "' AND p.status = '1' AND p.date_available <= NOW() AND p2s.store_id = '" . (int)$this->config->get('config_store_id') . "'";
+		$sql .= " LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id) LEFT JOIN " . DB_PREFIX . "product_to_store p2s ON (p.product_id = p2s.product_id) LEFT JOIN " . DB_PREFIX . "product_master pm "
+			. " ON pm.product_id = p.product_id "
+			. " WHERE (pm.master_product_id = -1 "; //do not change
+
+			if($this->config->get('pds_hide_from_list_view'))
+				$pds_hide_from_list_view = $this->config->get('pds_hide_from_list_view');
+			else
+				$pds_hide_from_list_view = 'items';
+			
+			if($pds_hide_from_list_view == 'series')
+			{
+				$sql .= " OR pm.master_product_id > 0 "; //= 0: master, > 0: slave
+			}
+			elseif($pds_hide_from_list_view == 'none')
+			{
+				$sql .= " OR pm.master_product_id > 0 ";
+				$sql .= " OR pm.master_product_id = 0 ";
+			}
+			else //'item' or default
+			{
+				$sql .= " OR pm.master_product_id = 0 ";
+			}
+			
+			$sql .= " OR pm.master_product_id IS NULL) AND pd.language_id = '" . (int)$this->config->get('config_language_id') . "' AND p.status = '1' AND p.date_available <= NOW() AND p2s.store_id = '" . (int)$this->config->get('config_store_id') . "'";
 
 		if (!empty($data['filter_category_id'])) {
 			if (!empty($data['filter_sub_category'])) {

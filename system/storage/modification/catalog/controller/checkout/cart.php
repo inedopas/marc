@@ -385,6 +385,26 @@ class ControllerCheckoutCart extends Controller {
 
                     $product_info = $this->model_catalog_product->getProduct($product_id);
 
+//BOF Product Series
+			$this->load->model('catalog/product_master');
+			if(!isset($product_id))
+				$product_id = $this->request->post['product_id'];
+			
+			$pds_allow_buying_series = false;
+			if ($this->config->get('pds_allow_buying_series'))
+			{ 
+				$pds_allow_buying_series = $this->config->get('pds_allow_buying_series');
+			}
+			$is_master = $this->model_catalog_product_master->isMaster($product_id, '2'); //2 is Image
+			
+			if($is_master && !$pds_allow_buying_series)
+			{
+				$json['redirect'] = str_replace('&amp;', '&', $this->url->link('product/product', 'product_id=' . $this->request->post['product_id']));
+			
+				$this->response->setOutput(json_encode($json));	
+				return;
+			}
+			//EOF Product Series
                     if ($product_info) {
                     
                         if (isset($this->request->post['option'])) {
@@ -491,6 +511,26 @@ class ControllerCheckoutCart extends Controller {
 
 		$product_info = $this->model_catalog_product->getProduct($product_id);
 
+//BOF Product Series
+			$this->load->model('catalog/product_master');
+			if(!isset($product_id))
+				$product_id = $this->request->post['product_id'];
+			
+			$pds_allow_buying_series = false;
+			if ($this->config->get('pds_allow_buying_series'))
+			{ 
+				$pds_allow_buying_series = $this->config->get('pds_allow_buying_series');
+			}
+			$is_master = $this->model_catalog_product_master->isMaster($product_id, '2'); //2 is Image
+			
+			if($is_master && !$pds_allow_buying_series)
+			{
+				$json['redirect'] = str_replace('&amp;', '&', $this->url->link('product/product', 'product_id=' . $this->request->post['product_id']));
+			
+				$this->response->setOutput(json_encode($json));	
+				return;
+			}
+			//EOF Product Series
 		if ($product_info) {
 			if (isset($this->request->post['quantity']) && ((int)$this->request->post['quantity'] >= $product_info['minimum'])) {
 				$quantity = (int)$this->request->post['quantity'];

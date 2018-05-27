@@ -161,7 +161,36 @@ public function addProduct($data) {
 					Mfilter_Plus::getInstance( $this )->updateProduct( $product_id );
 				}
 			
+//BOF Product Series
+			//insert product|color
+			$this->load->model('catalog/product_special_attribute');
+			$this->load->model('catalog/special_attribute');			
+			if(!isset($data['product_series_image']))
+				$data['product_series_image'] = '';
+			
+			$data['special_attribute_group_id'] = '2'; //2 is image
+			$this->model_catalog_product_special_attribute->editProductSpecialAttribute(array(
+				'product_id' => $product_id,
+				'special_attribute_id' => $this->model_catalog_special_attribute->getImageId($data)
+			));
+
+			//insert product|master product
+			$this->load->model('catalog/product_master');			
+			$master_product_id = $this->model_catalog_product_master->getMasterProductIdFromData($data);
+			if($master_product_id == 0 || $master_product_id > 0) //is either series or series item
+			{
+				$this->model_catalog_product_master->addLink(array(
+					'product_id' => $product_id,
+					'master_product_id' => $master_product_id,
+					'special_attribute_group_id' => '2' //2 is image
+				));
+			}
+			//EOF Product Series
 		$this->cache->delete('product');
+//BOF Product Series	
+			if(isset($product_id))
+				return $product_id;
+			//EOF Product Series
 
 		return $product_id;
 	}
@@ -351,7 +380,34 @@ public function addProduct($data) {
 					Mfilter_Plus::getInstance( $this )->updateProduct( $product_id );
 				}
 			
+//BOF Product Series
+			//update product|color
+			if(isset($data['product_series_image']))
+			{
+				$this->load->model('catalog/product_special_attribute');
+				$this->load->model('catalog/special_attribute');
+				$data['special_attribute_group_id'] = '2'; //2 is image
+				$this->model_catalog_product_special_attribute->editProductSpecialAttribute(array(
+					'product_id' => $product_id,
+					'special_attribute_id' => $this->model_catalog_special_attribute->getImageId($data)
+				));
+			}
+
+			//update product|master product
+			$this->load->model('catalog/product_master');
+			$master_product_id = $this->model_catalog_product_master->getMasterProductIdFromData($data);
+						
+			$this->model_catalog_product_master->editLink(array(
+				'product_id' => $product_id,
+				'master_product_id' => $master_product_id,
+				'special_attribute_group_id' => '2' //2 is image
+			));
+			//EOF Product Series
 		$this->cache->delete('product');
+//BOF Product Series	
+			if(isset($product_id))
+				return $product_id;
+			//EOF Product Series
 	}
 
 	public function copyProduct($product_id) {
@@ -389,6 +445,12 @@ public function addProduct($data) {
 
 			$data['main_category_id'] = $this->getProductMainCategoryId($product_id);
 
+//BOF Product Series
+			$this->load->model('catalog/product_special_attribute');			
+			$this->load->model('catalog/product_master');
+			$data = array_merge($data, array('product_color' => $this->model_catalog_product_special_attribute->getProductSpecialAttribute($product_id, '2'))); //2 is image
+			$data = array_merge($data, array('master_product' => $this->model_catalog_product_master->getMasterProductId($product_id, '2'))); //2 is image
+			//BOF Product Series
 			$this->addProduct($data);
 		}
 	}
@@ -427,7 +489,24 @@ public function addProduct($data) {
 					Mfilter_Plus::getInstance( $this )->updateProduct( $product_id );
 				}
 			
+//BOF Product Series
+			//delete product|color
+			$this->load->model('catalog/product_special_attribute');
+			$this->model_catalog_product_special_attribute->deleteProductSpecialAttribute(array(
+				'product_id' => $product_id
+			));
+
+			//delete product|master product
+			$this->load->model('catalog/product_master');
+			$this->model_catalog_product_master->deleteLink(array(
+				'product_id' => $product_id
+			));
+			//EOF Product Series
 		$this->cache->delete('product');
+//BOF Product Series	
+			if(isset($product_id))
+				return $product_id;
+			//EOF Product Series
 	}
 
 	public function getProduct($product_id) {
