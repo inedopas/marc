@@ -3,9 +3,6 @@ abstract class Controller {
 	protected $registry;
 
 
-		// [BEGIN]
-
-
 			//BOF WeDoWeb Util			
 			//usage: $this->setDataLang('field_name');
 			protected function setDataLang(&$data, $field_name)
@@ -53,6 +50,9 @@ abstract class Controller {
 			}
 			//EOF WeDoWeb Util
 			
+
+		// [BEGIN]
+
 		protected function oc_smsc_init() {
 
 				// Load language

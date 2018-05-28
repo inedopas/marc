@@ -1,4 +1,4 @@
-2018-05-27 23:58:18 - 
+2018-05-28 17:54:35 - 
 ERROR: CODE NOT FOUND!
 FILE: catalog/view/theme/marcjewelry/template/checkout/checkout.tpl
 CODE: <h1><?php echo $heading_title; ?></h1>
@@ -40,6 +40,11 @@ MOD: affiliate
 ERROR: FILE NOT FOUND!
 FILE: /home/nedopasc/public_html/admin/language/ua-uk/catalog/review.php
 MOD: Answer to the commentary for OpenCart 2x
+
+ERROR: CODE NOT FOUND!
+FILE: catalog/view/theme/default/template/product/product.tpl
+CODE: div id="geopa"></div>
+MOD: Estimate Shipping
 
 ERROR: FILE NOT FOUND!
 FILE: /home/nedopasc/public_html/admin/view/template/common/menu.tpl
@@ -105,6 +110,14 @@ MOD: Extra_email_WebJeweler
 ERROR: FILE NOT FOUND!
 FILE: /home/nedopasc/public_html/admin/view/template/editors/product/product_form.tpl
 MOD: OCFilter Modification
+
+ERROR: FILE NOT FOUND!
+FILE: /home/nedopasc/public_html/catalog/controller/checkout/register.php,catalog/controller/checkout/payment_address.php,catalog/controller/checkout/shipping_address.php
+MOD: GeoIP
+
+ERROR: FILE NOT FOUND!
+FILE: /home/nedopasc/public_html/catalog/view/theme/*/template/checkout/register.tpl,catalog/view/theme/*/template/checkout/payment_address.tpl,catalog/view/theme/*/template/checkout/shipping_address.tpl
+MOD: GeoIP
 
 ERROR: CODE NOT FOUND!
 FILE: catalog/view/theme/marcjewelry/template/product/product.tpl

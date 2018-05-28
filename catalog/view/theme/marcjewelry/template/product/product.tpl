@@ -39,7 +39,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
   		<div class="col-md-<?php if($theme_options->get( 'custom_block', 'product_page', $config->get( 'config_language_id' ), 'status' ) == 1 || count($product_custom_block)) { echo 9; } else { echo 12; } ?> col-sm-12">
   			<div class="row" id="quickview_product">
 			    <?php if($theme_options->get( 'product_image_zoom' ) != 2) { ?>
-			    <script>
+						<script>
 			    	$(document).ready(function(){
 			    	     if($(window).width() > 992) {
      			    		<?php if($theme_options->get( 'product_image_zoom' ) == 1) { ?>
@@ -517,7 +517,13 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 														</tr>
 												</table>
 								</div>
+
+
 	<?php } ?>
+	<script type="text/javascript">$(".geoip-module").appendTo("#geopa");</script>
+	<div id="geopa"></div>
+
+
 
             <div id="win" style="display:none;">
  										   <div class="overlay"></div>
@@ -563,7 +569,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
     </div>
 </div>
 
-
+					<input type="hidden" name="product_id" size="2" value="" />
 			          <?php
 			          $product_enquiry = $modules_old_opencart->getModules('product_enquiry');
 			          if( count($product_enquiry) ) {

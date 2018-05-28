@@ -39,7 +39,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
   		<div class="col-md-<?php if($theme_options->get( 'custom_block', 'product_page', $config->get( 'config_language_id' ), 'status' ) == 1 || count($product_custom_block)) { echo 9; } else { echo 12; } ?> col-sm-12">
   			<div class="row" id="quickview_product">
 			    <?php if($theme_options->get( 'product_image_zoom' ) != 2) { ?>
-			    <script>
+						<script>
 			    	$(document).ready(function(){
 			    	     if($(window).width() > 992) {
      			    		<?php if($theme_options->get( 'product_image_zoom' ) == 1) { ?>
@@ -617,7 +617,139 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 														</tr>
 												</table>
 								</div>
+
+
 	<?php } ?>
+	<script type="text/javascript">$(".geoip-module").appendTo("#geopa");</script>
+	<div id="geopa"></div>
+
+              <!-- Shipping calculate -->
+
+
+              <div class="form-horizontal">
+                <?php $estimate_shipping_estimate_shipping_geo = 1; ?>
+                <?php if($estimate_shipping_estimate_shipping_geo) { ?>
+                <div style="display:none" class="form-group required">
+                  <div class="col-sm-12">
+
+                    <select style="display:none" name="country_id" id="input-country" class="form-control">
+                      <option value="176"><?php echo $text_select; ?></option>
+                      <?php foreach ($countries as $country) { ?>
+                      <?php if ($country['country_id'] == $country_id) { ?>
+                      <option value="<?php echo $country['country_id']; ?>" selected="selected"><?php echo $country['name']; ?></option>
+                      <?php } else { ?>
+                      <option value="<?php echo $country['country_id']; ?>"><?php echo $country['name']; ?></option>
+                      <?php } ?>
+                      <?php } ?>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group required">
+                  <div style="display:none" class="col-sm-12">
+
+                    <?php
+
+$postc = ['2726' =>	'656000',
+'2729'	 =>	'675000',
+'2725'	 =>	'414000',
+'2724'	 =>	'163000',
+'2727'	 =>	'308000',
+'2730'	 =>	'241000',
+'2799'	 =>	'600000',
+'2801'	 =>	'400000',
+'2802'	 =>	'160000',
+'2803'	 =>	'394000',
+'2728'	 =>	'679000',
+'2741'	 =>	'153000',
+'2740'	 =>	'664000',
+'2743'	 =>	'236000',
+'2744'	 =>	'248000',
+'2775'	 =>	'683000',
+'2733'	 =>	'369000',
+'2747'	 =>	'650000',
+'2804'	 =>	'610000',
+'2750'	 =>	'156000',
+'2751'	 =>	'350000',
+'2752'	 =>	'660000',
+'2754'	 =>	'640000',
+'2755'	 =>	'305000',
+'2735'	 =>	'187000',
+'2757'	 =>	'398000',
+'2758'	 =>	'685000',
+'2761'	 =>	'101000',
+'2722'	 =>	'140000',
+'2762'	 =>	'183000',
+'2764'	 =>	'166000',
+'2766'	 =>	'603000',
+'2767'	 =>	'173000',
+'2768'	 =>	'630000',
+'2769'	 =>	'644000',
+'2771'	 =>	'460000',
+'2770'	 =>	'302000',
+'2773'	 =>	'440000',
+'2774'	 =>	'614000',
+'2800'	 =>	'690000',
+'2777'	 =>	'180000',
+'2738'	 =>	'649000',
+'2794'	 =>	'450999',
+'2796'	 =>	'670000',
+'2759'	 =>	'367000',
+'2765'	 =>	'386000',
+'2736'	 =>	'358000',
+'2776'	 =>	'185000',
+'2787'	 =>	'167000',
+'2808'	 =>	'424000',
+'2782'	 =>	'430000',
+'2798'	 =>	'362000',
+'2756'	 =>	'667000',
+'2721'	 =>	'655000',
+'2778'	 =>	'344000',
+'2779'	 =>	'390000',
+'2781'	 =>	'443000',
+'2785'	 =>	'190000',
+'2783'	 =>	'410000',
+'2737'	 =>	'693000',
+'2807'	 =>	'620000',
+'2784'	 =>	'214000',
+'2786'	 =>	'355000',
+'2788'	 =>	'392000',
+'2792'	 =>	'170000',
+'2789'	 =>	'634000',
+'2790'	 =>	'300000',
+'2793'	 =>	'625000',
+'2742'	 =>	'426000',
+'2795'	 =>	'432000',
+'2748'	 =>	'680000',
+'2749'	 =>	'628000',
+'2732'	 =>	'454000',
+'2739'	 =>	'364000',
+'2731'	 =>	'428000',
+'2723'	 =>	'689000',
+'2780'	 =>	'629000',
+'2806'	 =>	'150000',
+];
+
+
+
+
+
+                     ?>
+                            <select style="display:none" name="zone_id" id="input-zone" class="form-control">
+                    </select>
+                  </div>
+                </div>
+                <?php } ?>
+                <div class="form-group required">
+                  <div class="col-sm-12">
+                 <?php echo $geoip; ?>
+                    <input style="display:none" type="text" name="postcode" value="<? echo $postc[$zone_id]; ?>" placeholder="<?php echo $entry_postcode; ?>" id="input-postcode" class="form-control" />
+                  
+                </div>
+                <button type="button" id="button-quote" data-loading-text="<?php echo $text_loading; ?>" class="btn btn-primary">Ближайшая доставка</button>
+              </div>
+            
+
+
 
             <div id="win" style="display:none;">
  										   <div class="overlay"></div>
@@ -663,7 +795,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
     </div>
 </div>
 
-
+					<input type="hidden" name="product_id" size="2" value="" />
 			          <?php
 			          $product_enquiry = $modules_old_opencart->getModules('product_enquiry');
 			          if( count($product_enquiry) ) {
@@ -1990,41 +2122,141 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
 				</script>
 
 
-				<script type="application/ld+json">
-				{
-				"@context": "http://schema.org",
-                "@type": "BreadcrumbList",
-                "itemListElement":
-                [
-				<?php $home = array_shift($breadcrumbs); ?>
-				{
-                "@type": "ListItem",
-                "position": 1,
-                "item":
-                {
-                  "@id": "<?php echo $base; ?>",
-                  "name": "<?php echo $store_name; ?>"
-                }
-				},
-				<?php for($i = 0; $i < count($breadcrumbs); ++$i) { 
-				if ( strpos($breadcrumbs[$i]['href'], '?route=') == false ) {
-				   $breadcrumb_url = explode("?", $breadcrumbs[$i]['href']);
-				} else { $breadcrumb_url = explode("&", $breadcrumbs[$i]['href']); }
-				?>
-                {
-                "@type": "ListItem",
-                "position": <?php echo $i+2; ?>,
-                "item":
-                {
-                  "@id": "<?php echo $breadcrumb_url[0]; ?>",
-                  "name": "<?php echo $breadcrumbs[$i]['text']; ?>"
-                }
-                }<?php echo($i !== (count($breadcrumbs)-1) ? ',' : ''); ?>
-                <?php } ?>
-				]
-				}
-				</script>
-                
+<script type="text/javascript">
+$('#button-quote').on('click', function() {
+    $.ajax({
+          url: 'index.php?route=product/product/quoteProduct',
+          type: 'post',
+          data: $('#product input[type=\'text\'], #product input[type=\'hidden\'], #product input[type=\'radio\']:checked, #product input[type=\'checkbox\']:checked, #product select, #product textarea'),
+          dataType: 'json',
+          beforeSend: function() {
+              $('#button-quote').button('loading');
+          },
+          complete: function() {
+              $('#button-quote').button('reset');
+          },
+          success: function(json) {
+              $('.alert, .text-danger').remove();
+              $.ajax({
+    				url: 'index.php?route=product/product/quote',
+    				type: 'post',
+    				data: 'country_id=' + $('select[name=\'country_id\']').val() + '&zone_id=' + $('select[name=\'zone_id\']').val() + '&postcode=' + encodeURIComponent($('input[name=\'postcode\']').val()),
+    				dataType: 'json',
+    				success: function(json) {
+                        if (json['error']) {
+                              if (json['error']['warning']) {
+
+                              }
+
+                              if (json['error']['country']) {
+                                  $('select[name=\'country_id\']').after('<div class="text-danger">' + json['error']['country'] + '</div>');
+                              }
+
+                              if (json['error']['zone']) {
+
+                              }
+
+                              if (json['error']['postcode']) {
+
+                              }
+                        }
+
+                          if (json['shipping_method']) {
+                              $('#modal-shipping').remove();
+
+                              html  = '<div id="modal-shipping" class="modal">';
+                              html += '  <div class="modal-dialog">';
+                              html += '    <div class="modal-content">';
+                              html += '      <div class="modal-header">';
+                              html += '        <h4 class="modal-title">Предварительная стоимость доставки</h4>';
+                              html += '      </div>';
+                              html += '      <div class="modal-body">';
+
+                              for (i in json['shipping_method']) {
+                                  html += '<p><strong>' + json['shipping_method'][i]['title'] + '</strong></p>';
+
+                                  if (!json['shipping_method'][i]['error']) {
+                                      for (j in json['shipping_method'][i]['quote']) {
+                                          html += '<div class="radio">';
+                                          html += '  <label>';
+                                          html += json['shipping_method'][i]['quote'][j]['title'] + ' - ' + json['shipping_method'][i]['quote'][j]['text'] + '</label></div>';
+                                      }
+                                  } else {
+                                      html += '<div class="alert alert-danger">' + json['shipping_method'][i]['error'] + '</div>';
+                                  }
+                              }
+
+                              html += '      </div>';
+                              html += '      <div class="modal-footer">';
+                              html += '        <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $button_cancel; ?></button>';
+
+                              html += '      </div>';
+                              html += '    </div>';
+                              html += '  </div>';
+                              html += '</div> ';
+
+                              $('body').append(html);
+
+                              $('#modal-shipping').modal('show');
+
+                              $('input[name=\'shipping_method\']').on('change', function() {
+                                  $('#button-shipping').prop('disabled', false);
+                              });
+                          }
+    				}//success
+    			});
+    		},
+    		error: function(xhr, ajaxOptions, thrownError) {
+    			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+    		}
+    });
+});
+</script>
+<script type="text/javascript">
+$('select[name=\'country_id\']').on('change', function() {
+    $.ajax({
+		url: 'index.php?route=product/product/country&country_id=' + this.value,
+        dataType: 'json',
+        beforeSend: function() {
+            $('select[name=\'country_id\']').after(' <i class="fa fa-circle-o-notch fa-spin"></i>');
+        },
+        complete: function() {
+            $('.fa-spin').remove();
+        },
+        success: function(json) {
+            if (json['postcode_required'] == '1') {
+                  $('input[name=\'postcode\']').parent().parent().addClass('required');
+            } else {
+                  $('input[name=\'postcode\']').parent().parent().removeClass('required');
+            }
+
+            html = '<option value=""><?php echo $text_select; ?></option>';
+
+            if (json['zone'] && json['zone'] != '') {
+                  for (i = 0; i < json['zone'].length; i++) {
+                      html += '<option value="' + json['zone'][i]['zone_id'] + '"';
+
+                      if (json['zone'][i]['zone_id'] == '<?php echo $zone_id; ?>') {
+                          html += ' selected="selected"';
+                      }
+
+                      html += '>' + json['zone'][i]['name'] + '</option>';
+                  }
+            } else {
+                html += '<option value="0" selected="selected"><?php echo $text_none; ?></option>';
+            }
+
+              $('select[name=\'zone_id\']').html(html);
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+              alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+        }
+    });
+});
+
+$('select[name=\'country_id\']').trigger('change');
+</script>
+            
 
                 <?php if($video_status){  ?>
                     <script type="text/javascript">
@@ -2071,4 +2303,40 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
                     </script>
                 <?php } ?>
             
+
+				<script type="application/ld+json">
+				{
+				"@context": "http://schema.org",
+                "@type": "BreadcrumbList",
+                "itemListElement":
+                [
+				<?php $home = array_shift($breadcrumbs); ?>
+				{
+                "@type": "ListItem",
+                "position": 1,
+                "item":
+                {
+                  "@id": "<?php echo $base; ?>",
+                  "name": "<?php echo $store_name; ?>"
+                }
+				},
+				<?php for($i = 0; $i < count($breadcrumbs); ++$i) { 
+				if ( strpos($breadcrumbs[$i]['href'], '?route=') == false ) {
+				   $breadcrumb_url = explode("?", $breadcrumbs[$i]['href']);
+				} else { $breadcrumb_url = explode("&", $breadcrumbs[$i]['href']); }
+				?>
+                {
+                "@type": "ListItem",
+                "position": <?php echo $i+2; ?>,
+                "item":
+                {
+                  "@id": "<?php echo $breadcrumb_url[0]; ?>",
+                  "name": "<?php echo $breadcrumbs[$i]['text']; ?>"
+                }
+                }<?php echo($i !== (count($breadcrumbs)-1) ? ',' : ''); ?>
+                <?php } ?>
+				]
+				}
+				</script>
+                
 <?php echo $footer; ?>
