@@ -518,16 +518,16 @@ class ControllerExtensionModification extends Controller {
 				$url .= '&page=' . $this->request->get['page'];
 			}
 
-			
-        if (isset($this->request->get['modification_editor'])) {
-            echo $this->session->data['success'];
-            exit;
-        } else {
 
 				if (__FUNCTION__ == 'refresh' && in_array($this->request->get['route'], array("extension/installer/localremove", "extension/installer/xml"))) {
                     $GLOBALS['localremove.success'] = true;
 					return;
                 }
+			
+        if (isset($this->request->get['modification_editor'])) {
+            echo $this->session->data['success'];
+            exit;
+        } else {
             $this->response->redirect($this->url->link('extension/modification', 'token=' . $this->session->data['token'] . $url, true));
         }
       

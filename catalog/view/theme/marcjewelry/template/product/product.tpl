@@ -599,7 +599,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			        </div>
 			         </div>
 			        <div class="links clearfix">
-							<input type="button" data-toggle="modal" data-target="#how-to-size" value="Как узнать размер?" class="button"/>
+							<input type="hidden" data-toggle="modal" id="howtosize" data-target="#how-to-size" value="Как узнать размер?" class="button"/>
 
 
 			        	<a onclick="wishlist.add('<?php echo $product_id; ?>');"><?php if($theme_options->get( 'add_to_wishlist_text', $config->get( 'config_language_id' ) ) != '') { echo $theme_options->get( 'add_to_wishlist_text', $config->get( 'config_language_id' ) ); } else { echo 'Add to wishlist'; } ?></a>
@@ -964,6 +964,13 @@ $('select[name=\'recurring_id\'], input[name="quantity"]').change(function(){
 
 <script type="text/javascript"><!--
 
+
+$(document).ready(function(){
+var text= document.getElementById("title-page").innerHTML;
+if(text.indexOf('ольцо') + 1) {
+document.getElementById("howtosize").type= "button";
+}
+});
 
 window.howSizeRing = function(){
 	    var val='';
