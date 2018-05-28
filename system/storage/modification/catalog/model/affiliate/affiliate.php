@@ -5,12 +5,34 @@ class ModelAffiliateAffiliate extends Model {
 
 		$affiliate_id = $this->db->getLastId();
 
-$affiliate_add = (bool)$this->config->get('affiliate_add');
-$this->db->query("UPDATE `" . DB_PREFIX . "affiliate` SET qiwi = '" . $this->db->escape($data['qiwi']) . "', card = '" . $this->db->escape($data['card']) . "', yandex = '" . $this->db->escape($data['yandex']) . "', webmoney_wmr = '" . $this->db->escape($data['webmoney_wmr']) . "', webmoney_wmz = '" . $this->db->escape($data['webmoney_wmz']) . "', webmoney_wmu = '" . $this->db->escape($data['webmoney_wmu']) . "', webmoney_wme = '" . $this->db->escape($data['webmoney_wme']) . "', webmoney_wmy = '" . $this->db->escape($data['webmoney_wmy']) . "', webmoney_wmb = '" . $this->db->escape($data['webmoney_wmb']) . "', webmoney_wmg = '" . $this->db->escape($data['webmoney_wmg']) . "', alert_pay = '" . $this->db->escape($data['alert_pay']) .  "', moneybookers = '" . $this->db->escape($data['moneybookers']) .  "', liqpay = '" . $this->db->escape($data['liqpay']) . "', sage_pay = '" . $this->db->escape($data['sage_pay']) .  "', two_checkout = '" . $this->db->escape($data['two_checkout']) . "', google_wallet = '" . $this->db->escape($data['google_wallet']) . "', approved = '" . (int)$affiliate_add . "' WHERE affiliate_id = '" . (int)$affiliate_id . "'");
-if($this->config->get('affiliate_number_tracking')) {
-$code = 1000 + (int)$affiliate_id;
-$this->db->query("UPDATE `" . DB_PREFIX . "affiliate` SET code = '" . $code . "' WHERE affiliate_id = '" . (int)$affiliate_id . "'");
-}
+       $levels = $this->config->get('affiliate_level_commission');
+		$trackingmmm = isset($this->request->cookie['tracking']) ? $this->request->cookie['tracking'] : null;
+		if (!isset($trackingmmm)) {
+			$trackingmmm = isset($this->session->data['tracking']) ? $this->session->data['tracking'] : null;
+		} 
+		if (array_key_exists('tracking', $data)) {
+            $trackingmmm = $data['tracking'];
+		}
+		
+       if(isset($trackingmmm) & $levels) {
+        $query = $this->db->query("SELECT affiliate_id FROM `" . DB_PREFIX . "affiliate` WHERE code = '" . $trackingmmm . "'");
+        if ($query->num_rows) {
+          $affiliate_parent = $query->row['affiliate_id'];
+          $count_affiliate = $levels[1]['level_affiliate'];
+          if($count_affiliate != 0) {
+            $query = $this->db->query("SELECT count(*) as total FROM `" . DB_PREFIX . "affiliate` WHERE parent = '" . $affiliate_parent . "'");
+            $count_affiliate_sql = $query->row['total'];
+            if($count_affiliate_sql<$count_affiliate){
+              $count_affiliate = 0;
+            }
+          }
+          if($count_affiliate == 0) {
+            $query_id = $this->db->query("SELECT affiliate_id FROM `" . DB_PREFIX . "affiliate` WHERE email = '" . $this->db->escape($data['email']) . "'");
+            $affiliate_id = $query_id->row['affiliate_id'];
+            $this->db->query("UPDATE `" . DB_PREFIX . "affiliate` SET parent = '" . $affiliate_parent . "' WHERE affiliate_id = '" . (int)$affiliate_id . "'");
+          }
+        }
+      }
       
 
 		$this->load->language('mail/affiliate');
@@ -22,16 +44,7 @@ $this->db->query("UPDATE `" . DB_PREFIX . "affiliate` SET code = '" . $code . "'
 		if (!$this->config->get('config_affiliate_approval')) {
 			$message .= $this->language->get('text_login') . "\n";
 		} else {
-			
-if (!(array_key_exists('email', $this->request->post))) {
-  $this->request->post['email'] = $this->db->escape($data['email']);
-}
-if((bool)$this->config->get('affiliate_add')){
-  $message .= $this->language->get('text_approve_login') . "\n";
-}else{
-  $message .= $this->language->get('text_approval') . "\n";
-}
-      
+			$message .= $this->language->get('text_approval') . "\n";
 		}
 
 		$message .= $this->url->link('affiliate/login', '', true) . "\n\n";
@@ -102,9 +115,6 @@ if((bool)$this->config->get('affiliate_add')){
 		$affiliate_id = $this->affiliate->getId();
 
 		$this->db->query("UPDATE " . DB_PREFIX . "affiliate SET tax = '" . $this->db->escape($data['tax']) . "', payment = '" . $this->db->escape($data['payment']) . "', cheque = '" . $this->db->escape($data['cheque']) . "', paypal = '" . $this->db->escape($data['paypal']) . "', bank_name = '" . $this->db->escape($data['bank_name']) . "', bank_branch_number = '" . $this->db->escape($data['bank_branch_number']) . "', bank_swift_code = '" . $this->db->escape($data['bank_swift_code']) . "', bank_account_name = '" . $this->db->escape($data['bank_account_name']) . "', bank_account_number = '" . $this->db->escape($data['bank_account_number']) . "' WHERE affiliate_id = '" . (int)$affiliate_id . "'");
-
-$this->db->query("UPDATE `" . DB_PREFIX . "affiliate` SET qiwi = '" . $this->db->escape($data['qiwi']) . "', card = '" . $this->db->escape($data['card']) . "', yandex = '" . $this->db->escape($data['yandex']) . "', webmoney_wmr = '" . $this->db->escape($data['webmoney_wmr']) . "', webmoney_wmz = '" . $this->db->escape($data['webmoney_wmz']) . "', webmoney_wmu = '" . $this->db->escape($data['webmoney_wmu']) . "', webmoney_wme = '" . $this->db->escape($data['webmoney_wme']) . "', webmoney_wmy = '" . $this->db->escape($data['webmoney_wmy']) . "', webmoney_wmb = '" . $this->db->escape($data['webmoney_wmb']) . "', webmoney_wmg = '" . $this->db->escape($data['webmoney_wmg']) .  "', alert_pay = '" . $this->db->escape($data['alert_pay']) .  "', moneybookers = '" . $this->db->escape($data['moneybookers']) .  "', liqpay = '" . $this->db->escape($data['liqpay']) .  "', sage_pay = '" . $this->db->escape($data['sage_pay']) .  "', two_checkout = '" . $this->db->escape($data['two_checkout']) . "', google_wallet = '" . $this->db->escape($data['google_wallet']) . "' WHERE affiliate_id = '" . (int)$affiliate_id . "'");
-      
 	}
 
 	public function editPassword($email, $password) {

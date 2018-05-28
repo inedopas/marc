@@ -126,6 +126,16 @@
                   <button disabled="disabled" class="btn btn-success btn-xs"><i class="fa fa-plus-circle"></i></button>
                   <?php } ?></td>
               </tr>
+
+      <?php foreach ($getaffiliates as $parentaffiliate) { ?>
+      <tr>
+            <td><?php echo $text_affiliate.'#'.$parentaffiliate['level']; ?>(
+            <a href="<?php echo $parentaffiliate['link']; ?>"><?php echo $parentaffiliate['affiliate_name']; ?> </a>
+            )</td>
+            <td><?php echo $parentaffiliate['commission']; ?></td>
+          </tr>
+      <?php } ?>
+      
             </tbody>
           </table>
         </div>
@@ -628,11 +638,6 @@ $('#button-history').on('click', function() {
 				$('#history').before('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
 
 				$('textarea[name=\'comment\']').val('');
-
-if (json['add']) {
-  $('#button-commission-add').replaceWith('<button id="button-commission-remove" data-toggle="tooltip" title="<?php echo $button_commission_remove; ?>" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></button>');
-}
-      
 			}
 		},
 		error: function(xhr, ajaxOptions, thrownError) {

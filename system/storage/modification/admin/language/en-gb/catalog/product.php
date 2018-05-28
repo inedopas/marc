@@ -1,4 +1,8 @@
 <?php
+
+        $_['column_commission'] = 'Commission';
+        $_['entry_commission'] = 'Commission<br /><span class="help">Percentage the affiliate recieves on each order.</span>';
+			
 // Heading
 $_['heading_title']          = 'Products';
 

@@ -8,10 +8,9 @@
   <?php } ?>
   <a href="<?php echo $payment; ?>" class="list-group-item"><?php echo $text_payment; ?></a> <a href="<?php echo $tracking; ?>" class="list-group-item"><?php echo $text_tracking; ?></a> <a href="<?php echo $transaction; ?>" class="list-group-item"><?php echo $text_transaction; ?></a>
 
-        <a href="<?php echo $statistics; ?>" class="list-group-item"><?php echo $text_statistics; ?></a>
-      
-
-        <a href="<?php echo $orderpayment; ?>" class="list-group-item"><?php echo $text_orderpayment; ?></a>
+<?php if ($level) { ?>
+<a href="<?php echo $statisticsmyaffiliate; ?>" class="list-group-item"><?php echo $text_statisticsmyaffiliate; ?></a>
+<?php } ?>
       
   <?php if ($logged) { ?>
   <a href="<?php echo $logout; ?>" class="list-group-item"><?php echo $text_logout; ?></a>

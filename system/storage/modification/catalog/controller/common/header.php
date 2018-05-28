@@ -134,7 +134,6 @@ class ControllerCommonHeader extends Controller {
 			}
 		}
 
-		$data['geoip'] = $this->load->controller('module/geoip');
 
 				$data['store_name'] = $this->config->get('config_name');
 				if ( $this->config->get('config_support') ) {
@@ -154,6 +153,7 @@ class ControllerCommonHeader extends Controller {
 				$data['social'] = '';
 				}
                 
+		$data['geoip'] = $this->load->controller('module/geoip');
 		$data['language'] = $this->load->controller('common/language');
 		$data['currency'] = $this->load->controller('common/currency');
 		$data['search'] = $this->load->controller('common/search');

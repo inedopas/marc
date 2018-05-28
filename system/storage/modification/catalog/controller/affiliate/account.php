@@ -34,19 +34,10 @@ class ControllerAffiliateAccount extends Controller {
 		$data['text_tracking'] = $this->language->get('text_tracking');
 		$data['text_transaction'] = $this->language->get('text_transaction');
 
-        $data['text_my_orderpayment'] = $this->language->get('text_my_orderpayment');
-		$data['text_my_statistics'] = $this->language->get('text_my_statistics');
-		$data['text_orderpayment'] = $this->language->get('text_orderpayment');
-		$data['text_statistics'] = $this->language->get('text_statistics');     
-		$data['orderpayment'] = $this->url->link('affiliate/orderpayment', '', 'SSL');
-		$data['statistics'] = $this->url->link('affiliate/statistics', '', 'SSL');
-        $this->load->model('affiliate/affiliate');
-        $affiliateinfo = $this->model_affiliate_affiliate->getAffiliate($this->affiliate->getId());
-        $this->load->model('affiliate/transaction');
-        $balance = $this->model_affiliate_transaction->getBalance();
-        $data['balance'] = sprintf($this->language->get('text_balance'), $this->currency->format($balance, $this->session->data['currency']));
-        $data['percentage'] = sprintf($this->language->get('text_percentage'), $affiliateinfo['commission'], '%');
-        $data['name_affiliate'] = sprintf($this->language->get('text_name_affiliate'), $affiliateinfo['firstname'] , $affiliateinfo['lastname']);
+                $data['level'] = $this->config->get('affiliate_level_commission');
+                $data['text_my_statisticsmyaffiliate'] = $this->language->get('text_my_statisticsmyaffiliate');
+                $data['text_statisticsmyaffiliate'] = $this->language->get('text_statisticsmyaffiliate');
+                $data['statisticsmyaffiliate'] = $this->url->link('affiliate/statisticsmyaffiliate', '', 'SSL');
       
 
 		if (isset($this->session->data['success'])) {

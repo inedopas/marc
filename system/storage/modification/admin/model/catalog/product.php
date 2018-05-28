@@ -31,6 +31,11 @@ public function addProduct($data) {
 		}
 		// OCFilter end
       
+
+    if (isset($data['commission'])) {
+      $this->db->query("UPDATE `" . DB_PREFIX . "product` SET affiliate_commission = '" . $this->db->escape($data['commission']) . "' WHERE product_id = '" . (int)$product_id . "'");
+    }
+      
 		if (isset($data['image'])) {
 			$this->db->query("UPDATE " . DB_PREFIX . "product SET image = '" . $this->db->escape($data['image']) . "' WHERE product_id = '" . (int)$product_id . "'");
 		}
@@ -219,6 +224,11 @@ public function addProduct($data) {
 			}
 		}
 		// OCFilter end
+      
+
+    if (isset($data['commission'])) {
+      $this->db->query("UPDATE `" . DB_PREFIX . "product` SET affiliate_commission = '" . $this->db->escape($data['commission']) . "' WHERE product_id = '" . (int)$product_id . "'");
+    }
       
 		if (isset($data['image'])) {
 			$this->db->query("UPDATE " . DB_PREFIX . "product SET image = '" . $this->db->escape($data['image']) . "' WHERE product_id = '" . (int)$product_id . "'");
@@ -419,6 +429,9 @@ public function addProduct($data) {
 			$data['sku'] = '';
 			$data['upc'] = '';
 			$data['viewed'] = '0';
+
+    $data['commission'] = $data['affiliate_commission'];
+      
 			$data['keyword'] = '';
 			$data['status'] = '0';
 

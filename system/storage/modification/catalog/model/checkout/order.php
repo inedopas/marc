@@ -50,6 +50,17 @@ class ModelCheckoutOrder extends Model {
 			}
 		}
 
+
+      if($this->config->get('affiliate_product_commission')) {
+        if(isset($this->request->cookie['tracking'])) {
+          $this->load->model('affiliate/affiliate');
+          $affiliate_info = $this->model_affiliate_affiliate->getAffiliateByCode($this->request->cookie['tracking']);
+          $this->load->model('module/statisticsmyaffiliate');
+          $affiliate_commission = $this->model_module_statisticsmyaffiliate->getOrderCommission($order_id) / 100;
+          $this->db->query("UPDATE `" . DB_PREFIX . "order` SET commission = '" . $affiliate_commission . "' WHERE order_id = '" . (int)$order_id . "'");
+        }
+      }
+      
 		return $order_id;
 	}
 
@@ -177,10 +188,6 @@ class ModelCheckoutOrder extends Model {
 			return array(
 				'order_id'                => $order_query->row['order_id'],
 
-        'affiliate_id' => $order_query->row['affiliate_id'],
-                                'commission' => $order_query->row['commission'],
-      
-
 				'track_no'                => (isset($order_query->row['track_no']) ? $order_query->row['track_no'] : ''),
 				'invoice_no'              => $order_query->row['invoice_no'],
 				'invoice_prefix'          => $order_query->row['invoice_prefix'],
@@ -255,10 +262,6 @@ class ModelCheckoutOrder extends Model {
 
 	public function addOrderHistory($order_id, $order_status_id, $comment = '', $notify = false, $override = false) {
 		$order_info = $this->getOrder($order_id);
-
-        $this->load->model('module/affiliate');
-        $this->model_module_affiliate->validate($order_id, $order_info, $order_status_id);
-      
 
 		if ($order_info) {
 			// Fraud Detection

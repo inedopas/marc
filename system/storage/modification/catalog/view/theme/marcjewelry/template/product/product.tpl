@@ -2130,6 +2130,88 @@ echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($c
 				</script>
 
 
+				<script type="application/ld+json">
+				{
+				"@context": "http://schema.org",
+                "@type": "BreadcrumbList",
+                "itemListElement":
+                [
+				<?php $home = array_shift($breadcrumbs); ?>
+				{
+                "@type": "ListItem",
+                "position": 1,
+                "item":
+                {
+                  "@id": "<?php echo $base; ?>",
+                  "name": "<?php echo $store_name; ?>"
+                }
+				},
+				<?php for($i = 0; $i < count($breadcrumbs); ++$i) { 
+				if ( strpos($breadcrumbs[$i]['href'], '?route=') == false ) {
+				   $breadcrumb_url = explode("?", $breadcrumbs[$i]['href']);
+				} else { $breadcrumb_url = explode("&", $breadcrumbs[$i]['href']); }
+				?>
+                {
+                "@type": "ListItem",
+                "position": <?php echo $i+2; ?>,
+                "item":
+                {
+                  "@id": "<?php echo $breadcrumb_url[0]; ?>",
+                  "name": "<?php echo $breadcrumbs[$i]['text']; ?>"
+                }
+                }<?php echo($i !== (count($breadcrumbs)-1) ? ',' : ''); ?>
+                <?php } ?>
+				]
+				}
+				</script>
+                
+
+                <?php if($video_status){  ?>
+                    <script type="text/javascript">
+                       jQuery('a[data-video]:not([data-video=""])').each(function(index,element) {
+                            jQuery(this).attr('href', $(this).attr('data-video'));
+                            jQuery(this).attr('target','_blank');
+                            jQuery(this).css({'background-repeat':'no-repeat','background-position':'center center', 'background-size': '100%', 'background-image': 'url("/image/play.png")'}).find('img').css({ opacity: 0.6 });
+                        });
+                    
+                        jQuery('a[data-video][data-video_role="video_main"]:not([data-video=""])').css({ 'background-image': 'none' });
+
+                        jQuery('a[data-video]').magnificPopup({
+                                    type: 'iframe',
+                                    mainClass: 'mfp-fade',
+                                    removalDelay: 160,
+                                    preloader: false,
+                                    fixedContentPos: false,
+                                    iframe: {
+                                      patterns: {
+                                          youtube: {
+                                              index: 'youtube.com/', 
+                                              id: function(url) {        
+                                                  var m = url.match(/[\\?\\&]v=([^\\?\\&]+)/);
+                                                  if ( !m || !m[1] ) return null;
+                                                  return m[1];
+                                              },
+                                              src: '//www.youtube.com/embed/%id%?autoplay=1'
+                                          },
+                                          vimeo: {
+                                              index: 'vimeo.com/', 
+                                              id: function(url) {        
+                                                  var m = url.match(/(https?:\/\/)?(www.)?(player.)?vimeo.com\/([a-z]*\/)*([0-9]{6,11})[?]?.*/);
+                                                  if ( !m || !m[5] ) return null;
+                                                  return m[5];
+                                              },
+                                              src: '//player.vimeo.com/video/%id%?autoplay=1'
+                                          }
+                                      }
+                                  }
+                        });
+                        jQuery('a[data-video]:not([data-video=""]').click(function () {
+                            return false;
+                        });
+                    </script>
+                <?php } ?>
+            
+
 <script type="text/javascript">
 $('#button-quote').on('click', function() {
     $.ajax({
@@ -2265,86 +2347,4 @@ $('select[name=\'country_id\']').on('change', function() {
 $('select[name=\'country_id\']').trigger('change');
 </script>
             
-
-                <?php if($video_status){  ?>
-                    <script type="text/javascript">
-                       jQuery('a[data-video]:not([data-video=""])').each(function(index,element) {
-                            jQuery(this).attr('href', $(this).attr('data-video'));
-                            jQuery(this).attr('target','_blank');
-                            jQuery(this).css({'background-repeat':'no-repeat','background-position':'center center', 'background-size': '100%', 'background-image': 'url("/image/play.png")'}).find('img').css({ opacity: 0.6 });
-                        });
-                    
-                        jQuery('a[data-video][data-video_role="video_main"]:not([data-video=""])').css({ 'background-image': 'none' });
-
-                        jQuery('a[data-video]').magnificPopup({
-                                    type: 'iframe',
-                                    mainClass: 'mfp-fade',
-                                    removalDelay: 160,
-                                    preloader: false,
-                                    fixedContentPos: false,
-                                    iframe: {
-                                      patterns: {
-                                          youtube: {
-                                              index: 'youtube.com/', 
-                                              id: function(url) {        
-                                                  var m = url.match(/[\\?\\&]v=([^\\?\\&]+)/);
-                                                  if ( !m || !m[1] ) return null;
-                                                  return m[1];
-                                              },
-                                              src: '//www.youtube.com/embed/%id%?autoplay=1'
-                                          },
-                                          vimeo: {
-                                              index: 'vimeo.com/', 
-                                              id: function(url) {        
-                                                  var m = url.match(/(https?:\/\/)?(www.)?(player.)?vimeo.com\/([a-z]*\/)*([0-9]{6,11})[?]?.*/);
-                                                  if ( !m || !m[5] ) return null;
-                                                  return m[5];
-                                              },
-                                              src: '//player.vimeo.com/video/%id%?autoplay=1'
-                                          }
-                                      }
-                                  }
-                        });
-                        jQuery('a[data-video]:not([data-video=""]').click(function () {
-                            return false;
-                        });
-                    </script>
-                <?php } ?>
-            
-
-				<script type="application/ld+json">
-				{
-				"@context": "http://schema.org",
-                "@type": "BreadcrumbList",
-                "itemListElement":
-                [
-				<?php $home = array_shift($breadcrumbs); ?>
-				{
-                "@type": "ListItem",
-                "position": 1,
-                "item":
-                {
-                  "@id": "<?php echo $base; ?>",
-                  "name": "<?php echo $store_name; ?>"
-                }
-				},
-				<?php for($i = 0; $i < count($breadcrumbs); ++$i) { 
-				if ( strpos($breadcrumbs[$i]['href'], '?route=') == false ) {
-				   $breadcrumb_url = explode("?", $breadcrumbs[$i]['href']);
-				} else { $breadcrumb_url = explode("&", $breadcrumbs[$i]['href']); }
-				?>
-                {
-                "@type": "ListItem",
-                "position": <?php echo $i+2; ?>,
-                "item":
-                {
-                  "@id": "<?php echo $breadcrumb_url[0]; ?>",
-                  "name": "<?php echo $breadcrumbs[$i]['text']; ?>"
-                }
-                }<?php echo($i !== (count($breadcrumbs)-1) ? ',' : ''); ?>
-                <?php } ?>
-				]
-				}
-				</script>
-                
 <?php echo $footer; ?>

@@ -17,29 +17,12 @@
     <?php $class = 'col-sm-12'; ?>
     <?php } ?>
     <div id="content" class="<?php echo $class; ?>"><?php echo $content_top; ?>
-
-<div style="text-align: right">
-  <?php 
-  echo $name_affiliate;
-  echo '<br>';
-  echo $balance;
-  echo '<br>';
-  echo $percentage;
-  ?>
-</div>
-      
       <h2><?php echo $text_my_account; ?></h2>
       <ul class="list-unstyled">
         <li><a href="<?php echo $edit; ?>"><?php echo $text_edit; ?></a></li>
         <li><a href="<?php echo $password; ?>"><?php echo $text_password; ?></a></li>
         <li><a href="<?php echo $payment; ?>"><?php echo $text_payment; ?></a></li>
       </ul>
-
-<h2><?php echo $text_my_orderpayment; ?></h2>
-<ul class="list-unstyled">
-  <li><a href="<?php echo $orderpayment; ?>"><?php echo $text_orderpayment; ?></a></li>
-</ul>
-      
       <h2><?php echo $text_my_tracking; ?></h2>
       <ul class="list-unstyled">
         <li><a href="<?php echo $tracking; ?>"><?php echo $text_tracking; ?></a></li>
@@ -49,10 +32,12 @@
         <li><a href="<?php echo $transaction; ?>"><?php echo $text_transaction; ?></a></li>
       </ul>
 
-  <h2><?php echo $text_my_statistics; ?></h2>
+<?php if ($level) { ?>
+  <h2><?php echo $text_my_statisticsmyaffiliate; ?></h2>
     <ul class="list-unstyled">
-      <li><a href="<?php echo $statistics; ?>"><?php echo $text_statistics; ?></a></li>
+      <li><a href="<?php echo $statisticsmyaffiliate; ?>"><?php echo $text_statisticsmyaffiliate; ?></a></li>
   </ul>
+<?php } ?>
       
       <?php echo $content_bottom; ?></div>
     <?php echo $column_right; ?></div>

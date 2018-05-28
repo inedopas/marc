@@ -1,7 +1,6 @@
 <?php
 
-				$_['text_statistics'] = 'Your Statistics';
-				$_['text_orderpayment'] = 'Order Payment';
+				$_['text_statisticsmyaffiliate'] = 'My Partners';
 			
 // Heading
 $_['heading_title']    = 'Affiliate';

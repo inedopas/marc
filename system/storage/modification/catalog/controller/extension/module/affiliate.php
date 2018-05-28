@@ -3,10 +3,9 @@ class ControllerExtensionModuleAffiliate extends Controller {
 	public function index() {
 		$this->load->language('extension/module/affiliate');
 
-        $data['text_statistics'] = $this->language->get('text_statistics');
-        $data['text_orderpayment'] = $this->language->get('text_orderpayment');
-        $data['statistics'] = $this->url->link('affiliate/statistics', '', 'SSL');
-        $data['orderpayment'] = $this->url->link('affiliate/orderpayment', '', 'SSL');
+        $data['level'] = $this->config->get('affiliate_level_commission');
+        $data['text_statisticsmyaffiliate'] = $this->language->get('text_statisticsmyaffiliate');
+        $data['statisticsmyaffiliate'] = $this->url->link('affiliate/statisticsmyaffiliate', '', 'SSL');
       
 
 		$data['heading_title'] = $this->language->get('heading_title');

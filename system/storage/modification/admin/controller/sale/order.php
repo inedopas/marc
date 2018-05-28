@@ -888,6 +888,16 @@ class ControllerSaleOrder extends Controller {
 			$data['order_status_id'] = $order_info['order_status_id'];
 			$data['comment'] = $order_info['comment'];
 			$data['affiliate_id'] = $order_info['affiliate_id'];
+
+      $data['getaffiliates'] = array();
+      if($order_info['affiliate_id']) {
+        $getlevel = $this->config->get('affiliate_level_commission');
+        $levelcount = count($getlevel);
+        $this->load->model('module/affiliatemmm');
+        $text = $this->model_module_affiliatemmm->getAffiliateParent((int)$order_info['affiliate_id'], 0, $levelcount);
+        $data['getaffiliates'] = $this->model_module_affiliatemmm->getAffiliateCommission($text, $getlevel, $order_info);
+      }
+      
 			$data['affiliate'] = $order_info['affiliate_firstname'] . ' ' . $order_info['affiliate_lastname'];
 			$data['currency_code'] = $order_info['currency_code'];
 		} else {
@@ -1394,6 +1404,16 @@ class ControllerSaleOrder extends Controller {
 				$data['affiliate'] = '';
 			}
 
+
+      $data['getaffiliates'] = array();
+      if($order_info['affiliate_id']) {
+        $getlevel = $this->config->get('affiliate_level_commission');
+        $levelcount = count($getlevel);
+        $this->load->model('module/affiliatemmm');
+        $text = $this->model_module_affiliatemmm->getAffiliateParent((int)$order_info['affiliate_id'], 0, $levelcount);
+        $data['getaffiliates'] = $this->model_module_affiliatemmm->getAffiliateCommission($text, $getlevel, $order_info);
+      }
+      
 			$data['commission'] = $this->currency->format($order_info['commission'], $order_info['currency_code'], $order_info['currency_value']);
 
 			$this->load->model('marketing/affiliate');

@@ -3,10 +3,6 @@ class ControllerProductCategory extends Controller {
 	public function index() {
 		$this->load->language('product/category');
 
-          $this->load->model('module/statistics');
-        $this->model_module_statistics->validateTransitions();
-      
-
 		$this->load->model('catalog/category');
 
 		$this->load->model('catalog/product');

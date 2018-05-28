@@ -162,6 +162,16 @@
                   <input type="text" name="price" value="<?php echo $price; ?>" placeholder="<?php echo $entry_price; ?>" id="input-price" class="form-control" />
                 </div>
               </div>
+
+      <?php if ($affiliate_product_commission) { ?>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-commission"><?php echo $entry_commission; ?></label>
+                <div class="col-sm-10">
+                  <input type="text" name="commission" value="<?php echo $commission; ?>" id="input-commission" class="form-control" />
+                </div>
+              </div>
+      <?php } ?>
+      
               <div class="form-group">
                 <label class="col-sm-2 control-label" for="input-tax-class"><?php echo $entry_tax_class; ?></label>
                 <div class="col-sm-10">

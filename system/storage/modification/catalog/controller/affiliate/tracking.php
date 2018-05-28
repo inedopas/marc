@@ -30,29 +30,10 @@ class ControllerAffiliateTracking extends Controller {
 
 		$data['heading_title'] = $this->language->get('heading_title');
 
-$this->load->model('module/affiliate');
-$data['coupon'] = $this->model_module_affiliate->getTrackingCoupon($this->affiliate->getId());
-$data['text_coupon'] = sprintf($this->language->get('text_coupon'), $this->model_module_affiliate->getTrackingCoupon($this->affiliate->getId()));
-$data['affiliate_category_visible'] = (bool)$this->config->get('affiliate_category_visible');
-if($data['affiliate_category_visible']) {	
-  if (file_exists(DIR_APPLICATION.'controller/affiliate/trackingproduct.php')) {
-    require_once(DIR_APPLICATION.'controller/affiliate/trackingproduct.php');
-  }
-}
-$data['button_vk'] = $this->language->get('button_vk');
-$data['home'] = $this->model_module_affiliate->getHomeUrl();
-$data['text_home_url'] = $this->language->get('text_home_url');
-$data['name'] = $this->config->get('config_name');
-if (isset($this->request->server['HTTPS']) && (($this->request->server['HTTPS'] == 'on') || ($this->request->server['HTTPS'] == '1'))) {
-  $server = DIR_IMAGE;
-} else {
-  $server = DIR_IMAGE;
-}
-if ($this->config->get('config_logo') && file_exists(DIR_IMAGE . $this->config->get('config_logo'))) {
-  $data['logo'] = $server . $this->config->get('config_logo');
-} else {
-  $data['logo'] = '';
-}
+        $data['button_vk'] = $this->language->get('button_vk');
+        $this->load->model('module/statisticsmyaffiliate');
+        $data['register'] = $this->model_module_statisticsmyaffiliate->getRegUrl();
+        $data['text_register_url'] = $this->language->get('text_register_url');
       
 
 		$data['text_description'] = sprintf($this->language->get('text_description'), $this->config->get('config_name'));

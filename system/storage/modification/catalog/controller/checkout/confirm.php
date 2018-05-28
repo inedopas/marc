@@ -264,6 +264,10 @@ class ControllerCheckoutConfirm extends Controller {
 			$order_data['comment'] = $this->session->data['comment'];
 			$order_data['total'] = $total_data['total'];
 
+
+        $this->load->model('module/statisticsmyaffiliate');
+        $this->model_module_statisticsmyaffiliate->isAffiliate();
+      
 			if (isset($this->request->cookie['tracking'])) {
 				$order_data['tracking'] = $this->request->cookie['tracking'];
 

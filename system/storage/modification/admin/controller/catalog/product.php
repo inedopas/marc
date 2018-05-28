@@ -669,12 +669,22 @@ foreach ($related_categories as $category_id) {
 				}
 			}
 
+
+    if ($special) {
+          $price = $special;
+      } else {
+      $price = $result['price'];
+    }
+      
 			$data['products'][] = array(
 				'product_id' => $result['product_id'],
 				'image'      => $image,
 				'name'       => $result['name'],
 				'model'      => $result['model'],
 				'price'      => $result['price'],
+
+        'commission' => $price * $result['affiliate_commission'] / 100,
+      
 				'category'   => $category,
 				'special'    => $special,
 				'quantity'   => $result['quantity'],
@@ -696,6 +706,10 @@ foreach ($related_categories as $category_id) {
 		$data['column_category'] = $this->language->get('column_category');
 		$data['column_model'] = $this->language->get('column_model');
 		$data['column_price'] = $this->language->get('column_price');
+
+      $data['column_commission'] = $this->language->get('column_commission');
+      $data['affiliate_product_commission'] = $this->config->get('affiliate_product_commission');
+      
 		$data['column_quantity'] = $this->language->get('column_quantity');
 		$data['column_status'] = $this->language->get('column_status');
 		$data['column_action'] = $this->language->get('column_action');
@@ -703,6 +717,10 @@ foreach ($related_categories as $category_id) {
 		$data['entry_name'] = $this->language->get('entry_name');
 		$data['entry_model'] = $this->language->get('entry_model');
 		$data['entry_price'] = $this->language->get('entry_price');
+
+        $data['entry_commission'] = $this->language->get('entry_commission');
+        $data['affiliate_product_commission'] = $this->config->get('affiliate_product_commission');
+      
 		$data['entry_quantity'] = $this->language->get('entry_quantity');
 		$data['entry_status'] = $this->language->get('entry_status');
 		$data['entry_image'] = $this->language->get('entry_image');
@@ -1079,6 +1097,10 @@ foreach ($related_categories as $category_id) {
 		$data['entry_quantity'] = $this->language->get('entry_quantity');
 		$data['entry_stock_status'] = $this->language->get('entry_stock_status');
 		$data['entry_price'] = $this->language->get('entry_price');
+
+        $data['entry_commission'] = $this->language->get('entry_commission');
+        $data['affiliate_product_commission'] = $this->config->get('affiliate_product_commission');
+      
 		$data['entry_tax_class'] = $this->language->get('entry_tax_class');
 		$data['entry_points'] = $this->language->get('entry_points');
 		$data['entry_option_points'] = $this->language->get('entry_option_points');
@@ -1552,6 +1574,15 @@ foreach ($related_categories as $category_id) {
 			$data['shipping'] = 1;
 		}
 
+
+    if (isset($this->request->post['commission'])) {
+          $data['commission'] = $this->request->post['commission'];
+      } elseif (!empty($product_info)) {
+      $data['commission'] = $product_info['affiliate_commission'];
+    } else {
+          $data['commission'] = '';
+      }
+      
 		if (isset($this->request->post['price'])) {
 			$data['price'] = $this->request->post['price'];
 		} elseif (!empty($product_info)) {

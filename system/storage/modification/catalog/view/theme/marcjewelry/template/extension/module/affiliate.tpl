@@ -13,13 +13,12 @@
       <li><a href="<?php echo $password; ?>"><?php echo $text_password; ?></a></li>
       <?php } ?>
       <li><a href="<?php echo $payment; ?>"><?php echo $text_payment; ?></a></li>
-
-        <a href="<?php echo $orderpayment; ?>" class="list-group-item"><?php echo $text_orderpayment; ?></a>
-      
       <li><a href="<?php echo $tracking; ?>"><?php echo $text_tracking; ?></a></li>
       <li><a href="<?php echo $transaction; ?>"><?php echo $text_transaction; ?></a></li>
 
-        <a href="<?php echo $statistics; ?>" class="list-group-item"><?php echo $text_statistics; ?></a>
+<?php if ($level) { ?>
+<a href="<?php echo $statisticsmyaffiliate; ?>" class="list-group-item"><?php echo $text_statisticsmyaffiliate; ?></a>
+<?php } ?>
       
       <?php if ($logged) { ?>
       <li><a href="<?php echo $logout; ?>"><?php echo $text_logout; ?></a></li>

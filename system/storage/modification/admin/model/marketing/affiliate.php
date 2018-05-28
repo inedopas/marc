@@ -3,19 +3,11 @@ class ModelMarketingAffiliate extends Model {
 	public function addAffiliate($data) {
 		$this->db->query("INSERT INTO " . DB_PREFIX . "affiliate SET firstname = '" . $this->db->escape($data['firstname']) . "', lastname = '" . $this->db->escape($data['lastname']) . "', email = '" . $this->db->escape($data['email']) . "', telephone = '" . $this->db->escape($data['telephone']) . "', fax = '" . $this->db->escape($data['fax']) . "', salt = '" . $this->db->escape($salt = token(9)) . "', password = '" . $this->db->escape(sha1($salt . sha1($salt . sha1($data['password'])))) . "', company = '" . $this->db->escape($data['company']) . "', website = '" . $this->db->escape($data['website']) . "', address_1 = '" . $this->db->escape($data['address_1']) . "', address_2 = '" . $this->db->escape($data['address_2']) . "', city = '" . $this->db->escape($data['city']) . "', postcode = '" . $this->db->escape($data['postcode']) . "', country_id = '" . (int)$data['country_id'] . "', zone_id = '" . (int)$data['zone_id'] . "', code = '" . $this->db->escape($data['code']) . "', commission = '" . (float)$data['commission'] . "', tax = '" . $this->db->escape($data['tax']) . "', payment = '" . $this->db->escape($data['payment']) . "', cheque = '" . $this->db->escape($data['cheque']) . "', paypal = '" . $this->db->escape($data['paypal']) . "', bank_name = '" . $this->db->escape($data['bank_name']) . "', bank_branch_number = '" . $this->db->escape($data['bank_branch_number']) . "', bank_swift_code = '" . $this->db->escape($data['bank_swift_code']) . "', bank_account_name = '" . $this->db->escape($data['bank_account_name']) . "', bank_account_number = '" . $this->db->escape($data['bank_account_number']) . "', status = '" . (int)$data['status'] . "', date_added = NOW()");
 
-if (!(isset($affiliate_id))) { $affiliate_id = $this->db->getLastId(); }
-$this->db->query("UPDATE `" . DB_PREFIX . "affiliate` SET qiwi = '" . $this->db->escape($data['qiwi']) . "', card = '" . $this->db->escape($data['card']) . "', yandex = '" . $this->db->escape($data['yandex']) . "', webmoney_wmr = '" . $this->db->escape($data['webmoney_wmr']) . "', webmoney_wmz = '" . $this->db->escape($data['webmoney_wmz']) . "', webmoney_wmu = '" . $this->db->escape($data['webmoney_wmu']) . "', webmoney_wme = '" . $this->db->escape($data['webmoney_wme']) . "', webmoney_wmy = '" . $this->db->escape($data['webmoney_wmy']) . "', webmoney_wmb = '" . $this->db->escape($data['webmoney_wmb']) . "', webmoney_wmg = '" . $this->db->escape($data['webmoney_wmg']) . "', alert_pay = '" . $this->db->escape($data['alert_pay']) .  "', moneybookers = '" . $this->db->escape($data['moneybookers']) .  "', liqpay = '" . $this->db->escape($data['liqpay']) . "', sage_pay = '" . $this->db->escape($data['sage_pay']) .  "', two_checkout = '" . $this->db->escape($data['two_checkout']) . "', google_wallet = '" . $this->db->escape($data['google_wallet']) . "' WHERE affiliate_id = '" . (int)$affiliate_id . "'");
-
-
 		return $this->db->getLastId();
 	}
 
 	public function editAffiliate($affiliate_id, $data) {
 		$this->db->query("UPDATE " . DB_PREFIX . "affiliate SET firstname = '" . $this->db->escape($data['firstname']) . "', lastname = '" . $this->db->escape($data['lastname']) . "', email = '" . $this->db->escape($data['email']) . "', telephone = '" . $this->db->escape($data['telephone']) . "', fax = '" . $this->db->escape($data['fax']) . "', company = '" . $this->db->escape($data['company']) . "', website = '" . $this->db->escape($data['website']) . "', address_1 = '" . $this->db->escape($data['address_1']) . "', address_2 = '" . $this->db->escape($data['address_2']) . "', city = '" . $this->db->escape($data['city']) . "', postcode = '" . $this->db->escape($data['postcode']) . "', country_id = '" . (int)$data['country_id'] . "', zone_id = '" . (int)$data['zone_id'] . "', code = '" . $this->db->escape($data['code']) . "', commission = '" . (float)$data['commission'] . "', tax = '" . $this->db->escape($data['tax']) . "', payment = '" . $this->db->escape($data['payment']) . "', cheque = '" . $this->db->escape($data['cheque']) . "', paypal = '" . $this->db->escape($data['paypal']) . "', bank_name = '" . $this->db->escape($data['bank_name']) . "', bank_branch_number = '" . $this->db->escape($data['bank_branch_number']) . "', bank_swift_code = '" . $this->db->escape($data['bank_swift_code']) . "', bank_account_name = '" . $this->db->escape($data['bank_account_name']) . "', bank_account_number = '" . $this->db->escape($data['bank_account_number']) . "', status = '" . (int)$data['status'] . "' WHERE affiliate_id = '" . (int)$affiliate_id . "'");
-
-if (!(isset($affiliate_id))) { $affiliate_id = $this->db->getLastId(); }
-$this->db->query("UPDATE `" . DB_PREFIX . "affiliate` SET qiwi = '" . $this->db->escape($data['qiwi']) . "', card = '" . $this->db->escape($data['card']) . "', yandex = '" . $this->db->escape($data['yandex']) . "', webmoney_wmr = '" . $this->db->escape($data['webmoney_wmr']) . "', webmoney_wmz = '" . $this->db->escape($data['webmoney_wmz']) . "', webmoney_wmu = '" . $this->db->escape($data['webmoney_wmu']) . "', webmoney_wme = '" . $this->db->escape($data['webmoney_wme']) . "', webmoney_wmy = '" . $this->db->escape($data['webmoney_wmy']) . "', webmoney_wmb = '" . $this->db->escape($data['webmoney_wmb']) . "', webmoney_wmg = '" . $this->db->escape($data['webmoney_wmg']) . "', alert_pay = '" . $this->db->escape($data['alert_pay']) .  "', moneybookers = '" . $this->db->escape($data['moneybookers']) .  "', liqpay = '" . $this->db->escape($data['liqpay']) . "', sage_pay = '" . $this->db->escape($data['sage_pay']) .  "', two_checkout = '" . $this->db->escape($data['two_checkout']) . "', google_wallet = '" . $this->db->escape($data['google_wallet']) . "' WHERE affiliate_id = '" . (int)$affiliate_id . "'");
-
 
 		if ($data['password']) {
 			$this->db->query("UPDATE " . DB_PREFIX . "affiliate SET salt = '" . $this->db->escape($salt = token(9)) . "', password = '" . $this->db->escape(sha1($salt . sha1($salt . sha1($data['password'])))) . "' WHERE affiliate_id = '" . (int)$affiliate_id . "'");
@@ -75,15 +67,6 @@ $this->db->query("UPDATE `" . DB_PREFIX . "affiliate` SET qiwi = '" . $this->db-
 			$implode[] = "DATE(a.date_added) = DATE('" . $this->db->escape($data['filter_date_added']) . "')";
 		}
 
-
-if (isset($data['filter_request_payment']) && !is_null($data['filter_request_payment'])) {
-  if (((int) $data['filter_request_payment']) == 0) {
-    $implode[] = "request_payment = '" . (int) $data['filter_request_payment'] . "'";
-  } else {
-    $implode[] = "request_payment > '" . 0 . "'";
-  }
-}
-      
 		if ($implode) {
 			$sql .= " WHERE " . implode(" AND ", $implode);
 		}
@@ -93,9 +76,6 @@ if (isset($data['filter_request_payment']) && !is_null($data['filter_request_pay
 			'a.email',
 			'a.code',
 			'a.status',
-
-'a.request_payment',
-      
 			'a.approved',
 			'a.date_added'
 		);
@@ -193,15 +173,6 @@ if (isset($data['filter_request_payment']) && !is_null($data['filter_request_pay
 			$implode[] = "DATE(date_added) = DATE('" . $this->db->escape($data['filter_date_added']) . "')";
 		}
 
-
-if (isset($data['filter_request_payment']) && !is_null($data['filter_request_payment'])) {
-  if (((int) $data['filter_request_payment']) == 0) {
-    $implode[] = "request_payment = '" . (int) $data['filter_request_payment'] . "'";
-  } else {
-    $implode[] = "request_payment > '" . 0 . "'";
-  }
-}
-      
 		if ($implode) {
 			$sql .= " WHERE " . implode(" AND ", $implode);
 		}
@@ -237,24 +208,25 @@ if (isset($data['filter_request_payment']) && !is_null($data['filter_request_pay
 
 			$affiliate_transaction_id = $this->db->getLastId();
 
+      if($affiliate_id!=0 & $order_id != 0) {
+        $this->load->model('sale/order');
+        $order_info = $this->model_sale_order->getOrder($order_id);
+        $this->load->model('module/affiliatemmm');
+        $getlevel = $this->config->get('affiliate_level_commission');
+        $levelcount = count($getlevel);
+        $text = $this->model_module_affiliatemmm->getAffiliateParent((int)$affiliate_id, 0, $levelcount);
+        $getaffiliates = $this->model_module_affiliatemmm->getAffiliateCommission($text, $getlevel, $order_info);
+        foreach ($getaffiliates as $parentaffiliate) {
+          if ((float)$parentaffiliate['total'] != 0.0) {
+            $this->db->query("INSERT INTO `" . DB_PREFIX . "affiliate_transaction` SET affiliate_id = '" . (int)$parentaffiliate['affiliate_id'] . "', order_id = '" . (float)$order_id . "', description = '" . $this->db->escape($description). " (" .$affiliate_info['firstname'] ." ". $affiliate_info['lastname'] . ")', amount = '" . (float)$parentaffiliate['total'] . "', date_added = NOW(), affiliate_children = '" . $affiliate_id . "'");
+          }
+        }
+      }
+      
+
 			$this->load->language('mail/affiliate');
 
-			
-$this->load->model('module/affiliate');
-$message  = '';
-if ((float)$amount < 0) {
-  $query_request_payment = $this->db->query("SELECT request_payment AS total FROM `" . DB_PREFIX . "affiliate` WHERE affiliate_id = '" . (int) $affiliate_id . "'");
-  $request_payment_value = $query_request_payment->row['total'] + $amount;
-  if ($request_payment_value < 0) {
-    $request_payment_value = 0.00;
-  }
-  $this->db->query("UPDATE `" . DB_PREFIX . "affiliate` SET request_payment = '" . $request_payment_value . "' WHERE affiliate_id = '" . (int) $affiliate_id . "'");
-  $message = sprintf($this->language->get('text_transaction_paid'), $this->currency->format($amount * (-1), $this->config->get('config_currency')), $this->model_module_affiliate->valuePlayment($affiliate_info)) . "\n\n";
-}
-else {
-  $message = sprintf($this->language->get('text_transaction_received'), $this->currency->format($amount, $this->config->get('config_currency'))) . "\n\n";
-} 
-      
+			$message  = sprintf($this->language->get('text_transaction_received'), $this->currency->format($amount, $this->config->get('config_currency'))) . "\n\n";
 			$message .= sprintf($this->language->get('text_transaction_total'), $this->currency->format($this->getTransactionTotal($affiliate_id), $this->config->get('config_currency')));
 
 			$mail = new Mail();

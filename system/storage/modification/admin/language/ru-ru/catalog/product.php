@@ -1,4 +1,8 @@
 <?php
+
+$_['column_commission']             = 'Комиссия';
+$_['entry_commission']             = '<span data-toggle="tooltip" data-container="#tab-general" title="Процент партнерской программы.">Комиссия<br /></span>';
+			
 // Heading
 $_['heading_title']          	= 'Товары';
 

@@ -128,6 +128,11 @@
                     <a href="<?php echo $sort_price; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_price; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_price; ?>"><?php echo $column_price; ?></a>
+
+      <?php if ($affiliate_product_commission) { ?>
+        <td class="left"><?php echo $column_commission; ?></td>
+      <?php } ?>
+      
                     <?php } ?></td>
                   <td class="text-left"><?php echo $column_category; ?></td>
                   <td class="text-right"><?php if ($sort == 'p.quantity') { ?>
@@ -165,6 +170,11 @@
                     <?php } else { ?>
                     <?php echo $product['price']; ?>
                     <?php } ?></td>
+
+      <?php if ($affiliate_product_commission) { ?>
+        <td class="left"><?php echo $product['commission']; ?></td>
+      <?php } ?>
+      
 
                   <td class="text-left">
                     <?php foreach ($categories as $category) { ?>
