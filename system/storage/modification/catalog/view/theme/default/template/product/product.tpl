@@ -83,16 +83,6 @@
 					  </tr>
 					  <tr>
 						<td colspan="2"><p><?php echo $review['text']; ?></p>
-
-			<?php if ($review['answer']) { ?>
-			<hr>
-			  <div class="answer_admin">
-				<p><strong><?php echo $review['admin_author']; ?></strong> - <?php echo $entry_admin_author; ?></p>
-				<p><?php echo $review['answer']; ?></p>
-			  </div>
-			<?php } ?>
-			</div>
-		
 						  <?php for ($i = 1; $i <= 5; $i++) { ?>
 						  <?php if ($review['rating'] < $i) { ?>
 						  <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
@@ -257,7 +247,527 @@
 					<?php if($colors_cfg['enable_popup'] === '0'){ ?>
 					<a class="colors fancybox.ajax" href="index.php?route=product/colorkits&c_product_id=<?php echo $product_id ?>">All colors</a>
 					<script type="text/javascript">
+var text_stock = "<?php echo $text_stock; ?>";
+var text_tax = "<?php echo $text_tax; ?>";
+<?php
+if (isset($warehouses)) {
+	echo "var \$warehouses = {";
+	foreach ($warehouses as $warehouse_id => $name) {
+		echo "'" . $warehouse_id . "':'" . $name . "',";
+	}
+	echo "}\n";
+}
+?>
+<?php if ($options) {?>
+//------------------------------------------------------------------------------------------------------------------------------
+// Определение переменных для характеристик
+var $options_type = {<?php foreach ($options as $option) { echo $option['product_option_id'].":'".$option['type']."',"; }?>};
+var options_order = [<?php foreach ($options as $option) { echo $option['product_option_id'].","; }?>];
+var $options_required = {<?php foreach ($options as $option) { echo $option['product_option_id'].":true,"; }?>};
+var $options = {<?php
+	foreach ($product_features_options as $product_feature_id => $feature) {
+		$str_value = $product_feature_id.":{";
+		foreach ($feature as $product_option_id => $product_option_value_id) {
+			$str_value .= $product_option_id.":".$product_option_value_id.",";
+		}
+		$str_value .= "},";
+		echo $str_value;
+	}
+	echo "};\n";?>
+// Тут хранится id выбранной характеристики
+var product_feature_id = 0;
+var unit_id = 0;
+<?php
+
+	$str_features =  "var \$features = {";
+	$str_price =  "var \$price = {";
+	$str_quantity = "// quantity{product_feature_id:{warehouse_id:{unit_id:quantity}}}\n";
+	$quantity_total =  0;
+	$str_quantity .=  "var \$quantity = {";
+	foreach ($product_features_options as $product_feature_id => $feature_option) {
+		// Цены
+		$str_price .= "'" . $product_feature_id . "':{'value':" . $product_features_price[$product_feature_id]['value'] . ",'tax':" . $product_features_price[$product_feature_id]['tax'] . ",'unit':" . $product_features_price[$product_feature_id]['unit'] . "},";
+		// Характеристики
+		$str_features .= "'" . implode("_", $feature_option) . "':" . $product_feature_id . ",";
+		// Остатки
+		$quantity_array = isset($product_quantity[$product_feature_id]) ? $product_quantity[$product_feature_id] : array();
+		$str_quantity .= "'" . $product_feature_id . "':";
+
+		$str_quantity .= "{";
+		foreach ($quantity_array as $warehouse_id => $quantity) {
+			$str_quantity .= "'" . $warehouse_id . "':" . $quantity . ",";
+			$quantity_total += $quantity;
+		}
+		$str_quantity .= "},";
+
+	}
+	echo $str_features . "};\n";
+	echo $str_price . "};\n";
+	echo $str_quantity . "};\n";
+	echo "var quantity_total = " . $quantity_total . ";\n";
+	echo "var \$product_units = {";
+	foreach ($product_units as $unit_id => $unit) {
+		echo $unit_id . ":{'name':'" . $unit['name'] . "','ratio':".$unit['ratio']."},";
+	}
+	echo "};\n";
+	echo "var \$currency_data = {'symbol':'".$currency_data['symbol']."','decimal':".$currency_data['decimal']."};\n";
+?>
+
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Функция отображает остатки по складам
+// Возвращает строковую переменную в которой перечислены названия всех складов с остатками и единицами измерений
+function displayQuantity() {
+
+	if ($.type($quantity[product_feature_id]) == "string") {
+
+		// Если переменная строка, то есть нет складов, возвращается только количество
+		return $quantity[product_feature_id];
+
+	} else {
+
+		var str = "";
+		var quantity_warehouse = 0;
+		var str_war = "";
+		unit_id = $price[product_feature_id]['unit'];
+		var $unit = $product_units[unit_id];
+		var total = 0;
+
+		// Единица цены
+		if ($unit) {
+			str_unit = " ("+$unit['name']+")";
+		} else {
+			str_unit = "";
+		}
+
+		// Перебираем все остатки по складам
+		$.each($quantity[product_feature_id],function(warehouse_id, product_quantity) {
+
+			// Нет складов, если warehouse_id = 0
+			if (warehouse_id == "0") {
+
+				// Перебираем все единицы измерений
+				$.each(product_quantity,function(unit_id, quantity) {
+					//str += quantity+" ("+$unit['name']+"),";
+					str += "\n" + quantity;
+				});
+			}
+			// Остатки в выбранной единице
+			else if (unit_id != 0) {
+
+				// Название склада
+				str_war = " Склад: "+$warehouses[warehouse_id]+": ";
+
+			} else {
+				if (product_quantity > 0) {
+					quantity_warehouse++;
+					str_war += " " + $warehouses[warehouse_id] + " = " + product_quantity + str_unit;
+				}
+			}
+		});
+		if (quantity_warehouse > 0) {
+			str = " " + quantity_total + str_unit + " в " + quantity_warehouse + " магазинах: (" + str_war + ")";
+		} else if (quantity_total > 0) {
+			if ($unit['ratio'] != 0) {
+				total = quantity_total / $unit['ratio'];
+			}
+			str = " " + total + " по опциям: " + $quantity[product_feature_id][0] + str_unit;
+		} else {
+			str = " нет в наличии";
+		}
+		return str;
+	}
+} // displayQuantity()
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Функция отображает на странице цену, налоги, остатки,
+// а также, для передачи в корзину, устанавливает значение product_feature_id
+function displaySelect() {
+	if (product_feature_id){
+		$('#price').text(Math.round($price[product_feature_id]['value']).toFixed($currency_data['decimal'])+$currency_data['symbol']);
+		$('#tax').text(text_tax+" "+Math.round($price[product_feature_id]['tax']).toFixed($currency_data['decimal'])+$currency_data['symbol']);
+		$('#stock').text(text_stock+" "+displayQuantity());
+		$('input[name=\'product_feature_id\']').val(product_feature_id);
+		$('input[name=\'unit_id\']').val(unit_id);
+	} else {
+		$('#price').text("");
+		$('#tax').text("");
+		$('#stock').text(text_stock+" "+quantity_total+" ("+$product_units[0]['name']+")");
+		$('input[name=\'product_feature_id\']').val(0);
+		$('input[name=\'unit_id\']').val(0);
+	}
+} // displaySelect()
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Функция очищает все опции и разблокирует их, сбрасывает ид характеристики, а также обновляет надписи на страничке
+function clearOptions() {
+
+	// Перебираем все опции
+	$.each($options_type,function(product_option_id, value) {
+
+		if (value == "select") {
+
+			// Делаем доступным опцию
+			$('select[name="option['+product_option_id+']"]').attr("disabled",false);
+
+			// Сбрасываем выбор, по-умолчанию будет выбран первый элемент
+			$('select[name="option['+product_option_id+']"]').val('');
+
+			// Делаем доступным все значения опции
+			$('select[name="option['+product_option_id+']"] option').each(function(){
+				$(this).removeAttr("disabled");
+			});
+		} else {
+
+			// Делаем доступным опцию
+			$('input[name="option['+product_option_id+']"]').attr("disabled",false);
+
+			// Снимаем выбор со всех значений
+			$('input[name="option['+product_option_id+']"]').attr('checked', false);
+		}
+		$options_required[product_option_id] = true;
+	});
+
+	// Проверка на обязательные опции
+	checkRequired();
+
+	// Сбрасываем выбранную характеристику
+	product_feature_id = 0;
+
+	// Обновляем надписи на страничке
+	displaySelect();
+
+} // clearOptions()
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Функция проверяет и устанавливает какие опции обязательные, бывает что некоторые характеристики имеют разное количество опций
+function checkRequired() {
+
+	// Перебираем все опции
+	$.each($options_required,function(product_option_id, required) {
+
+		if ($options_type[product_option_id] == "select") {
+
+			// Получаем элемент в котором устанавливается класс обязательной опции
+			$form = $('select[name="option['+product_option_id+']"]').parents("div.form-group");
+
+			// Если опция должна быть обязательной, а она не содержит класс "required", устанавливает этот класс или наоборот убираем его
+			if (required && !$form.hasClass("required")) {
+				$form.addClass("required");
+			} else if (!required && $form.hasClass("required")) {
+				$form.removeClass("required");
+			}
+
+		} else {
+
+			// Получаем элемент в котором устанавливается класс обязательной опции
+			$form = $('input[name="option['+product_option_id+']"]').parents("div.form-group");
+
+			// Если опция должна быть обязательной, а она не содержит класс "required", устанавливает этот класс или наоборот убираем его
+			if (required && !$form.hasClass("required")) {
+				$form.addClass("required");
+			} else if (!required && $form.hasClass("required")) {
+				$form.removeClass("required");
+			}
+		}
+	});
+} // checkRequired()
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Функция возвращает выбранные опции значений в виде объекта
+// Возвращает $option_values - объект с опция и значениями
+function getOptionValues() {
+	var $option_values = {};
+
+	// Перебираем опции в том порядке в каком они заданы на сайте
+	$.each(options_order,function(index, product_option_id) {
+
+		if ($options_type[product_option_id] == 'select') {
+			// Если опция типа select
+			$option_values[product_option_id] = $('select[name="option['+product_option_id+']"] :selected').val();
+
+		} else {
+			// Если опция типа input
+			$option_values[product_option_id] = $('input[name="option['+product_option_id+']"]:checked').val();
+		}
+	});
+	return $option_values;
+} // getOptionValues()
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Функция по выбранным опциям возвращает product_feature_id
+// $option_values - объект с опциями и значений
+// Возвращает ид характеристики, если вариант выбранныхопций не существует ни в одной характеристики, то вернет 0
+function getProductFeature($option_values) {
+	var new_product_feature_id = 0;
+	$.each($options,function(feature_id, $product_options) {
+
+		// Количество совпадений
+		var matches = 0;
+
+		// Перебираем все опции характеристики
+		$.each($product_options,function(product_option_id, product_option_value_id) {
+
+			// Ищем совпадение значений
+			if ($option_values[product_option_id] == product_option_value_id) {
+				matches ++;
+			}
+		});
+
+		// Если совпали все опции
+		if (matches == options_order.length) {
+
+			// Сохраним значение характеристики где совпали все опции
+			new_product_feature_id = feature_id;
+
+			// Прервем цикл
+			return false;
+		}
+	});
+
+	return new_product_feature_id;
+} // getProductFeature()
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Функция устанавливает доступность опции типа input и ее значения
+// current_product_option_value_id - текущее выбранное значение опции
+// current_option_id - текущая опция в которой выбрано значение
+// $option_values - объект в котором заданы все значения опций текущей характеристики
+// Возвращает значение текущей опции
+function setAccessInputOption(current_option_id, current_product_option_value_id, $option_values) {
+	var val = 0;
+	var required = false;
+
+	// Перебираем все значения опций
+	$('div#input-option'+current_option_id+' div label input').each(function(index){
+
+		// Если в классе не содержится значение выбранной опции, то отключаем эту опцию и снимаем флажок
+		if (!$(this).hasClass(current_product_option_value_id) && (current_product_option_value_id)) {
+			$(this).attr("disabled",true);
+			$(this).prop("checked",false);
+
+		} else {
+
+			required = true;
+
+			// Включаем,если была отключена ранее
+			$(this).attr("disabled",false);
+
+			// Если есть в варианте текущее значение опции
+			if ($option_values[current_option_id] == $(this).val()) {
+
+				// И еще не выбрано значение
+				if (!val) {
+					val = $(this).val();
+					$(this).prop("checked",true);
+				} else {
+					// Если значение уже было установлено, то с других опций снимаем выбор
+					$(this).prop("checked",false);
+				}
+			} else {
+				// Если вариант не содержит значение, снимаем выбор
+				$(this).prop("checked",false);
+				//$(this).attr("disabled",true);
+			}
+		}
+
+	});
+	$options_required[current_option_id] = required;
+	return val;
+} // setAccessSelectOption()
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Функция устанавливает доступность опции типа select и ее значения
+// current_product_option_value_id - текущее выбранное значение опции
+// current_option_id - текущая опция в которой выбрано значение
+// $option_values - объект в котором заданы все значения опций текущей характеристики
+// Возвращает значение текущей опции
+function setAccessSelectOption(current_option_id, current_product_option_value_id, $option_values) {
+	var val = 0;
+	var required = false;
+
+	// Перебираем все значения опций
+	$('select#input-option'+current_option_id+' option').each(function(index){
+
+		// Если в классе не содержится значение выбранной опции,
+		// и есть само значение и не первое, тогда отключаем эту опцию и снимаем флажок
+		if (!$(this).hasClass(current_product_option_value_id) && (current_product_option_value_id) && index > 0) {
+			$(this).attr("disabled",true);
+			$(this).prop("selected",false);
+		} else {
+
+			required = true;
+
+			// Значение содержится в классе, значит разблокируем если был заблокирован
+			$(this).attr("disabled",false);
+
+			// Если не было ранее выбрано значение, и не первое,
+			// и в варианте для этой опции есть текущее значение
+			if (!val && index > 0 && $option_values[current_option_id] == $(this).val()) {
+
+				// Записываем выбранное значение
+				val = $(this).val();
+
+				// Выбираем его в селекте
+				$(this).prop("selected",true);
+			}
+		}
+	});
+	$options_required[current_option_id] = required;
+	return val;
+} // setAccessSelectOption()
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Функция устанавливает доступность опций и их значений
+// current_product_option_value_id - текущее выбранное значение опции
+// current_option_id - текущая опция в которой выбрано значение
+// $option_values - объект в котором заданы все значения опций текущей характеристики
+// Возвращает объект $option_values, теоретически он не меняется, оставлено временно для тестирования
+function setAccessOptions(current_product_option_value_id, current_option_id, $option_values) {
+
+	// Выберем опции по варианту
+	$.each(options_order,function(index, product_option_id) {
+
+		if (current_option_id == product_option_id) {
+			$option_values[product_option_id] = current_product_option_value_id;
+		} else {
+			if ($options_type[product_option_id] == 'select') {
+
+				// Установим доступность значений в опции типа select
+				//$option_values[product_option_id] = setAccessSelectOption(product_option_id, current_product_option_value_id, $option_values);
+				setAccessSelectOption(product_option_id, current_product_option_value_id, $option_values);
+			} else {
+
+				// Установим доступность значений в опции типа input
+				//$option_values[product_option_id] = setAccessInputOption(product_option_id, current_product_option_value_id, $option_values);
+				setAccessInputOption(product_option_id, current_product_option_value_id, $option_values);
+			}
+		}
+	});
+
+	return $option_values;
+} // setAccessOptions()
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Функция получает первый вариант опция по выбранному значению одной из опций
+// product_option_value_id - значение выбранной опции
+// Возвращает объект (index = product_option_id, value = product_option_value_id)
+function getRightOption(product_option_value_id) {
+
+	// Тут хранится вариант опций выбранной характеристики
+	var $option_values = {};
+
+	// Перебирем все опции
+	$.each($options, function(sel_product_feature_id, $product_options) {
+
+		// Прервем цикл, если ид характеристики уже определена
+		if (product_feature_id) {
+   			return false;
+   		}
+
+		// Перебираем все опции характеристики
+		$.each($product_options, function(option_id, sel_product_option_value_id) {
+
+			// Если значение неопределено, берем первую попавшуюся характеристику
+			if (product_option_value_id == undefined) {
+
+				// Запишем id характеристики, чтобы потом передать ее в корзину
+				product_feature_id = sel_product_feature_id;
+
+				// Получим вариант опций и значений этой характеристики
+				$option_values = $product_options;
+
+				// Прервем цикл
+				return false;
+			}
+
+			// Если совпало значение опции в первой попавшейся характеристики, тогда выбираем ее, и получаем остальные значения опций
+    		else if (sel_product_option_value_id == product_option_value_id) {
+
+				// Запишем id характеристики, чтобы потом передать ее в корзину
+				product_feature_id = sel_product_feature_id;
+
+				// Получим вариант опций и значений этой характеристики
+				$option_values = $product_options;
+
+				// Прервем цикл
+				return false;
+    		}
+   		});
+
+	});
+
+	return $option_values;
+} // getRightOption()
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Функция вызывается при изменении любой опции
+// current_option_id - это номер опции в которой выбрано значение
+// selected - выбранное значение опции, product_option_value_id
+// type - тип опции, может иметь значение: select, input, radio, image
+function selectOption(current_option_id, selected, type) {
+
+	// Объект опций с выбранными значениями (index = опция, value = значение)
+	var $option_values = {};
+
+	// Получим существующие значения опций
+	$option_values = getOptionValues();
+
+	// Проверим вариант и получим id характеристики, если вариант неверный, тогда id = 0
+	product_feature_id = getProductFeature($option_values);
+
+	// Если опции не соответствуют ни одной характеристики, выставляем другие опции по первому совпадению в первой найденой характеристики
+	if (!product_feature_id) {
+
+		// Получим вариант опции по выбранному значению одной из опций
+		// option_values это объект index = product_option_id, value = product_option_value_id
+		$option_values = getRightOption(selected);
+
+		// Устанавливает доступность значений всех опций
+		setAccessOptions(selected, current_option_id, $option_values);
+
+		// Установим единицу цены по умолчанию
+		//unit_id = $price[product_feature_id]['unit'];
+	}
+
+	// Проверим опции на обязательные
+	checkRequired();
+
+	// Отображает выбранные данные
+	displaySelect();
+}
+
+<?php } ?>
+
 					$(document).ready(function() {
+<?php if ($options) {?>
+	// Кнопки очистки опций, под каждый шаблон возможно придется править
+	//$('select[name="option[9]"]').parent('div').before('<div class="form-group"><a href="#" id="clear_options">Очистить опции</a></div>');
+	$('div#input-option7').parent('div').after('<div class="form-group"><a href="#" id="clear_options">Очистить опции</a></div>');
+	//$('div#form-group').parent('div').after('<div class="form-group"><a href="#" id="clear_options">Очистить опции</a></div>');
+
+	$('#product').find('h3').after('<div class="form-group"><a href="#" id="clear_options">Очистить опции</a></div>');
+
+<?php foreach ($options as $option) { ?>
+	//------------------------------------------------------------------------------------------------------------------------------
+	// Функция обрабатывает значение при выборе опции
+<?php
+	$select_type = $option['type'] == "select" ? "select" : "input";
+	$html = "	$('".$select_type."[name=\"option[".$option['product_option_id']."]\"]').change(function(){\n";
+	$html .= "		var selected = ".($select_type  == "select" ? "$(':selected', this).val();" : "this.value;") . "\n";
+	$html .= "		selectOption(".$option['product_option_id'].",selected,'".$select_type."');\n";
+	$html .= "	});\n\n";
+	echo $html;
+	} ?>
+	$('#product').on('click', '#clear_options', function(e){
+		e.preventDefault();
+		clearOptions();
+	});
+
+	selectOption();
+
+<?php } ?>
+
 						
 						$(".colors").fancybox({
 							openEffect : 'elastic',
@@ -1782,6 +2292,52 @@ $(document).ready(function() {
 })
 //--></script>
 
+                <?php if($video_status){  ?>
+                    <script type="text/javascript">
+                       jQuery('a[data-video]:not([data-video=""])').each(function(index,element) {
+                            jQuery(this).attr('href', $(this).attr('data-video'));
+                            jQuery(this).attr('target','_blank');
+                            jQuery(this).css({'background-repeat':'no-repeat','background-position':'center center', 'background-size': '100%', 'background-image': 'url("/image/play.png")'}).find('img').css({ opacity: 0.6 });
+                        });
+                    
+                        jQuery('a[data-video][data-video_role="video_main"]:not([data-video=""])').css({ 'background-image': 'none' });
+
+                        jQuery('a[data-video]').magnificPopup({
+                                    type: 'iframe',
+                                    mainClass: 'mfp-fade',
+                                    removalDelay: 160,
+                                    preloader: false,
+                                    fixedContentPos: false,
+                                    iframe: {
+                                      patterns: {
+                                          youtube: {
+                                              index: 'youtube.com/', 
+                                              id: function(url) {        
+                                                  var m = url.match(/[\\?\\&]v=([^\\?\\&]+)/);
+                                                  if ( !m || !m[1] ) return null;
+                                                  return m[1];
+                                              },
+                                              src: '//www.youtube.com/embed/%id%?autoplay=1'
+                                          },
+                                          vimeo: {
+                                              index: 'vimeo.com/', 
+                                              id: function(url) {        
+                                                  var m = url.match(/(https?:\/\/)?(www.)?(player.)?vimeo.com\/([a-z]*\/)*([0-9]{6,11})[?]?.*/);
+                                                  if ( !m || !m[5] ) return null;
+                                                  return m[5];
+                                              },
+                                              src: '//player.vimeo.com/video/%id%?autoplay=1'
+                                          }
+                                      }
+                                  }
+                        });
+                        jQuery('a[data-video]:not([data-video=""]').click(function () {
+                            return false;
+                        });
+                    </script>
+                <?php } ?>
+            
+
                   <script type="application/ld+json">
                {
                  "@context": "http://schema.org/",
@@ -1873,50 +2429,4 @@ $(document).ready(function() {
 				}
 				</script>
                 
-
-                <?php if($video_status){  ?>
-                    <script type="text/javascript">
-                       jQuery('a[data-video]:not([data-video=""])').each(function(index,element) {
-                            jQuery(this).attr('href', $(this).attr('data-video'));
-                            jQuery(this).attr('target','_blank');
-                            jQuery(this).css({'background-repeat':'no-repeat','background-position':'center center', 'background-size': '100%', 'background-image': 'url("/image/play.png")'}).find('img').css({ opacity: 0.6 });
-                        });
-                    
-                        jQuery('a[data-video][data-video_role="video_main"]:not([data-video=""])').css({ 'background-image': 'none' });
-
-                        jQuery('a[data-video]').magnificPopup({
-                                    type: 'iframe',
-                                    mainClass: 'mfp-fade',
-                                    removalDelay: 160,
-                                    preloader: false,
-                                    fixedContentPos: false,
-                                    iframe: {
-                                      patterns: {
-                                          youtube: {
-                                              index: 'youtube.com/', 
-                                              id: function(url) {        
-                                                  var m = url.match(/[\\?\\&]v=([^\\?\\&]+)/);
-                                                  if ( !m || !m[1] ) return null;
-                                                  return m[1];
-                                              },
-                                              src: '//www.youtube.com/embed/%id%?autoplay=1'
-                                          },
-                                          vimeo: {
-                                              index: 'vimeo.com/', 
-                                              id: function(url) {        
-                                                  var m = url.match(/(https?:\/\/)?(www.)?(player.)?vimeo.com\/([a-z]*\/)*([0-9]{6,11})[?]?.*/);
-                                                  if ( !m || !m[5] ) return null;
-                                                  return m[5];
-                                              },
-                                              src: '//player.vimeo.com/video/%id%?autoplay=1'
-                                          }
-                                      }
-                                  }
-                        });
-                        jQuery('a[data-video]:not([data-video=""]').click(function () {
-                            return false;
-                        });
-                    </script>
-                <?php } ?>
-            
 <?php echo $footer; ?>
