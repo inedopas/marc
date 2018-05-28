@@ -1,4 +1,4 @@
-/*------------------------------------------------------------------
+/*-------------------------------------------simplecheckout/-----------------------
 [Table of contents]
 
 1. Main Styles
@@ -29,11 +29,6 @@
 
 
 
-.modal-content{
-
-  width:460px;
-
-}
 .b-popup-howsize {
   max-width: 460px;
   font-size: 16px;
