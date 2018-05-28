@@ -304,6 +304,8 @@ class ControllerAccountRegister extends Controller {
 
 		if (isset($this->request->post['city'])) {
 			$data['city'] = $this->request->post['city'];
+		} elseif (isset($this->session->data['shipping_address']['city'])) {
+            $data['city'] = $this->session->data['shipping_address']['city'];
 		} else {
 			$data['city'] = '';
 		}

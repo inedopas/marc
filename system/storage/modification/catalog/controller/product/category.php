@@ -1,5 +1,5 @@
 <?php
-class ControllerProductCategory extends Controller { 
+class ControllerProductCategory extends Controller {
 	public function index() {
 		$this->load->language('product/category');
 
@@ -12,11 +12,11 @@ class ControllerProductCategory extends Controller {
 		$this->load->model('catalog/product');
 
 		$this->load->model('tool/image');
-		
+
 		/*Комплекты начало*/
 		$this->document->addStyle('catalog/view/theme/default/stylesheet/color_options.css');
         /*Комплекты конец*/
-        
+
 		if (isset($this->request->get['filter'])) {
 			$filter = $this->request->get['filter'];
 		} else {
@@ -178,6 +178,7 @@ class ControllerProductCategory extends Controller {
 			
 
 			$category_id = (int)array_pop($parts);
+
 
 			foreach ($parts as $path_id) {
 				if (!$path) {
@@ -443,14 +444,14 @@ class ControllerProductCategory extends Controller {
 			$product_total = $this->model_catalog_product->getTotalProducts($filter_data);
 
 			$results = $this->model_catalog_product->getProducts($filter_data);
-			
+
 			/*Комлекты начало*/
 			$this->load->model('catalog/colorkit');
 			$data['colors_cfg'] = $this->config->get('color_kit');
             /*Комлекты конец*/
-            
+
 			foreach ($results as $result) {
-			    
+
 			/*Комлекты начало*/
 			$getColors = $this->model_catalog_colorkit->getColors($result['product_id']);
             $data_colors = array();
@@ -472,21 +473,21 @@ class ControllerProductCategory extends Controller {
                     } else {
                         $cp_image = false;
                     }
-                
+
                     $cp_name = $cp_product_info['name'];
-						
+
 	                if (($this->config->get('config_customer_price') && $this->customer->isLogged()) || !$this->config->get('config_customer_price')) {
 		                $cp_price = $this->currency->format($this->tax->calculate($cp_product_info['price'], $cp_product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 	                } else {
 		                $cp_price = false;
 	                }
-								
+
 	                if ((float)$cp_product_info['special']) {
 		                $cp_special = $this->currency->format($this->tax->calculate($cp_product_info['special'], $cp_product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 	                } else {
 		                $cp_special = false;
 	                }
-	 
+
                     $data_colors[] = array(
                         'product_id' => $color['product_id'],
                         'product_name' => $cp_name,
@@ -574,7 +575,7 @@ class ControllerProductCategory extends Controller {
                         'required'             => $option['required']
                     );
                 }
-				
+
 				$data['products'][] = array(
 					'options'     => $options,
 					'product_id'  => $result['product_id'],

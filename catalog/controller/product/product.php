@@ -148,6 +148,8 @@ class ControllerProductProduct extends Controller {
 			);
 		}
 
+
+
 		if (isset($this->request->get['product_id'])) {
 			$product_id = (int)$this->request->get['product_id'];
 		} else {
@@ -157,6 +159,8 @@ class ControllerProductProduct extends Controller {
 		$this->load->model('catalog/product');
 
 		$product_info = $this->model_catalog_product->getProduct($product_id);
+
+	
 
 		if ($product_info) {
 			$url = '';
