@@ -278,8 +278,9 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
                          <?php } ?>
                           <?php if ($option['type'] == 'radio') { ?>
 
-                            <label class="control-label opt-name"><?php echo $option['name']; ?></label>
-                            <div id="input-option<?php echo $option['product_option_id']; ?>" class="overflow-thumbnails-carousel global clearfix">
+                            <div style="display:inline-block"
+														 class="control-label opt-name"><?php echo $option['name']; ?></label></d</div>
+                            <div style="display:block" id="input-option<?php echo $option['product_option_id']; ?>" >
                             	<div class="">
                               <?php foreach ($option['product_option_value'] as $option_value) { ?>
                               <div class="radio <?php if($theme_options->get( 'product_page_radio_style' ) == 1) { echo 'radio-type-button2'; } ?>">
@@ -396,14 +397,14 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 
                            <label class="control-label" for="input-option<?php echo $option['product_option_id']; ?>"><?php echo $option['name']; ?></label>
                            <textarea name="option[<?php echo $option['product_option_id']; ?>]" rows="5" placeholder="<?php echo $option['name']; ?>" id="input-option<?php echo $option['product_option_id']; ?>" class="form-control"><?php echo $option['value']; ?></textarea>
-                         </d>
+                         </div>
                          <?php } ?>
                          <?php if ($option['type'] == 'file') { ?>
 
                            <label class="control-label"><?php echo $option['name']; ?></label>
                            <button type="button" id="button-upload<?php echo $option['product_option_id']; ?>" class="btn btn-default btn-block" style="margin-top: 7px"><i class="fa fa-upload"></i> <?php echo $button_upload; ?></button>
                            <input type="hidden" name="option[<?php echo $option['product_option_id']; ?>]" value="" id="input-option<?php echo $option['product_option_id']; ?>" />
-                         </di>
+                         </div>
                          <?php } ?>
                             <?php if ($option['type'] == 'date') { ?>
 
