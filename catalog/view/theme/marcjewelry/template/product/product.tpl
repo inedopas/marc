@@ -10,7 +10,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			$('#q_down').click(function () {
 			var $input = $(this).parent().find('#quantity_wanted');
 			var count = parseInt($input.val()) - 1;
-			count = count < 1 ? 1 : count;
+			count = count <td 1 ? 1 : count;
 			$input.val(count);
 			$input.change();
 			return false;
@@ -205,50 +205,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			    </div>
 
 			    <div class="col-sm-<?php echo $product_center_grid; ?> product-center clearfix">
-			     <?php if ($price) { ?>
 
-
-
-
-			      <div class="price">
-			      	<span class="textprice">Цена</span>
-			        <?php if($theme_options->get( 'display_specials_countdown' ) == '1' && $special) { $countdown = rand(0, 5000)*rand(0, 5000);
-			                  $product_detail = $theme_options->getDataProduct( $product_id );
-			                  $date_end = $product_detail['date_end'];
-			                  if($date_end != '0000-00-00' && $date_end) { ?>
-			             		<script>
-			             		$(function () {
-			             			var austDay = new Date();
-			             			austDay = new Date(<?php echo date("Y", strtotime($date_end)); ?>, <?php echo date("m", strtotime($date_end)); ?> - 1, <?php echo date("d", strtotime($date_end)); ?>);
-			             			$('#countdown<?php echo $countdown; ?>').countdown({until: austDay});
-			             		});
-			             		</script>
-			             		<h3><?php if($theme_options->get( 'limited_time_offer_text', $config->get( 'config_language_id' ) ) != '') { echo $theme_options->get( 'limited_time_offer_text', $config->get( 'config_language_id' ) ); } else { echo 'Limited time offer'; } ?></h3>
-			             		<div id="countdown<?php echo $countdown; ?>" class="clearfix"></div>
-			        	     <?php } ?>
-			        <?php } ?>
-			        <?php if (!$special) { ?>
-                    <span class="price-new" data-price="<?php echo $price_float; ?>"><span itemprop="price" id="price-old" class="price_true"><?php echo $price . " ₽"; ?></span></span> <span id="price-special" class="price_old price-old" data-price=""></span>
-                    <?php } else { ?>
-                    <span class="price-new" data-price="<?php echo $price_special; ?>"><span itemprop="price" id="price-special" class="price_true"><?php echo $special . " ₽"; ?></span></span> <span id="price-old" class="price_old price-old" data-price="<?php echo $price_float; ?>"><?php echo $price . " ₽"; ?></span>
-                    <?php } ?>
-			        <br />
-			        <?php if ($tax) { ?>
-			        <span class="price-tax"><?php echo $text_tax . " ₽"; ?> <span id="price-tax"><?php echo $tax . " ₽"; ?></span></span><br />
-			        <?php } ?>
-			        <?php if ($points) { ?>
-			        <span class="reward"><small><?php echo $text_points; ?> <?php echo $points; ?></small></span><br />
-			        <?php } ?>
-			        <?php if ($discounts) { ?>
-			        <br />
-			        <div class="discount">
-			          <?php foreach ($discounts as $discount) { ?>
-			          <?php echo $discount['quantity']; ?><?php echo $text_discount; ?><?php echo $discount['price'] . " ₽"; ?><br />
-			          <?php } ?>
-			        </div>
-			        <?php } ?>
-			      </div>
-			      <?php } ?>
 
 			   	<div id="product">
 
@@ -278,9 +235,14 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
                          <?php } ?>
                           <?php if ($option['type'] == 'radio') { ?>
 
-                            <div style="display:inline-block"
-														 class="control-label opt-name"><?php echo $option['name']; ?></label></d</div>
-                            <div style="display:block" id="input-option<?php echo $option['product_option_id']; ?>" >
+													<table border="1"><tr><td>
+
+
+				<div class="container-fluid"  style="display:block; width:100%">
+
+
+                            <div style="display:inline-block;" class="control-label"><?php echo $option['name']; ?></label></div> <input type="hidden" data-toggle="modal" id="howtosize" data-target="#how-to-size" value="Как узнать размер?" class="button"/>
+                            <div class="col-md-12 col-xs-12" style="display:block; width:100%" id="input-option<?php echo $option['product_option_id']; ?>" >
                             	<div class="">
                               <?php foreach ($option['product_option_value'] as $option_value) { ?>
                               <div class="radio <?php if($theme_options->get( 'product_page_radio_style' ) == 1) { echo 'radio-type-button2'; } ?>">
@@ -322,7 +284,98 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
                               </script>
                               <?php } ?>
                             </div>
-                            </div>
+                            </div></div>
+														</td></tr>
+<tr>
+<td>
+<?php if ($price) { ?>
+
+
+
+
+ <div class="price">
+	 <span class="textprice">Цена</span>
+
+	 <?php if (!$special) { ?>
+				 <span class="price-new" data-price="<?php echo $price_float; ?>"><span itemprop="price" id="price-old" class="price_true"><?php echo $price . " ₽"; ?></span></span> <span id="price-special" class="price_old price-old" data-price=""></span>
+				 <?php } else { ?>
+				 <span class="price-new" data-price="<?php echo $price_special; ?>"><span itemprop="price" id="price-special" class="price_true"><?php echo $special . " ₽"; ?></span></span> <span id="price-old" class="price_old price-old" data-price="<?php echo $price_float; ?>"><?php echo $price . " ₽"; ?></span>
+				 <?php } ?>
+	 <br />
+	 <?php if ($tax) { ?>
+	 <span class="price-tax"><?php echo $text_tax . " ₽"; ?> <span id="price-tax"><?php echo $tax . " ₽"; ?></span></span><br />
+	 <?php } ?>
+	 <?php if ($points) { ?>
+	 <span class="reward"><small><?php echo $text_points; ?> <?php echo $points; ?></small></span><br />
+	 <?php } ?>
+	 <?php if ($discounts) { ?>
+	 <br />
+
+
+	 <div class="discount">
+		 <?php foreach ($discounts as $discount) { ?>
+		 <?php echo $discount['quantity']; ?><?php echo $text_discount; ?><?php echo $discount['price'] . " ₽"; ?><br />
+		 <?php } ?>
+	 </div>
+	 <?php } ?>
+ </div>
+ <?php } ?>
+
+
+
+
+
+</td>
+<td><div class="quantity">
+		<span id="q_up"><i class="fa fa-angle-up"></i></span>
+	<input type="text" name="quantity" id="quantity_wanted" size="2" value="<?php echo $minimum; ?>" />
+	<span id="q_down"><i class="fa fa-angle-down"></i></span>
+		</div>
+		<?php echo $option_value['weight']; ?>.гр
+ </td>
+<td>
+  <input type="button" value="<?php echo $button_cart; ?>" id="button-cart" rel="<?php echo $product_id; ?>" data-loading-text="<?php echo $text_loading; ?>" class="button" />
+  <input type="button" value="Заказать в один клик" id="button-cart" rel="<?php echo $product_id; ?>" data-loading-text="<?php echo $text_loading; ?>" class="button" />
+			 </td>
+				</tr>
+
+</td>
+<td  width="70%">
+<div class="pluso" data-background="transparent" data-options="small,round,line,horizontal,nocounter,theme=04" data-services="vkontakte,odnoklassniki,facebook,twitter,google,moimir,email,print" data-user="1366104031"></div>
+<?php if ($review_status) { ?>
+<div class="review">
+	<?php if($rating > 0) { ?>
+	<span itemprop="review" class="hidden" itemscope itemtype="http://schema.org/Review-aggregate">
+		<span itemprop="itemreviewed"><?php echo $heading_title; ?></span>
+		<span itemprop="rating"><?php echo $rating; ?></span>
+		<span itemprop="votes"><?php preg_match_all('/\(([0-9]+)\)/', $tab_review, $wyniki);
+		if(isset($wyniki[1][0])) { echo $wyniki[1][0]; } else { echo 0; } ?></span>
+	</span>
+	<?php } ?>
+	<div class="rating"><i class="fa fa-star<?php if($rating >= 1) { echo ' active'; } ?>"></i><i class="fa fa-star<?php if($rating >= 2) { echo ' active'; } ?>"></i><i class="fa fa-star<?php if($rating >= 3) { echo ' active'; } ?>"></i><i class="fa fa-star<?php if($rating >= 4) { echo ' active'; } ?>"></i><i class="fa fa-star<?php if($rating >= 5) { echo ' active'; } ?>"></i>&nbsp;&nbsp;&nbsp;<a onclick="$('a[href=\'#tab-review\']').trigger('click'); $('html, body').animate({scrollTop:$('#tab-review').offset().top}, '500', 'swing');"></a><a onclick="$('a[href=\'#tab-review\']').trigger('click'); $('html, body').animate({scrollTop:$('#tab-review').offset().top}, '500', 'swing');"></a></div>
+	<?php if($theme_options->get( 'product_social_share' ) != '0') { ?>
+	<div class="share">
+		<!-- AddThis Button BEGIN -->
+		<script type="text/javascript">(function() {
+if (window.pluso)if (typeof window.pluso.start == "function") return;
+if (window.ifpluso==undefined) { window.ifpluso = 1;
+var d = document, s = d.createElement('script'), g = 'getElementsByTagName';
+s.type = 'text/javascript'; s.charset='UTF-8'; s.async = true;
+s.src = ('https:' == window.location.protocol ? 'https' : 'http')  + '://share.pluso.ru/pluso-like.js';
+var h=d[g]('body')[0];
+h.appendChild(s);
+}})();</script>
+
+		<!-- AddThis Button END -->
+	</div>
+	<?php } ?>
+</div>
+<?php } ?>
+
+
+</td>
+														</table>
+
                           </div>
                           <?php } ?>
                          <?php if ($option['type'] == 'checkbox') { ?>
@@ -500,7 +553,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 
 	<?php } ?>
 	<script type="text/javascript">$(".geoip-module").appendTo("#geopa");</script>
-	<div id="geopa"></div>
+	<div style="display:block"><div id="geopa"></div> </div>
 
 
 
@@ -564,12 +617,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			          <div style="padding:10px 0;width: 100%;" class="col-sm-6">
      			          <!-- <p><?php echo $entry_qty; ?></p> -->
 						  <input type="hidden" name="product_id" size="2" value="<?php echo $product_id; ?>" />
-     			          <input type="button" value="<?php echo $button_cart; ?>" id="button-cart" rel="<?php echo $product_id; ?>" data-loading-text="<?php echo $text_loading; ?>" class="button" />
-						  <div class="quantity">
-     			          <span id="q_up"><i class="fa fa-angle-up"></i></span>
-     				      <input type="text" name="quantity" id="quantity_wanted" size="2" value="<?php echo $minimum; ?>" />
-     				      <span id="q_down"><i class="fa fa-angle-down"></i></span>
-     			          </div>
+
 
 
      			          <?php
@@ -582,11 +630,6 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			          <?php } ?>
 			        </div>
 			         </div>
-			        <div class="links clearfix">
-							<input type="hidden" data-toggle="modal" id="howtosize" data-target="#how-to-size" value="Как узнать размер?" class="button"/>
-
-
-			        </div>
 
 			        <?php if ($minimum > 1) { ?>
 			        <div class="minimum"><?php echo $text_minimum; ?></div>
@@ -604,35 +647,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			      	}
 			      } ?>
 
-			      <?php if ($review_status) { ?>
-			      <div class="review">
-			      	<?php if($rating > 0) { ?>
-			      	<span itemprop="review" class="hidden" itemscope itemtype="http://schema.org/Review-aggregate">
-			      		<span itemprop="itemreviewed"><?php echo $heading_title; ?></span>
-			      		<span itemprop="rating"><?php echo $rating; ?></span>
-			      		<span itemprop="votes"><?php preg_match_all('/\(([0-9]+)\)/', $tab_review, $wyniki);
-			      		if(isset($wyniki[1][0])) { echo $wyniki[1][0]; } else { echo 0; } ?></span>
-			      	</span>
-			      	<?php } ?>
-			        <div class="rating"><i class="fa fa-star<?php if($rating >= 1) { echo ' active'; } ?>"></i><i class="fa fa-star<?php if($rating >= 2) { echo ' active'; } ?>"></i><i class="fa fa-star<?php if($rating >= 3) { echo ' active'; } ?>"></i><i class="fa fa-star<?php if($rating >= 4) { echo ' active'; } ?>"></i><i class="fa fa-star<?php if($rating >= 5) { echo ' active'; } ?>"></i>&nbsp;&nbsp;&nbsp;<a onclick="$('a[href=\'#tab-review\']').trigger('click'); $('html, body').animate({scrollTop:$('#tab-review').offset().top}, '500', 'swing');"><?php echo $reviews; ?></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a onclick="$('a[href=\'#tab-review\']').trigger('click'); $('html, body').animate({scrollTop:$('#tab-review').offset().top}, '500', 'swing');"><?php echo $text_write; ?></a></div>
-			        <?php if($theme_options->get( 'product_social_share' ) != '0') { ?>
-			        <div class="share">
-			        	<!-- AddThis Button BEGIN -->
-			        	<script type="text/javascript">(function() {
-  if (window.pluso)if (typeof window.pluso.start == "function") return;
-  if (window.ifpluso==undefined) { window.ifpluso = 1;
-    var d = document, s = d.createElement('script'), g = 'getElementsByTagName';
-    s.type = 'text/javascript'; s.charset='UTF-8'; s.async = true;
-    s.src = ('https:' == window.location.protocol ? 'https' : 'http')  + '://share.pluso.ru/pluso-like.js';
-    var h=d[g]('body')[0];
-    h.appendChild(s);
-  }})();</script>
-<div class="pluso" data-background="transparent" data-options="small,round,line,horizontal,nocounter,theme=04" data-services="vkontakte,odnoklassniki,facebook,twitter,google,moimir,email,print" data-user="1366104031"></div>
-			        	<!-- AddThis Button END -->
-			        </div>
-			        <?php } ?>
-			      </div>
-			      <?php } ?>
+
 
 			      <div class="description">
 			        <?php if ($manufacturer) { ?>
