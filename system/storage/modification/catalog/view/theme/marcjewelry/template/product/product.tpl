@@ -36,7 +36,8 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
   <div class="product-info">
   	<div class="row">
   	     <?php $product_custom_block = $modules_old_opencart->getModules('product_custom_block'); ?>
-  		<div class="col-md-<?php if($theme_options->get( 'custom_block', 'product_page', $config->get( 'config_language_id' ), 'status' ) == 1 || count($product_custom_block)) { echo 9; } else { echo 12; } ?> col-sm-12">
+		<div class="container-fluid">
+			<div class="col-md-<?php if($theme_options->get( 'custom_block', 'product_page', $config->get( 'config_language_id' ), 'status' ) == 1 || count($product_custom_block)) { echo 9; } else { echo 12; } ?> col-sm-12">
   			<div class="row" id="quickview_product">
 			    <?php if($theme_options->get( 'product_image_zoom' ) != 2) { ?>
 						<script>
@@ -87,6 +88,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			    		}
 			    	});
 			    </script>
+
 			    <?php } ?>
 			    <?php $image_grid = 7; $product_center_grid = 5;
 			    if ($theme_options->get( 'product_image_size' ) == 1) {
@@ -356,18 +358,14 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
                          <h2><?php echo $text_option; ?></h2>
                          <?php foreach ($options as $option) { ?>
                          <?php if ($option['type'] == 'select') { ?>
-                         <!--BOF Related Options-->
-			<div class="form-group<?php echo ($option['required'] ? ' required' : ''); ?> option" <?php echo 'master-option="' . $option['master_option'] . '"' . ' option="' . $option['option_id'] . '"'; ?> id="option-<?php echo $option['product_option_id']; ?>" >
-						<!--EOF Related Options-->
+
                            <label class="control-label" for="input-option<?php echo $option['product_option_id']; ?>"><?php echo $option['name'] . $option_value['name']; ?></label>
                            <select name="option[<?php echo $option['product_option_id']; ?>]" id="input-option<?php echo $option['product_option_id']; ?>" class="form-control">
                              <option value=""><?php echo $text_select; ?></option>
                              <?php foreach ($option['product_option_value'] as $option_value) { ?>
-                             <!--BOF Related Options-->
-			<option value="<?php echo $option_value['product_option_value_id']; ?>" <?php echo 'master-option-value="' . $option_value['master_option_value'] . '"' . ' option-value="' . $option_value['option_value_id'] . '"'; ?> <?php echo ($related_options['show_disabled'] == 0 and isset($option_value['quantity']) and $option_value['quantity'] <= 0) ? 'disabled' : ''; ?>><?php echo $option_value['name']; ?>
-			<!--EOF Related Options-->
+
                              <?php if ($option_value['price']) { ?>
-                             (<?php echo $option_value['price_prefix']; ?><?php echo $option_value['price'] . " ₽"; ?>)
+                            <?php echo $option_value['price_prefix']; ?><?php echo $option_value['price'] . " ₽"; ?>
                              <?php } ?>
                              </option>
                              <?php } ?>
@@ -375,18 +373,14 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
                          </div>
                          <?php } ?>
                           <?php if ($option['type'] == 'radio') { ?>
-                          <!--BOF Related Options-->
-			<div class="form-group<?php echo ($option['required'] ? ' required' : ''); ?> option" <?php echo 'master-option="' . $option['master_option'] . '"' . ' option="' . $option['option_id'] . '"'; ?> id="option-<?php echo $option['product_option_id']; ?>" >
-						<!--EOF Related Options-->
+
                             <label class="control-label opt-name"><?php echo $option['name']; ?></label>
                             <div id="input-option<?php echo $option['product_option_id']; ?>" class="overflow-thumbnails-carousel global clearfix">
-                            	<div class="thumbnails-carousel owl-carousel">
+                            	<div class="">
                               <?php foreach ($option['product_option_value'] as $option_value) { ?>
                               <div class="radio <?php if($theme_options->get( 'product_page_radio_style' ) == 1) { echo 'radio-type-button2'; } ?>">
-                                <!--BOF Related Options--><label for="option-value-<?php echo $option_value['product_option_value_id']; ?>"><!--EOF Related Options-->
-                                  <!--BOF Related Options-->
-					<input type="radio" name="option[<?php echo $option['product_option_id']; ?>]" value="<?php echo $option_value['product_option_value_id']; ?>" id="option-value-<?php echo $option_value['product_option_value_id']; ?>" <?php echo 'master-option-value="' . $option_value['master_option_value'] . '"' . ' option-value="' . $option_value['option_value_id'] . '"'; ?> <?php echo ($related_options['show_disabled'] == 0 and isset($option_value['quantity']) and $option_value['quantity'] <= 0) ? 'disabled' : ''; ?> />
-					<!--EOF Related Options-->
+
+
                                   <span <?php if ($option_value['image']) { echo 'style="padding: 5px 2px 0px"'; } ?>>
                                  <?php if (!$option_value['image']) { ?><?php } ?>
                                 <span id="opt-name" class="opt"><?php echo $option_value['name']; ?></span>
@@ -396,7 +390,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
                                   <?php if ($option_value['image']) { ?>
                                   <img src="<?php echo $option_value['image']; ?>" alt="<?php echo $option_value['name'] . ($option_value['price'] ? ' ' . $option_value['price_prefix'] . $option_value['price'] : ''); ?>"  style="border-radius: 100px;-webkit-border-radius: 100px;-moz-border-radius: 100px" class="img-thumbnail" />
                                   <?php } ?>
-                                  <span class="hidden"><?php if ($option_value['special']) { ?>(<?php echo $option_value['price_prefix']; ?><?php echo $option_value['special']; ?>)<?php } elseif ($option_value['price']) { ?><!--BOF Related Options-->(<?php echo $option_value['price_prefix']; ?><?php echo $option_value['price']; ?>)<!--EOF Related Options--><?php } ?></span>
+                                  <span class="hidden"><?php if ($option_value['special']) { ?>(<?php echo $option_value['price_prefix']; ?><?php echo $option_value['special']; ?>)<?php } elseif ($option_value['price']) { ?><?php } ?></span>
                                   <?php if($theme_options->get( 'product_page_radio_style' ) != 1) { ?>
                                   <?php } ?></span>
                                   </div>
@@ -427,21 +421,16 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
                           </div>
                           <?php } ?>
                          <?php if ($option['type'] == 'checkbox') { ?>
-                         <!--BOF Related Options-->
-			<div class="form-group<?php echo ($option['required'] ? ' required' : ''); ?> option" <?php echo 'master-option="' . $option['master_option'] . '"' . ' option="' . $option['option_id'] . '"'; ?> id="option-<?php echo $option['product_option_id']; ?>" >
-						<!--EOF Related Options-->
+
                            <label class="control-label"><?php echo $option['name']; ?></label>
                            <div id="input-option<?php echo $option['product_option_id']; ?>">
                              <?php foreach ($option['product_option_value'] as $option_value) { ?>
                              <div class="checkbox <?php if($theme_options->get( 'product_page_checkbox_style' ) == 1) { echo 'radio-type-button2'; } ?>">
-                               <!--BOF Related Options--><label for="option-value-<?php echo $option_value['product_option_value_id']; ?>"><!--EOF Related Options-->
-                                 <!--BOF Related Options-->
-						<input type="checkbox" name="option[<?php echo $option['product_option_id']; ?>][]" value="<?php echo $option_value['product_option_value_id']; ?>" id="option-value-<?php echo $option_value['product_option_value_id']; ?>" <?php echo 'master-option-value="' . $option_value['master_option_value'] . '"' . ' option-value="' . $option_value['option_value_id'] . '"'; ?> <?php echo ($related_options['show_disabled'] == 0 and isset($option_value['quantity']) and $option_value['quantity'] <= 0) ? 'disabled' : ''; ?> />
-					<!--EOF Related Options-->
+
                                  <span><?php echo $option_value['name']; ?>
                                 <span class="hidden">
                                 <?php if ($option_value['price']) { ?>
-                                 <!--BOF Related Options-->(<?php echo $option_value['price_prefix']; ?><?php echo $option_value['price']; ?>)<!--EOF Related Options-->
+
                                  <?php } ?>
                                 </span>
                                  <?php if($theme_options->get( 'product_page_checkbox_style' ) != 1) { ?><?php } ?></span>
@@ -466,20 +455,16 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
                          </div>
                          <?php } ?>
                          <?php if ($option['type'] == 'image') { ?>
-                         <!--BOF Related Options-->
-			<div class="form-group<?php echo ($option['required'] ? ' required' : ''); ?> option" <?php echo 'master-option="' . $option['master_option'] . '"' . ' option="' . $option['option_id'] . '"'; ?> id="option-<?php echo $option['product_option_id']; ?>" >
-						<!--EOF Related Options-->
+
                            <label class="control-label"><?php echo $option['name']; ?></label>
                            <div id="input-option<?php echo $option['product_option_id']; ?>">
                              <?php foreach ($option['product_option_value'] as $option_value) { ?>
                              <div class="radio <?php if($theme_options->get( 'product_page_radio_style' ) == 1) { echo 'radio-type-button'; } ?>">
-                               <!--BOF Related Options--><label for="option-value-<?php echo $option_value['product_option_value_id']; ?>"><!--EOF Related Options-->
-                                 <!--BOF Related Options-->
-					<input type="radio" name="option[<?php echo $option['product_option_id']; ?>]" value="<?php echo $option_value['product_option_value_id']; ?>" id="option-value-<?php echo $option_value['product_option_value_id']; ?>" <?php echo 'master-option-value="' . $option_value['master_option_value'] . '"' . ' option-value="' . $option_value['option_value_id'] . '"'; ?> <?php echo ($related_options['show_disabled'] == 0 and isset($option_value['quantity']) and $option_value['quantity'] <= 0) ? 'disabled' : ''; ?> />
-					<!--EOF Related Options-->
-                                 <span <?php if($theme_options->get( 'product_page_radio_style' ) == 1) { ?>data-toggle="tooltip" data-placement="top" title="<?php echo $option_value['name']; ?> <?php if ($option_value['price']) { ?><!--BOF Related Options-->(<?php echo $option_value['price_prefix']; ?><?php echo $option_value['price']; ?>)<!--EOF Related Options--><?php } ?>"<?php } ?>><img src="<?php echo $option_value['image']; ?>" alt="<?php echo $option_value['name'] . ($option_value['price'] ? ' ' . $option_value['price_prefix'] . $option_value['price'] : ''); ?>" <?php if($theme_options->get( 'product_page_radio_style' ) == 1) { ?>width="<?php if($theme_options->get( 'product_page_radio_image_width' ) > 0) { echo $theme_options->get( 'product_page_radio_image_width' ); } else { echo 25; } ?>px" height="<?php if($theme_options->get( 'product_page_radio_image_height' ) > 0) { echo $theme_options->get( 'product_page_radio_image_height' ); } else { echo 25; } ?>px"<?php } ?> /> <?php if($theme_options->get( 'product_page_radio_style' ) != 1) { ?><?php echo $option_value['name']; ?>
+
+
+                                 <span <?php if($theme_options->get( 'product_page_radio_style' ) == 1) { ?>data-toggle="tooltip" data-placement="top" title="<?php echo $option_value['name']; ?> <?php if ($option_value['price']) { ?><?php } ?>"<?php } ?>><img src="<?php echo $option_value['image']; ?>" alt="<?php echo $option_value['name'] . ($option_value['price'] ? ' ' . $option_value['price_prefix'] . $option_value['price'] : ''); ?>" <?php if($theme_options->get( 'product_page_radio_style' ) == 1) { ?>width="<?php if($theme_options->get( 'product_page_radio_image_width' ) > 0) { echo $theme_options->get( 'product_page_radio_image_width' ); } else { echo 25; } ?>px" height="<?php if($theme_options->get( 'product_page_radio_image_height' ) > 0) { echo $theme_options->get( 'product_page_radio_image_height' ); } else { echo 25; } ?>px"<?php } ?> /> <?php if($theme_options->get( 'product_page_radio_style' ) != 1) { ?><?php echo $option_value['name']; ?>
                                  <?php if ($option_value['price']) { ?>
-                                 <!--BOF Related Options-->(<?php echo $option_value['price_prefix']; ?><?php echo $option_value['price']; ?>)<!--EOF Related Options-->
+
                                  <?php } ?><?php } ?></span>
                                </label>
                              </div>
@@ -498,46 +483,37 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
                          </div>
                          <?php } ?>
                          <?php if ($option['type'] == 'text') { ?>
-                         <!--BOF Related Options-->
-			<div class="form-group<?php echo ($option['required'] ? ' required' : ''); ?> option" <?php echo 'master-option="' . $option['master_option'] . '"' . ' option="' . $option['option_id'] . '"'; ?> id="option-<?php echo $option['product_option_id']; ?>" >
-						<!--EOF Related Options-->
+
                            <label class="control-label" for="input-option<?php echo $option['product_option_id']; ?>"><?php echo $option['name']; ?></label>
                            <input type="text" name="option[<?php echo $option['product_option_id']; ?>]" value="<?php echo $option['value']; ?>" placeholder="<?php echo $option['name']; ?>" id="input-option<?php echo $option['product_option_id']; ?>" class="form-control" />
                          </div>
                          <?php } ?>
                          <?php if ($option['type'] == 'textarea') { ?>
-                         <!--BOF Related Options-->
-			<div class="form-group<?php echo ($option['required'] ? ' required' : ''); ?> option" <?php echo 'master-option="' . $option['master_option'] . '"' . ' option="' . $option['option_id'] . '"'; ?> id="option-<?php echo $option['product_option_id']; ?>" >
-						<!--EOF Related Options-->
+
                            <label class="control-label" for="input-option<?php echo $option['product_option_id']; ?>"><?php echo $option['name']; ?></label>
                            <textarea name="option[<?php echo $option['product_option_id']; ?>]" rows="5" placeholder="<?php echo $option['name']; ?>" id="input-option<?php echo $option['product_option_id']; ?>" class="form-control"><?php echo $option['value']; ?></textarea>
-                         </div>
+                         </d>
                          <?php } ?>
                          <?php if ($option['type'] == 'file') { ?>
-                         <!--BOF Related Options-->
-			<div class="form-group<?php echo ($option['required'] ? ' required' : ''); ?> option" <?php echo 'master-option="' . $option['master_option'] . '"' . ' option="' . $option['option_id'] . '"'; ?> id="option-<?php echo $option['product_option_id']; ?>" >
-						<!--EOF Related Options-->
+
                            <label class="control-label"><?php echo $option['name']; ?></label>
                            <button type="button" id="button-upload<?php echo $option['product_option_id']; ?>" class="btn btn-default btn-block" style="margin-top: 7px"><i class="fa fa-upload"></i> <?php echo $button_upload; ?></button>
                            <input type="hidden" name="option[<?php echo $option['product_option_id']; ?>]" value="" id="input-option<?php echo $option['product_option_id']; ?>" />
-                         </div>
+                         </di>
                          <?php } ?>
                             <?php if ($option['type'] == 'date') { ?>
-                            <!--BOF Related Options-->
-			<div class="form-group<?php echo ($option['required'] ? ' required' : ''); ?> option" <?php echo 'master-option="' . $option['master_option'] . '"' . ' option="' . $option['option_id'] . '"'; ?> id="option-<?php echo $option['product_option_id']; ?>" >
-						<!--EOF Related Options-->
+
                               <label class="control-label" for="input-option<?php echo $option['product_option_id']; ?>"><?php echo $option['name']; ?></label>
                               <div class="input-group date">
                                 <input type="text" name="option[<?php echo $option['product_option_id']; ?>]" value="<?php echo $option['value']; ?>" data-date-format="YYYY-MM-DD" id="input-option<?php echo $option['product_option_id']; ?>" class="form-control" />
                                 <span class="input-group-btn">
                                 <button class="btn btn-default" type="button"><i class="fa fa-calendar"></i></button>
                                 </span></div>
-                            </div>
+												</div>
+														</div>
                             <?php } ?>
                             <?php if ($option['type'] == 'datetime') { ?>
-                            <!--BOF Related Options-->
-			<div class="form-group<?php echo ($option['required'] ? ' required' : ''); ?> option" <?php echo 'master-option="' . $option['master_option'] . '"' . ' option="' . $option['option_id'] . '"'; ?> id="option-<?php echo $option['product_option_id']; ?>" >
-						<!--EOF Related Options-->
+
                               <label class="control-label" for="input-option<?php echo $option['product_option_id']; ?>"><?php echo $option['name']; ?></label>
                               <div class="input-group datetime">
                                 <input type="text" name="option[<?php echo $option['product_option_id']; ?>]" value="<?php echo $option['value']; ?>" data-date-format="YYYY-MM-DD HH:mm" id="input-option<?php echo $option['product_option_id']; ?>" class="form-control" />
@@ -547,9 +523,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
                             </div>
                             <?php } ?>
                             <?php if ($option['type'] == 'time') { ?>
-                            <!--BOF Related Options-->
-			<div class="form-group<?php echo ($option['required'] ? ' required' : ''); ?> option" <?php echo 'master-option="' . $option['master_option'] . '"' . ' option="' . $option['option_id'] . '"'; ?> id="option-<?php echo $option['product_option_id']; ?>" >
-						<!--EOF Related Options-->
+
                               <label class="control-label" for="input-option<?php echo $option['product_option_id']; ?>"><?php echo $option['name']; ?></label>
                               <div class="input-group time">
                                 <input type="text" name="option[<?php echo $option['product_option_id']; ?>]" value="<?php echo $option['value']; ?>" data-date-format="HH:mm" id="input-option<?php echo $option['product_option_id']; ?>" class="form-control" />
@@ -580,7 +554,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			      </div>
 			      <?php } ?>
 				  <?php if ($option['option_id'] == '11') { $tab='tab'; ?>
-			      <div class="form-group checked-options" style="background-color: #f9f9f9;margin-top: 5px;">
+			      <div class="form-group checked-options" style="background-color: #f9f9f9;margin-top: 5px; display:none;">
 			            <div class="heading">Выбрано</div>
 			            <table cellpadding="10">
                             <tr class="opt-heading">
@@ -600,7 +574,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
                         </table>
                 </div>
 				<?php } else if ($option['option_id'] == '14') { $tab='tab'; ?>
-	<div class="form-group checked-options" style="background-color: #f9f9f9;margin-top: 5px;">
+	<div class="form-group checked-options" style="background-color: #f9f9f9;margin-top: 5px; display:none;">
 									<div class="heading">Выбрано</div>
 									<table cellpadding="10">
 														<tr class="opt-heading">
@@ -829,8 +803,6 @@ $postc = ['2726' =>	'656000',
 							<input type="hidden" data-toggle="modal" id="howtosize" data-target="#how-to-size" value="Как узнать размер?" class="button"/>
 
 
-			        	<a onclick="wishlist.add('<?php echo $product_id; ?>');"><?php if($theme_options->get( 'add_to_wishlist_text', $config->get( 'config_language_id' ) ) != '') { echo $theme_options->get( 'add_to_wishlist_text', $config->get( 'config_language_id' ) ); } else { echo 'Add to wishlist'; } ?></a>
-			        	<a onclick="compare.add('<?php echo $product_id; ?>');"><?php if($theme_options->get( 'add_to_compare_text', $config->get( 'config_language_id' ) ) != '') { echo $theme_options->get( 'add_to_compare_text', $config->get( 'config_language_id' ) ); } else { echo 'Add to compare'; } ?></a>
 			        </div>
 
 			        <?php if ($minimum > 1) { ?>
@@ -1621,385 +1593,9 @@ $('#tabs a').tabs();
 <?php if($theme_options->get( 'product_image_zoom' ) != 2) {
 echo '<script type="text/javascript" src="catalog/view/theme/' . $config->get($config->get('config_theme') . '_directory') . '/js/jquery.elevateZoom-3.0.3.min.js"></script>';
 } ?>
-<input type="button" onclick="history.back();" value="Назад" style="border: none;
-    padding: 2px 10px 2px 10px;
-    font-size: 16px;
-    color: #ffffff;
-    background-color: #19a1df;
-    font-weight: 400;" />
+<input type="button" onclick="history.back();" value="Назад" style="border: none;   padding: 2px 10px 2px 10px;   font-size: 16px;    color: #ffffff;    background-color: #19a1df;  font-weight: 400;" />
 <?php include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_directory').'/template/new_elements/wrapper_bottom.tpl'); ?>
-<!--BOF Related Options-->
-            <!--BOF Related Options-->
-            <script type="text/javascript"><!--
-                $(document).ready(function(){
-                    /*
-                    $('.product-thumb input[name=quantity]').bind('change keyup mouseup', function(){
-                        $(this).addClass('changed');
-                        t = true;
-                        $(this).parents('.product-thumb').find('.options input[type=radio]').each(function(){
-                            if ($(this).prop('checked')) {
-                                t = false;
-                                $(this).parents('.product-thumb').find('input[type=radio]:checked').trigger('change');
-                            }
-                        })
-                        if (t) {
-                            var $pr = $(this).parents('.product-thumb').find('.price-new').data('price');
-                            var $pr_old = $(this).parents('.product-thumb').find('.price-old').data('price');
 
-                            $(this).parents('.product-thumb').find('.price-new').html( price_format(Number($pr) * $(this).val()) );
-                            $(this).parents('.product-thumb').find('.price-old').html( price_format(Number($pr_old) * $(this).val()) );
-
-
-
-                        }
-
-                    });
-                    */
-
-                        var main_timeout_id = 0;
-                        var special_timeout_id = 0;
-                        var animate_delay = 20;
-
-                        var regex_price = /[0-9]+[\.]{0,1}[0-9]*/;
-                        var regex_replace_price = /([0-9]+[\.]{0,1}[0-9]*)/;
-
-//                    $('.option[master-option!=0]').hide();
-
-                    // SELECT OPTION
-                    /*
-                    $('.option select').bind('change', function(){
-                        var option_value = $(this).children('option:selected').attr('option-value');
-                        var $related_options = $(this).parents('.options').find('.option[master-option=' + $(this).parent('.option').attr('option') + ']');
-                        if ($(this).val() != '') {
-                            updateOptionList($related_options, option_value);
-                        } else {
-                            $related_options.slideUp();
-                        }
-                        clearOption($related_options);
-                    });
-                    */
-
-                    // RADIO OPTION
-                    /*
-                    $('.option input[type=radio]').bind('click', function(){
-                        $(this).parents('.product-thumb').find('input[name=quantity]').removeClass('changed');
-                    })
-                    */
-                    $('.option input[type=radio]').bind('change', function(){
-
-                        $(this).each(function(){
-                            if ($(this).prop('checked') == false) {
-                                $(this).parents('.form-group').next().find('.radio-type-button2 span').removeClass('active');
-                            }
-                        })
-
-                        var option_value = $(this).attr('option-value');
-                        var $related_options = $(this).parents('.options').find('.option[master-option = ' + $(this).parents('.option').attr('option') + ']');
-
-                        // changing price
-                        var num = <?php echo $related_options['price_residue'] ?>;
-                        var $price = $(this).parents('.product-info').find('.price-new').data('price');
-
-                        var $price_old = $(this).parents('.product-info').find('.price-old').data('price');
-                        var $price_special = $(this).parents('.product-info').find('.price-new').data('price');
-                        var $qty = $(this).parents('.product-info').find('input[name=quantity]').val();
-
-
-
-
-                        if ($price_special) {
-                            var $special = true;
-
-                          var initial_price = $price_special * $qty;
-                          var initial_price_old = $price_old * $qty;
-//                          initial_price = initial_price[0]*1;
-//                          initial_price_old = initial_price_old[0]*1;
-                          var initial_price_old_update = initial_price_old;
-                        } else {
-                            var $special = false;
-                            var initial_price = $price * $qty;
-//                          initial_price = initial_price[0]*1;
-                        }
-
-                        var initial_price_update = initial_price;
-
-                        var regex_add_price = /([\+\-\=])[^0-9]*([0-9]+[\.]{0,1}[0-9]*)/;
-                        additional_price = regex_add_price.exec($(this).parents('.option').find('label[for=' + $(this).attr('id') + '] span.hidden').text().replace('<?php echo $decimal_point; ?>', '.').replace(new RegExp('<?php echo $thousand_point; ?>', 'g'), ''));
-
-                        if (additional_price != null && additional_price != '' && additional_price != undefined) {
-                            if (additional_price[1] == '=') {
-                                var initial_price = 0;
-                                var initial_price_old = 0;
-                                var initial_price_old_update = 0;
-                                var initial_price_update = 0;
-                            }
-                        }
-
-                        if ($('input[name=\'' + $(this).attr('name') + '\']:checked').size() != '') {
-                            updateOptionList($related_options, option_value);
-                        } else {
-//                            $related_options.slideUp();
-                        }
-                        clearOption($related_options, $price, $price_old, $special, $(this), initial_price_update, initial_price, initial_price_old, $qty);
-
-                    });
-
-                    // CHECKBOX OPTION
-                    /*
-                    $('.option input[type=checkbox]').bind('change', function(){
-                        var option_value = [];
-                        $('.option input[name=\'' + $(this).attr('name') + '\']:checked').each(function(){
-                            option_value.push($(this).attr('option-value'));
-                        });
-                        var $related_options = $('.option[master-option = ' + $(this).parents('.option').attr('option') + ']');
-                        if ($('input[name=\'' + $(this).attr('name') + '\']:checked').size() != '') {
-                            updateOptionList($related_options, option_value);
-                        } else {
-                            $related_options.slideUp();
-                        }
-                        clearOption($related_options);
-                    });
-
-                    // TEXT INPUT AND TEXTAREA OPTION
-                    $('.option input[type=text], .option textarea').bind('change', function(){
-                        var $related_options = $('.option[master-option = ' + $(this).parent('.option').attr('option') + ']');
-                        if ($(this).val() != '') {
-                            $related_options.slideDown();
-                        } else {
-                            $related_options.slideUp();
-                        }
-                        clearOption($related_options);
-                    });
-                    */
-
-                    $( document ).on( "click", '[class^="opt-reset"]', function() {
-                        var id = $(this).attr('class').replace("opt-reset-", "");
-                        $('#option-'+ id).find('input[type=\'radio\']').prop('checked', false).trigger('change');
-                        $('#option-'+ id).find('.img-option-a').html('Выбрать');
-                        $('#option-'+ id).find('.img-option-span').html('');
-                        $('.opt-reset-'+ id).remove();
-                        changeimg();
-                    });
-                });
-                function updateOptionList($related_options, option_value) {
-                    // select options
-                    $related_options.find('option[master-option-value!=0]').each(function(){
-                        if ($(this).parent('span').size() == 0) {
-                            $(this).wrap("<span>");
-                        }
-                    });
-
-                    $related_options.find('.img_block[master-option-value!=0]').hide();
-                    $related_options.find('input[type=hidden][master-option-value!=0]').prev().prop('disabled', true);
-                    if ($related_options.find('[class^="opt-reset"]').length) {
-                        $related_options.find('[class^="opt-reset"]').trigger('click');
-                    }
-
-                    $related_options.find('input[master-option-value!=0]').hide();
-                    $related_options.find('input[master-option-value!=0]').parent('label').parent('div').hide();
-                    $related_options.find('input[master-option-value!=0]').next('label').next('br').hide();
-                    $related_options.find('textarea[master-option-value!=0]').hide();
-                    // image options
-                    $related_options.find('input[master-option-value!=0]').each(function(){
-                        if ($(this).closest('table').hasClass('option-image')) {
-                            $(this).closest('tr').hide();
-                        }
-                    });
-
-
-                    if (typeof(option_value) == "string") {
-                        option_value = [option_value];
-                    }
-                    for (var i in option_value) {
-                        $related_options.find('option[master-option-value=' + option_value[i] + '], option[value=\'\']').each(function(){
-                            if ($(this).parent('span').size() != 0) {
-                                $(this).unwrap();
-                            }
-                        });
-
-                        $related_options.find('.img_block[master-option-value=' + option_value[i] + ']').show();
-                        $related_options.find('input[type=hidden][master-option-value=' + option_value[i] + ']').prev().prop('disabled', false);
-
-                        $related_options.find('input[master-option-value=' + option_value[i] + ']').show();
-                        $related_options.find('input[master-option-value=' + option_value[i] + ']').parent('label').parent('div').show();
-                        $related_options.find('input[master-option-value=' + option_value[i] + ']').next('label').next('br').show();
-                        $related_options.find('textarea[master-option-value=' + option_value[i] + ']').show();
-                        // image options
-                        $related_options.find('input[master-option-value=' + option_value[i] + ']').each(function(){
-                            if ($(this).closest('table').hasClass('option-image')) {
-                                $(this).closest('tr').show();
-                            }
-                        });
-                    }
-
-                    $related_options.each(function(){
-                        var visible_options = 0;
-                        for (var i in option_value) {
-                            visible_options += $(this).find('[master-option-value=' + option_value[i] + ']').size()*1;
-                            visible_options += $(this).find('[master-option-value=0]').size()*1;
-                        }
-                        if ($(this).find('.img_block, option, input, textarea').size() != 0 && visible_options == 0) {
-                            $(this).slideUp();
-                        } else {
-                            $(this).slideDown();
-                        }
-                    });
-                }
-                function clearOption($option_container, $price, $price_old, $special, element,initial_price_update, initial_price, initial_price_old, $qty) {
-                    $option_container.find('select').val('');
-//                    if (!$option_container.parents('.product-thumb').find('input[name=quantity]').is('.changed')) {
-
-                    $option_container.find('.radio-type-button2 span').removeClass('active');
-                    $option_container.find('input[type=radio], input[type=checkbox]').removeAttr('checked');
-
-//                    }
-                    //$option_container.find('input[type=text], textarea').attr('value', '');
-                    recalcPrice($price, $price_old, $special, element, initial_price_update, initial_price, initial_price_old, $qty);
-                }
-            //--></script>
-            <?php
-            if (isset($related_options['price_adjustment_on']) && $related_options['price_adjustment_on']) {
-            ?>
-            <script type="text/javascript"><!--
-
-
-                function formatMoney(n, c, d, t) {
-                    var c = isNaN(c = Math.abs(c)) ? 2 : c,
-                    d = d == undefined ? "." : d,
-                    t = t == undefined ? "," : t,
-                    s = n < 0 ? "-" : "",
-                    i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "",
-                    j = (j = i.length) > 3 ? j % 3 : 0;
-                   return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
-                };
-
-                function diffPrice(element) {
-
-                    var regex_add_price = /([\+\-\=])[^0-9]*([0-9]+[\.]{0,1}[0-9]*)/;
-                  var diff = 0;
-                  element.parents('.option').find('input[type=radio]:checked, input[type=checkbox]:checked').each(function(){
-                    additional_price = regex_add_price.exec(element.parents('.option').find('label[for=' + element.attr('id') + '] span.hidden').text().replace('<?php echo $decimal_point; ?>', '.').replace(new RegExp('<?php echo $thousand_point; ?>', 'g'), ''));
-
-                    if (additional_price != null && additional_price != '' && additional_price != undefined) {
-                      if (additional_price[1] == '+') {
-                        diff += additional_price[2]*1;
-                      } else if (additional_price[1] == '-') {
-                        diff -= additional_price[2]*1;
-                      } else if (additional_price[1] == '=') {
-                        diff = additional_price[2]*1;
-                      }
-                    }
-                  });
-                  /*
-                  element.parents('.options').find('select>option:selected').each(function(){
-                    additional_price = regex_add_price.exec(element.text().replace('<?php echo $decimal_point; ?>', '.').replace(new RegExp('<?php echo $thousand_point; ?>', 'g'), ''));
-                    if (additional_price != null && additional_price != '' && additional_price != undefined) {
-                      if (additional_price[1] == '+') {
-                        diff += additional_price[2]*1;
-                      } else if (additional_price[1] == '-') {
-                        diff -= additional_price[2]*1;
-                      }
-                    }
-                  });
-                  */
-                  qty = element.parents('.product-info').find('input[name=quantity]').val();
-
-                  return diff * qty;
-                }
-                function price_format(/*price_view, */price) {
-
-                        var regex_replace_price = /([0-9]+[\.]{0,1}[0-9]*)/;
-                        var num = <?php echo $related_options['price_residue'] ?>;
-                  price = formatMoney(price, num, '<?php echo $decimal_point; ?>', '<?php echo $thousand_point; ?>');
-                  return price + ' р.';
-                  /*
-                  return price_view.replace('<?php echo $decimal_point; ?>', '.').replace(new RegExp('<?php echo $thousand_point; ?>', 'g'), '').replace(regex_replace_price, price);
-                  */
-                }
-                /*
-                <?php if ($related_options['animate_price']) { ?>
-                function animateMainPrice_callback(wrapper, price_start, price_final, animate_step, special) {
-
-                  price_start += animate_step;
-
-                  if ((animate_step > 0) && (price_start > price_final)){
-                    price_start = price_final;
-                  } else if ((animate_step < 0) && (price_start < price_final)) {
-                    price_start = price_final;
-                  } else if (animate_step == 0) {
-                    price_start = price_final;
-                  }
-
-                  wrapper.html( price_format(wrapper.html(), price_start) );
-
-                  if (price_start != price_final) {
-                    if (special === true) {
-                      special_timeout_id = setTimeout(function(){animateMainPrice_callback(wrapper, price_start, price_final, animate_step, special)}, animate_delay);
-                    } else {
-                      main_timeout_id = setTimeout(function(){animateMainPrice_callback(wrapper, price_start, price_final, animate_step, special)}, animate_delay);
-                    }
-                  }
-                }
-                function animateMainPrice(wrapper, start, final, special) {
-                  animate_step = (final - start) / 10;
-                  if (special === true) {
-                    clearTimeout(special_timeout_id);
-                    special_timeout_id = setTimeout(function(){animateMainPrice_callback(wrapper, start, final, animate_step, special)}, animate_delay);
-                  } else {
-                    clearTimeout(main_timeout_id);
-                    main_timeout_id = setTimeout(function(){animateMainPrice_callback(wrapper, start, final, animate_step, special)}, animate_delay);
-                  }
-                }
-                <?php } else { ?>
-
-                function showPrice(wrapper, price) {
-                  wrapper.html( price_format(wrapper, price) );
-                }
-                <?php } ?>
-                */
-
-                function recalcPrice($price, $price_old, $special, element, initial_price_update, initial_price, initial_price_old) {
-                  var diff = diffPrice(element);
-                  if (initial_price_update != initial_price + diff) {
-                      /*
-                    <?php if ($related_options['animate_price']) { ?>
-                      animateMainPrice($price, initial_price_update, initial_price + diff, false);
-                    <?php } else { ?>
-                      showPrice($price, initial_price + diff);
-                    <?php } ?>
-                    */
-
-                    if ($special) {
-                        element.parents('.product-info').find('.price-new').html( price_format(Number(initial_price) + Number(diff)) );
-                        element.parents('.product-info').find('.price-old').html( price_format(Number(initial_price_old) + Number(diff)) );
-                    } else {
-                        element.parents('.product-info').find('.price-new').html( price_format(Number(initial_price) + Number(diff)) );
-                    }
-
-//                    showPrice($price, initial_price + diff, element);
-                    initial_price_update = initial_price + diff;
-                    if ($special) {
-                        /*
-                      <?php if ($related_options['animate_price']) { ?>
-                        animateMainPrice($price_old, initial_price_old_update, initial_price_old + diff, true);
-                      <?php } else { ?>
-                        showPrice($price_old, initial_price_old + diff);
-                      <?php } ?>
-                      */
-//                        showPrice($price_old, initial_price_old + diff, element, true);
-                        initial_price_old_update = initial_price_old + diff;
-                    }
-                  }
-                }
-            //--></script>
-            <?php } else { ?>
-            <script type="text/javascript"><!--
-                function recalcPrice() {
-//                    return true;
-                }
-            //--></script>
-            <?php } ?>
-            <!--EOF Related Options-->
 
 
                   <script type="application/ld+json">
