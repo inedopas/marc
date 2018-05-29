@@ -332,14 +332,16 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
                          <?php } ?>
                           <?php if ($option['type'] == 'radio') { ?>
 
-													<table border="1"><tr><td>
+													<table width="100%"><thead>
+													<tr>
 
+<td colspan="3">
 
 				<div class="container-fluid"  style="display:block; width:100%">
 
 
-                            <div style="display:inline-block;" class="control-label"><?php echo $option['name']; ?></label></div> <input type="hidden" data-toggle="modal" id="howtosize" data-target="#how-to-size" value="Как узнать размер?" class="button"/>
-                            <div class="col-md-12 col-xs-12" style="display:block; width:100%" id="input-option<?php echo $option['product_option_id']; ?>" >
+                            <div style="display:inline-block" class="control-label"><b> <?php echo $option['name']; ?> </b></label></div> <input  style="height:30px; float:right;" type="hidden" data-toggle="modal" id="howtosize" data-target="#how-to-size" value="Как узнать размер?" class="button"/>
+                            <div class="col-md-12 col-xs-12" style="display:block; width:'100%'" id="input-option<?php echo $option['product_option_id']; ?>" >
                             	<div class="">
                               <?php foreach ($option['product_option_value'] as $option_value) { ?>
                               <div class="radio <?php if($theme_options->get( 'product_page_radio_style' ) == 1) { echo 'radio-type-button2'; } ?>">
@@ -382,7 +384,10 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
                               <?php } ?>
                             </div>
                             </div></div>
-														</td></tr>
+														</td>
+														<td > </td>
+
+														</td></tr></thead>
 <tr>
 <td>
 <?php if ($price) { ?>
@@ -421,29 +426,28 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
  </div>
  <?php } ?>
 
-
-
-
-
 </td>
-<td><div class="quantity">
+
+<td align="center" width="30px"><div class="quantity">
 		<span id="q_up"><i class="fa fa-angle-up"></i></span>
 	<input type="text" name="quantity" id="quantity_wanted" size="2" value="<?php echo $minimum; ?>" />
 	<span id="q_down"><i class="fa fa-angle-down"></i></span>
 		</div>
-		<?php echo $option_value['weight']; ?>.гр
+		 <?php echo $option_value['weight']; ?>гр
  </td>
 <td>
-  <input type="button" value="<?php echo $button_cart; ?>" id="button-cart" rel="<?php echo $product_id; ?>" data-loading-text="<?php echo $text_loading; ?>" class="button" />
-  <input type="button" value="Заказать в один клик" id="button-cart" rel="<?php echo $product_id; ?>" data-loading-text="<?php echo $text_loading; ?>" class="button" />
+  <input style="width:220px; height:30px" type="button" value="<?php echo $button_cart; ?>" id="button-cart" rel="<?php echo $product_id; ?>" data-loading-text="<?php echo $text_loading; ?>" class="button" /> <hr />
+  <input style="width:220px; height:30px" type="button" value="Заказать в один клик" id="button-cart" rel="<?php echo $product_id; ?>" data-loading-text="<?php echo $text_loading; ?>" class="button" />
 			 </td>
 				</tr>
 
-</td>
-<td  width="70%">
-<div class="pluso" data-background="transparent" data-options="small,round,line,horizontal,nocounter,theme=04" data-services="vkontakte,odnoklassniki,facebook,twitter,google,moimir,email,print" data-user="1366104031"></div>
+<tr>
+<td colspan="3">
+
+
+<div style="display:inline-block" class="pluso" data-background="transparent" data-options="small,round,line,horizontal,nocounter,theme=04" data-services="vkontakte,odnoklassniki,facebook,twitter,google,moimir,email,print" data-user="1366104031"></div>
 <?php if ($review_status) { ?>
-<div class="review">
+<div class="" style="display:inline-block">
 	<?php if($rating > 0) { ?>
 	<span itemprop="review" class="hidden" itemscope itemtype="http://schema.org/Review-aggregate">
 		<span itemprop="itemreviewed"><?php echo $heading_title; ?></span>
@@ -472,9 +476,146 @@ h.appendChild(s);
 </div>
 <?php } ?>
 
+<script type="text/javascript">$(".geoip-module").appendTo("#geopa");</script>
+<div style="display:block"><div id="geopa"></div> </div>
+
+              <!-- Shipping calculate -->
+
+
+              <div class="">
+                <?php $estimate_shipping_estimate_shipping_geo = 1; ?>
+                <?php if($estimate_shipping_estimate_shipping_geo) { ?>
+                <div style="display:none" class="form-group required">
+                  <div class="">
+
+                    <select style="display:none" name="country_id" id="input-country" class="form-control">
+                      <option value="176"><?php echo $text_select; ?></option>
+                      <?php foreach ($countries as $country) { ?>
+                      <?php if ($country['country_id'] == $country_id) { ?>
+                      <option value="<?php echo $country['country_id']; ?>" selected="selected"><?php echo $country['name']; ?></option>
+                      <?php } else { ?>
+                      <option value="<?php echo $country['country_id']; ?>"><?php echo $country['name']; ?></option>
+                      <?php } ?>
+                      <?php } ?>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group required " style="display: inline">
+                  <div style="display:none" class="options">
+
+                    <?php
+
+$postc = ['2726' =>	'656000',
+'2729'	 =>	'675000',
+'2725'	 =>	'414000',
+'2724'	 =>	'163000',
+'2727'	 =>	'308000',
+'2730'	 =>	'241000',
+'2799'	 =>	'600000',
+'2801'	 =>	'400000',
+'2802'	 =>	'160000',
+'2803'	 =>	'394000',
+'2728'	 =>	'679000',
+'2741'	 =>	'153000',
+'2740'	 =>	'664000',
+'2743'	 =>	'236000',
+'2744'	 =>	'248000',
+'2775'	 =>	'683000',
+'2733'	 =>	'369000',
+'2746'   => '420000',
+'2747'	 =>	'650000',
+'2804'	 =>	'610000',
+'2750'	 =>	'156000',
+'2751'	 =>	'350000',
+'2752'	 =>	'660000',
+'2754'	 =>	'640000',
+'2755'	 =>	'305000',
+'2735'	 =>	'187000',
+'2757'	 =>	'398000',
+'2758'	 =>	'685000',
+'2761'	 =>	'101000',
+'2722'	 =>	'140000',
+'2762'	 =>	'183000',
+'2764'	 =>	'166000',
+'2766'	 =>	'603000',
+'2767'	 =>	'173000',
+'2768'	 =>	'630000',
+'2769'	 =>	'644000',
+'2771'	 =>	'460000',
+'2770'	 =>	'302000',
+'2773'	 =>	'440000',
+'2774'	 =>	'614000',
+'2800'	 =>	'690000',
+'2777'	 =>	'180000',
+'2738'	 =>	'649000',
+'2794'	 =>	'450999',
+'2796'	 =>	'670000',
+'2759'	 =>	'367000',
+'2765'	 =>	'386000',
+'2736'	 =>	'358000',
+'2776'	 =>	'185000',
+'2787'	 =>	'167000',
+'2808'	 =>	'424000',
+'2782'	 =>	'430000',
+'2798'	 =>	'362000',
+'2756'	 =>	'667000',
+'2721'	 =>	'655000',
+'2778'	 =>	'344000',
+'2779'	 =>	'390000',
+'2781'	 =>	'443000',
+'2785'	 =>	'190000',
+'2783'	 =>	'410000',
+'2737'	 =>	'693000',
+'2807'	 =>	'620000',
+'2784'	 =>	'214000',
+'2786'	 =>	'355000',
+'2788'	 =>	'392000',
+'2792'	 =>	'170000',
+'2789'	 =>	'634000',
+'2790'	 =>	'300000',
+'2793'	 =>	'625000',
+'2742'	 =>	'426000',
+'2795'	 =>	'432000',
+'2748'	 =>	'680000',
+'2749'	 =>	'628000',
+'2732'	 =>	'454000',
+'2739'	 =>	'364000',
+'2731'	 =>	'428000',
+'2723'	 =>	'689000',
+'2780'	 =>	'629000',
+'2806'	 =>	'150000',
+];
+
+
+
+
+
+                     ?>
+                            <select style="display:none" name="zone_id" id="input-zone" class="form-control">
+                    </select>
+                  </div>
+                </div>
+                <?php } ?>
+                <div class="form-group required" style="display:inline-block">
+                  <div class="options" style="display:inline-block">
+                 <?php echo $geoip; ?>
+                    <input style="display:none" type="text" name="postcode" value="<? echo $postc[$zone_id]; ?>" placeholder="<?php echo $entry_postcode; ?>" id="input-postcode" class="form-control" />
+
+                </div>
+                <button style="display:inline-block" type="button" id="button-quote" data-loading-text="<?php echo $text_loading; ?>" class="btn btn-primary">Ближайшая доставка</button>
+              </div>
+            
 
 </td>
-														</table>
+
+<td>
+
+</td>
+<td>
+
+</td>
+	</tr>
+			</table>
 
                           </div>
                           <?php } ?>
@@ -652,135 +793,7 @@ h.appendChild(s);
 
 
 	<?php } ?>
-	<script type="text/javascript">$(".geoip-module").appendTo("#geopa");</script>
-	<div style="display:block"><div id="geopa"></div> </div>
 
-              <!-- Shipping calculate -->
-
-
-              <div class="">
-                <?php $estimate_shipping_estimate_shipping_geo = 1; ?>
-                <?php if($estimate_shipping_estimate_shipping_geo) { ?>
-                <div style="display:none" class="form-group required">
-                  <div class="">
-
-                    <select style="display:none" name="country_id" id="input-country" class="form-control">
-                      <option value="176"><?php echo $text_select; ?></option>
-                      <?php foreach ($countries as $country) { ?>
-                      <?php if ($country['country_id'] == $country_id) { ?>
-                      <option value="<?php echo $country['country_id']; ?>" selected="selected"><?php echo $country['name']; ?></option>
-                      <?php } else { ?>
-                      <option value="<?php echo $country['country_id']; ?>"><?php echo $country['name']; ?></option>
-                      <?php } ?>
-                      <?php } ?>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group required " style="display: inline">
-                  <div style="display:none" class="options">
-
-                    <?php
-
-$postc = ['2726' =>	'656000',
-'2729'	 =>	'675000',
-'2725'	 =>	'414000',
-'2724'	 =>	'163000',
-'2727'	 =>	'308000',
-'2730'	 =>	'241000',
-'2799'	 =>	'600000',
-'2801'	 =>	'400000',
-'2802'	 =>	'160000',
-'2803'	 =>	'394000',
-'2728'	 =>	'679000',
-'2741'	 =>	'153000',
-'2740'	 =>	'664000',
-'2743'	 =>	'236000',
-'2744'	 =>	'248000',
-'2775'	 =>	'683000',
-'2733'	 =>	'369000',
-'2746'   => '420000',
-'2747'	 =>	'650000',
-'2804'	 =>	'610000',
-'2750'	 =>	'156000',
-'2751'	 =>	'350000',
-'2752'	 =>	'660000',
-'2754'	 =>	'640000',
-'2755'	 =>	'305000',
-'2735'	 =>	'187000',
-'2757'	 =>	'398000',
-'2758'	 =>	'685000',
-'2761'	 =>	'101000',
-'2722'	 =>	'140000',
-'2762'	 =>	'183000',
-'2764'	 =>	'166000',
-'2766'	 =>	'603000',
-'2767'	 =>	'173000',
-'2768'	 =>	'630000',
-'2769'	 =>	'644000',
-'2771'	 =>	'460000',
-'2770'	 =>	'302000',
-'2773'	 =>	'440000',
-'2774'	 =>	'614000',
-'2800'	 =>	'690000',
-'2777'	 =>	'180000',
-'2738'	 =>	'649000',
-'2794'	 =>	'450999',
-'2796'	 =>	'670000',
-'2759'	 =>	'367000',
-'2765'	 =>	'386000',
-'2736'	 =>	'358000',
-'2776'	 =>	'185000',
-'2787'	 =>	'167000',
-'2808'	 =>	'424000',
-'2782'	 =>	'430000',
-'2798'	 =>	'362000',
-'2756'	 =>	'667000',
-'2721'	 =>	'655000',
-'2778'	 =>	'344000',
-'2779'	 =>	'390000',
-'2781'	 =>	'443000',
-'2785'	 =>	'190000',
-'2783'	 =>	'410000',
-'2737'	 =>	'693000',
-'2807'	 =>	'620000',
-'2784'	 =>	'214000',
-'2786'	 =>	'355000',
-'2788'	 =>	'392000',
-'2792'	 =>	'170000',
-'2789'	 =>	'634000',
-'2790'	 =>	'300000',
-'2793'	 =>	'625000',
-'2742'	 =>	'426000',
-'2795'	 =>	'432000',
-'2748'	 =>	'680000',
-'2749'	 =>	'628000',
-'2732'	 =>	'454000',
-'2739'	 =>	'364000',
-'2731'	 =>	'428000',
-'2723'	 =>	'689000',
-'2780'	 =>	'629000',
-'2806'	 =>	'150000',
-];
-
-
-
-
-
-                     ?>
-                            <select style="display:none" name="zone_id" id="input-zone" class="form-control">
-                    </select>
-                  </div>
-                </div>
-                <?php } ?>
-                <div class="form-group required">
-                  <div class="options" style="display:block">
-                 <?php echo $geoip; ?>
-                    <input style="display:none" type="text" name="postcode" value="<? echo $postc[$zone_id]; ?>" placeholder="<?php echo $entry_postcode; ?>" id="input-postcode" class="form-control" />
-
-                </div>
-                <button type="button" id="button-quote" data-loading-text="<?php echo $text_loading; ?>" class="btn btn-primary">Ближайшая доставка</button>
-              </div>
-            
 
 
 

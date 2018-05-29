@@ -235,14 +235,16 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
                          <?php } ?>
                           <?php if ($option['type'] == 'radio') { ?>
 
-													<table border="1"><tr><td>
+													<table width="100%"><thead>
+													<tr>
 
+<td colspan="3">
 
 				<div class="container-fluid"  style="display:block; width:100%">
 
 
-                            <div style="display:inline-block;" class="control-label"><?php echo $option['name']; ?></label></div> <input type="hidden" data-toggle="modal" id="howtosize" data-target="#how-to-size" value="Как узнать размер?" class="button"/>
-                            <div class="col-md-12 col-xs-12" style="display:block; width:100%" id="input-option<?php echo $option['product_option_id']; ?>" >
+                            <div style="display:inline-block" class="control-label"><b> <?php echo $option['name']; ?> </b></label></div> <input  style="height:30px; float:right;" type="hidden" data-toggle="modal" id="howtosize" data-target="#how-to-size" value="Как узнать размер?" class="button"/>
+                            <div class="col-md-12 col-xs-12" style="display:block; width:'100%'" id="input-option<?php echo $option['product_option_id']; ?>" >
                             	<div class="">
                               <?php foreach ($option['product_option_value'] as $option_value) { ?>
                               <div class="radio <?php if($theme_options->get( 'product_page_radio_style' ) == 1) { echo 'radio-type-button2'; } ?>">
@@ -285,7 +287,10 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
                               <?php } ?>
                             </div>
                             </div></div>
-														</td></tr>
+														</td>
+														<td > </td>
+
+														</td></tr></thead>
 <tr>
 <td>
 <?php if ($price) { ?>
@@ -321,29 +326,28 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
  </div>
  <?php } ?>
 
-
-
-
-
 </td>
-<td><div class="quantity">
+
+<td align="center" width="30px"><div class="quantity">
 		<span id="q_up"><i class="fa fa-angle-up"></i></span>
 	<input type="text" name="quantity" id="quantity_wanted" size="2" value="<?php echo $minimum; ?>" />
 	<span id="q_down"><i class="fa fa-angle-down"></i></span>
 		</div>
-		<?php echo $option_value['weight']; ?>.гр
+		 <?php echo $option_value['weight']; ?>гр
  </td>
 <td>
-  <input type="button" value="<?php echo $button_cart; ?>" id="button-cart" rel="<?php echo $product_id; ?>" data-loading-text="<?php echo $text_loading; ?>" class="button" />
-  <input type="button" value="Заказать в один клик" id="button-cart" rel="<?php echo $product_id; ?>" data-loading-text="<?php echo $text_loading; ?>" class="button" />
+  <input style="width:220px; height:30px" type="button" value="<?php echo $button_cart; ?>" id="button-cart" rel="<?php echo $product_id; ?>" data-loading-text="<?php echo $text_loading; ?>" class="button" /> <hr />
+  <input style="width:220px; height:30px" type="button" value="Заказать в один клик" id="button-cart" rel="<?php echo $product_id; ?>" data-loading-text="<?php echo $text_loading; ?>" class="button" />
 			 </td>
 				</tr>
 
-</td>
-<td  width="70%">
-<div class="pluso" data-background="transparent" data-options="small,round,line,horizontal,nocounter,theme=04" data-services="vkontakte,odnoklassniki,facebook,twitter,google,moimir,email,print" data-user="1366104031"></div>
+<tr>
+<td colspan="3">
+
+
+<div style="display:inline-block" class="pluso" data-background="transparent" data-options="small,round,line,horizontal,nocounter,theme=04" data-services="vkontakte,odnoklassniki,facebook,twitter,google,moimir,email,print" data-user="1366104031"></div>
 <?php if ($review_status) { ?>
-<div class="review">
+<div class="" style="display:inline-block">
 	<?php if($rating > 0) { ?>
 	<span itemprop="review" class="hidden" itemscope itemtype="http://schema.org/Review-aggregate">
 		<span itemprop="itemreviewed"><?php echo $heading_title; ?></span>
@@ -372,9 +376,19 @@ h.appendChild(s);
 </div>
 <?php } ?>
 
+<script type="text/javascript">$(".geoip-module").appendTo("#geopa");</script>
+<div style="display:block"><div id="geopa"></div> </div>
 
 </td>
-														</table>
+
+<td>
+
+</td>
+<td>
+
+</td>
+	</tr>
+			</table>
 
                           </div>
                           <?php } ?>
@@ -552,8 +566,7 @@ h.appendChild(s);
 
 
 	<?php } ?>
-	<script type="text/javascript">$(".geoip-module").appendTo("#geopa");</script>
-	<div style="display:block"><div id="geopa"></div> </div>
+
 
 
 
