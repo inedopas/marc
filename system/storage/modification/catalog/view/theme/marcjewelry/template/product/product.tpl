@@ -209,6 +209,10 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 
 				<?php if (isset($custom_partner_price)) echo $custom_partner_price ?>
 			
+
+
+
+
 			      <div class="price">
 			      	<span class="textprice">Цена</span>
 			        <?php if($theme_options->get( 'display_specials_countdown' ) == '1' && $special) { $countdown = rand(0, 5000)*rand(0, 5000);
@@ -600,11 +604,11 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
               <!-- Shipping calculate -->
 
 
-              <div class="form-horizontal">
+              <div class="">
                 <?php $estimate_shipping_estimate_shipping_geo = 1; ?>
                 <?php if($estimate_shipping_estimate_shipping_geo) { ?>
                 <div style="display:none" class="form-group required">
-                  <div class="col-sm-12">
+                  <div class="">
 
                     <select style="display:none" name="country_id" id="input-country" class="form-control">
                       <option value="176"><?php echo $text_select; ?></option>
@@ -618,8 +622,8 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
                     </select>
                   </div>
                 </div>
-                <div class="form-group required">
-                  <div style="display:none" class="col-sm-12">
+                <div class="form-group required " style="display: inline">
+                  <div style="display:none" class="options">
 
                     <?php
 
@@ -715,7 +719,7 @@ $postc = ['2726' =>	'656000',
                 </div>
                 <?php } ?>
                 <div class="form-group required">
-                  <div class="col-sm-12">
+                  <div class="options" style="display: inline;">
                  <?php echo $geoip; ?>
                     <input style="display:none" type="text" name="postcode" value="<? echo $postc[$zone_id]; ?>" placeholder="<?php echo $entry_postcode; ?>" id="input-postcode" class="form-control" />
 
@@ -737,7 +741,12 @@ $postc = ['2726' =>	'656000',
  										    </div>
  										</div>
 
-			      <div class="cart">
+
+
+
+
+
+			      <div class="clearfix">
                         <div class="add-to-cart clearfix">
 
 
@@ -778,7 +787,7 @@ $postc = ['2726' =>	'656000',
 			          		echo $module;
 			          	}
 			          } else { ?>
-			          <div style="padding:10px 0;width: 100%;float:right;" class="col-sm-6">
+			          <div style="padding:10px 0;width: 100%;" class="col-sm-6">
      			          <!-- <p><?php echo $entry_qty; ?></p> -->
 						  <input type="hidden" name="product_id" size="2" value="<?php echo $product_id; ?>" />
      			          <input type="button" value="<?php echo $button_cart; ?>" id="button-cart" rel="<?php echo $product_id; ?>" data-loading-text="<?php echo $text_loading; ?>" class="button" />

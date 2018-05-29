@@ -934,7 +934,7 @@ select {
           border-radius:         0px;
           -moz-border-radius:    0px;
           -webkit-border-radius: 0px;
-          padding: 15px 30px 12px 30px;
+        /*  padding: 15px 30px 12px 30px;*/
      }
 
           .button-body-type-10 #main .product-info .cart .add-to-cart #button-cart {
@@ -7536,7 +7536,7 @@ position: absolute;
 			.product-info .radio-type-button2 {
     margin: 2px 2px 2px 1px;
     padding: 0px;
-     width: 96%;
+
     float: left;
     background-color: #f9f9f9;
         background-color: #efefef;
@@ -7562,7 +7562,7 @@ position: absolute;
                              letter-spacing: 0.03em;
                                  vertical-align: middle;
     display: block;
-    width: 100%;
+    min-width: 50px;
     border: 1px solid transparent;
 			     }
 
@@ -7619,8 +7619,8 @@ font-size: 16px;
 
 				.product-info .cart .add-to-cart {
 				     /*padding: 20px 30px 30px 30px;*/
-                             width: 70%;
-                              float: right;
+                             
+
 				}
 
 				     .product-info .cart .add-to-cart a {

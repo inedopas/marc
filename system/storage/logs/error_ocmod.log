@@ -1,4 +1,4 @@
-2018-05-28 21:25:39 - 
+2018-05-29 15:14:15 - 
 ERROR: CODE NOT FOUND!
 FILE: catalog/view/theme/marcjewelry/template/checkout/checkout.tpl
 CODE: <h1><?php echo $heading_title; ?></h1>
@@ -36,6 +36,11 @@ MOD: affiliate
 ERROR: FILE NOT FOUND!
 FILE: /home/nedopasc/public_html/admin/view/template/common/menu.tpl
 MOD: affiliate
+
+ERROR: CODE NOT FOUND!
+FILE: catalog/controller/checkout/simplecheckout.php
+CODE: $this->children
+MOD: affiliatemmm_simple
 
 ERROR: FILE NOT FOUND!
 FILE: /home/nedopasc/public_html/admin/language/ua-uk/catalog/review.php

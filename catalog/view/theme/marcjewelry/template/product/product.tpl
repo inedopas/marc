@@ -206,6 +206,10 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 
 			    <div class="col-sm-<?php echo $product_center_grid; ?> product-center clearfix">
 			     <?php if ($price) { ?>
+
+
+
+
 			      <div class="price">
 			      	<span class="textprice">Цена</span>
 			        <?php if($theme_options->get( 'display_specials_countdown' ) == '1' && $special) { $countdown = rand(0, 5000)*rand(0, 5000);
@@ -510,7 +514,12 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
  										    </div>
  										</div>
 
-			      <div class="cart">
+
+
+
+
+
+			      <div class="clearfix">
                         <div class="add-to-cart clearfix">
 
 
@@ -551,7 +560,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 			          		echo $module;
 			          	}
 			          } else { ?>
-			          <div style="padding:10px 0;width: 100%;float:right;" class="col-sm-6">
+			          <div style="padding:10px 0;width: 100%;" class="col-sm-6">
      			          <!-- <p><?php echo $entry_qty; ?></p> -->
 						  <input type="hidden" name="product_id" size="2" value="<?php echo $product_id; ?>" />
      			          <input type="button" value="<?php echo $button_cart; ?>" id="button-cart" rel="<?php echo $product_id; ?>" data-loading-text="<?php echo $text_loading; ?>" class="button" />
