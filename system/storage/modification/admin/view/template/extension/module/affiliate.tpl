@@ -26,6 +26,13 @@
       <div class="panel-body">
         <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-affiliate" class="form-horizontal">
 
+      <?php  
+        if (file_exists(DIR_TEMPLATE.'module/affiliate_settings.tpl')) {
+          require_once(DIR_TEMPLATE.'module/affiliate_settings.tpl');
+        } 
+      ?>
+            
+
       <table class="table table-bordered">
       <tr>
           <td class="right"><?php echo $entry_customer_lifetime; ?> </br>

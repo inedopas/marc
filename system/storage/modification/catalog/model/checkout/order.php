@@ -188,6 +188,10 @@ class ModelCheckoutOrder extends Model {
 			return array(
 				'order_id'                => $order_query->row['order_id'],
 
+        'affiliate_id' => $order_query->row['affiliate_id'],
+                                'commission' => $order_query->row['commission'],
+      
+
 				'track_no'                => (isset($order_query->row['track_no']) ? $order_query->row['track_no'] : ''),
 				'invoice_no'              => $order_query->row['invoice_no'],
 				'invoice_prefix'          => $order_query->row['invoice_prefix'],
@@ -262,6 +266,11 @@ class ModelCheckoutOrder extends Model {
 
 	public function addOrderHistory($order_id, $order_status_id, $comment = '', $notify = false, $override = false) {
 		$order_info = $this->getOrder($order_id);
+
+        $order_info['affiliate_id'] = 0;
+        $this->load->model('module/affiliate');
+        $this->model_module_affiliate->checkOrder($order_id, $order_info, $order_status_id);
+      
 
 		if ($order_info) {
 			// Fraud Detection

@@ -4,6 +4,15 @@
         $_['text_statisticsmyaffiliate'] = 'Statistics of my partners';
         $_['statisticsmyaffiliate'] = 'See the statistics of my partners';
 			
+
+$_['text_orderpayment']    = 'Order payment';
+$_['text_my_orderpayment'] = 'Order payment';
+$_['text_statistics'] = 'View Statistics';
+$_['text_my_statistics'] = 'My Statistics';
+$_['text_balance'] = '<b>Get Balance: %s</b>';
+$_['text_percentage'] = '<b>Get Commission: %s %s</b>';
+$_['text_name_affiliate'] = '<b>%s %s</b>';
+			
 // Heading
 $_['heading_title']        = 'My Affiliate Account';
 

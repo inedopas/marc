@@ -638,6 +638,11 @@ $('#button-history').on('click', function() {
 				$('#history').before('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
 
 				$('textarea[name=\'comment\']').val('');
+
+if (json['add']) {
+  $('#button-commission-add').replaceWith('<button id="button-commission-remove" data-toggle="tooltip" title="<?php echo $button_commission_remove; ?>" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></button>');
+}
+      
 			}
 		},
 		error: function(xhr, ajaxOptions, thrownError) {

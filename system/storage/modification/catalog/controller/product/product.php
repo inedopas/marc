@@ -5,6 +5,10 @@ class ControllerProductProduct extends Controller {
 
 				protected function getReviewsFirstPage($product_id) {
 					$this->load->language('product/product');
+
+          $this->load->model('module/statistics');
+        $this->model_module_statistics->validateTransitions();
+      
 					$this->load->model('catalog/review');
 					$data['text_no_reviews'] = $this->language->get('text_no_reviews');
 
@@ -41,6 +45,10 @@ class ControllerProductProduct extends Controller {
 				
 	public function index() {
 		$this->load->language('product/product');
+
+          $this->load->model('module/statistics');
+        $this->model_module_statistics->validateTransitions();
+      
 
 
 				//breadcrumbs data
@@ -1063,6 +1071,10 @@ $data['video_status'] = $this->config->get('video_status');
 	public function review() {
 		$this->load->language('product/product');
 
+          $this->load->model('module/statistics');
+        $this->model_module_statistics->validateTransitions();
+      
+
 		$this->load->model('catalog/review');
 
 		$data['text_no_reviews'] = $this->language->get('text_no_reviews');
@@ -1110,6 +1122,10 @@ $data['video_status'] = $this->config->get('video_status');
 
 	public function write() {
 		$this->load->language('product/product');
+
+          $this->load->model('module/statistics');
+        $this->model_module_statistics->validateTransitions();
+      
 
 		$json = array();
 
@@ -1348,6 +1364,10 @@ $data['video_status'] = $this->config->get('video_status');
             
 	public function getRecurringDescription() {
 		$this->load->language('product/product');
+
+          $this->load->model('module/statistics');
+        $this->model_module_statistics->validateTransitions();
+      
 		$this->load->model('catalog/product');
 
 		if (isset($this->request->post['product_id'])) {

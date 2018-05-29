@@ -3,6 +3,11 @@
         $_['text_register_url'] = '<b>Referral link to invite partners:</b>';
         $_['button_vk'] = 'Post';
 			
+
+$_['text_home_url'] = '<b>Referral link to the store:</b>';
+$_['button_vk'] = 'Post';
+$_['text_coupon'] = '<br>You can also distribute your coupon code: <b>%s</b>';
+			
 // Heading
 $_['heading_title']    = 'Affiliate Tracking';
 

@@ -56,6 +56,12 @@ class ControllerMarketingAffiliate extends Controller {
 
 			$url = '';
 
+if (isset($this->request->get['filter_request_payment'])) {
+  $url .= '&filter_request_payment=' . $this->request->get['filter_request_payment'];
+}
+$data['sort_request_payment'] = $this->url->link('marketing/affiliate', 'token=' . $this->session->data['token'] . '&sort=a.request_payment' . $url, 'SSL');
+      
+
 			if (isset($this->request->get['filter_name'])) {
 				$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
 			}
@@ -116,6 +122,12 @@ class ControllerMarketingAffiliate extends Controller {
 			$this->session->data['success'] = $this->language->get('text_success');
 
 			$url = '';
+
+if (isset($this->request->get['filter_request_payment'])) {
+  $url .= '&filter_request_payment=' . $this->request->get['filter_request_payment'];
+}
+$data['sort_request_payment'] = $this->url->link('marketing/affiliate', 'token=' . $this->session->data['token'] . '&sort=a.request_payment' . $url, 'SSL');
+      
 
 			if (isset($this->request->get['filter_name'])) {
 				$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
@@ -185,6 +197,12 @@ class ControllerMarketingAffiliate extends Controller {
 
 			$url = '';
 
+if (isset($this->request->get['filter_request_payment'])) {
+  $url .= '&filter_request_payment=' . $this->request->get['filter_request_payment'];
+}
+$data['sort_request_payment'] = $this->url->link('marketing/affiliate', 'token=' . $this->session->data['token'] . '&sort=a.request_payment' . $url, 'SSL');
+      
+
 			if (isset($this->request->get['filter_name'])) {
 				$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
 			}
@@ -245,6 +263,12 @@ class ControllerMarketingAffiliate extends Controller {
 			$this->session->data['success'] = $this->language->get('text_success');
 
 			$url = '';
+
+if (isset($this->request->get['filter_request_payment'])) {
+  $url .= '&filter_request_payment=' . $this->request->get['filter_request_payment'];
+}
+$data['sort_request_payment'] = $this->url->link('marketing/affiliate', 'token=' . $this->session->data['token'] . '&sort=a.request_payment' . $url, 'SSL');
+      
 
 			if (isset($this->request->get['filter_name'])) {
 				$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
@@ -307,6 +331,12 @@ class ControllerMarketingAffiliate extends Controller {
 
 			$url = '';
 
+if (isset($this->request->get['filter_request_payment'])) {
+  $url .= '&filter_request_payment=' . $this->request->get['filter_request_payment'];
+}
+$data['sort_request_payment'] = $this->url->link('marketing/affiliate', 'token=' . $this->session->data['token'] . '&sort=a.request_payment' . $url, 'SSL');
+      
+
 			if (isset($this->request->get['filter_name'])) {
 				$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
 			}
@@ -355,6 +385,13 @@ class ControllerMarketingAffiliate extends Controller {
 	}
 
 	protected function getList() {
+
+if (isset($this->request->get['filter_request_payment'])) {
+  $filter_request_payment = $this->request->get['filter_request_payment'];
+} else {
+  $filter_request_payment = null;
+}
+      
 		if (isset($this->request->get['filter_name'])) {
 			$filter_name = $this->request->get['filter_name'];
 		} else {
@@ -404,6 +441,12 @@ class ControllerMarketingAffiliate extends Controller {
 		}
 
 		$url = '';
+
+if (isset($this->request->get['filter_request_payment'])) {
+  $url .= '&filter_request_payment=' . $this->request->get['filter_request_payment'];
+}
+$data['sort_request_payment'] = $this->url->link('marketing/affiliate', 'token=' . $this->session->data['token'] . '&sort=a.request_payment' . $url, 'SSL');
+      
 
 		if (isset($this->request->get['filter_name'])) {
 			$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
@@ -468,6 +511,9 @@ class ControllerMarketingAffiliate extends Controller {
 			'filter_name'       => $filter_name,
 			'filter_email'      => $filter_email,
 			'filter_status'     => $filter_status,
+
+'filter_request_payment' => $filter_request_payment,
+      
 			'filter_approved'   => $filter_approved,
 			'filter_date_added' => $filter_date_added,
 			'sort'              => $sort,
@@ -496,6 +542,10 @@ class ControllerMarketingAffiliate extends Controller {
 			}
 
 			$data['affiliates'][] = array(
+
+'request_payment' => $this->currency->format($result['request_payment'], $this->config->get('config_currency')),
+'request_payment_int' => $result['request_payment'],
+      
 				'affiliate_id' => $result['affiliate_id'],
 				'name'         => $result['name'],
 				'email'        => $result['email'],
@@ -563,6 +613,12 @@ class ControllerMarketingAffiliate extends Controller {
 
 		$url = '';
 
+if (isset($this->request->get['filter_request_payment'])) {
+  $url .= '&filter_request_payment=' . $this->request->get['filter_request_payment'];
+}
+$data['sort_request_payment'] = $this->url->link('marketing/affiliate', 'token=' . $this->session->data['token'] . '&sort=a.request_payment' . $url, 'SSL');
+      
+
 		if (isset($this->request->get['filter_name'])) {
 			$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
 		}
@@ -599,6 +655,12 @@ class ControllerMarketingAffiliate extends Controller {
 		$data['sort_date_added'] = $this->url->link('marketing/affiliate', 'token=' . $this->session->data['token'] . '&sort=a.date_added' . $url, true);
 
 		$url = '';
+
+if (isset($this->request->get['filter_request_payment'])) {
+  $url .= '&filter_request_payment=' . $this->request->get['filter_request_payment'];
+}
+$data['sort_request_payment'] = $this->url->link('marketing/affiliate', 'token=' . $this->session->data['token'] . '&sort=a.request_payment' . $url, 'SSL');
+      
 
 		if (isset($this->request->get['filter_name'])) {
 			$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
@@ -650,6 +712,10 @@ class ControllerMarketingAffiliate extends Controller {
 		$data['filter_name'] = $filter_name;
 		$data['filter_email'] = $filter_email;
 		$data['filter_status'] = $filter_status;
+
+$data['column_request_payment'] = $this->language->get('column_request_payment');
+$data['filter_request_payment'] = $filter_request_payment;
+      
 		$data['filter_approved'] = $filter_approved;
 		$data['filter_date_added'] = $filter_date_added;
 
@@ -677,6 +743,42 @@ class ControllerMarketingAffiliate extends Controller {
 		$data['text_cheque'] = $this->language->get('text_cheque');
 		$data['text_paypal'] = $this->language->get('text_paypal');
 		$data['text_bank'] = $this->language->get('text_bank');
+  
+$data['text_bonus'] = $this->language->get('text_bonus');
+$data['text_qiwi'] = $this->language->get('text_qiwi');
+$data['text_card'] = $this->language->get('text_card');
+$data['text_yandex'] = $this->language->get('text_yandex');
+$data['text_webmoney_wmr'] = $this->language->get('text_webmoney_wmr');
+$data['text_webmoney_wmz'] = $this->language->get('text_webmoney_wmz');
+$data['text_webmoney_wmu'] = $this->language->get('text_webmoney_wmu');
+$data['text_webmoney_wme'] = $this->language->get('text_webmoney_wme');
+$data['text_webmoney_wmy'] = $this->language->get('text_webmoney_wmy');
+$data['text_webmoney_wmb'] = $this->language->get('text_webmoney_wmb');
+$data['text_webmoney_wmg'] = $this->language->get('text_webmoney_wmg');
+$data['text_alert_pay'] = $this->language->get('text_alert_pay');
+$data['text_moneybookers'] = $this->language->get('text_moneybookers');
+$data['text_liqpay'] = $this->language->get('text_liqpay');
+$data['text_sage_pay'] = $this->language->get('text_sage_pay');
+$data['text_two_checkout'] = $this->language->get('text_two_checkout');
+$data['text_google_wallet'] = $this->language->get('text_google_wallet');      
+$data['entry_payment_comment'] = $this->language->get('entry_payment_comment');
+$data['entry_qiwi'] = $this->language->get('entry_qiwi');
+$data['entry_card'] = $this->language->get('entry_card');
+$data['entry_yandex'] = $this->language->get('entry_yandex');
+$data['entry_webmoney_wmr'] = $this->language->get('entry_webmoney_wmr');
+$data['entry_webmoney_wmz'] = $this->language->get('entry_webmoney_wmz');
+$data['entry_webmoney_wmu'] = $this->language->get('entry_webmoney_wmu');
+$data['entry_webmoney_wme'] = $this->language->get('entry_webmoney_wme');
+$data['entry_webmoney_wmy'] = $this->language->get('entry_webmoney_wmy');
+$data['entry_webmoney_wmb'] = $this->language->get('entry_webmoney_wmb');
+$data['entry_webmoney_wmg'] = $this->language->get('entry_webmoney_wmg');
+$data['entry_alert_pay'] = $this->language->get('entry_alert_pay');
+$data['entry_moneybookers'] = $this->language->get('entry_moneybookers');
+$data['entry_liqpay'] = $this->language->get('entry_liqpay');
+$data['entry_sage_pay'] = $this->language->get('entry_sage_pay');
+$data['entry_two_checkout'] = $this->language->get('entry_two_checkout');
+$data['entry_google_wallet'] = $this->language->get('entry_google_wallet');
+      
 
 		$data['entry_firstname'] = $this->language->get('entry_firstname');
 		$data['entry_lastname'] = $this->language->get('entry_lastname');
@@ -824,6 +926,12 @@ class ControllerMarketingAffiliate extends Controller {
 
 		$url = '';
 
+if (isset($this->request->get['filter_request_payment'])) {
+  $url .= '&filter_request_payment=' . $this->request->get['filter_request_payment'];
+}
+$data['sort_request_payment'] = $this->url->link('marketing/affiliate', 'token=' . $this->session->data['token'] . '&sort=a.request_payment' . $url, 'SSL');
+      
+
 		if (isset($this->request->get['filter_name'])) {
 			$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
 		}
@@ -889,6 +997,154 @@ class ControllerMarketingAffiliate extends Controller {
 			$affiliate_info = $this->model_marketing_affiliate->getAffiliate($this->request->get['affiliate_id']);
 		}
 
+
+if (isset($this->request->post['request_payment'])) {
+  $data['request_payment'] = $this->request->post['request_payment'];
+} elseif (!empty($affiliate_info)) {
+  $data['request_payment'] = $affiliate_info['request_payment'];
+} else {
+  $data['request_payment'] = '';
+}
+
+$data['affiliate_bonus'] = (bool)$this->config->get('affiliate_bonus');
+$data['affiliate_cheque'] = (bool)$this->config->get('affiliate_cheque');
+$data['affiliate_paypal'] = (bool)$this->config->get('affiliate_paypal');
+$data['affiliate_bank'] = (bool)$this->config->get('affiliate_bank');
+$data['affiliate_qiwi'] = (bool)$this->config->get('affiliate_qiwi');
+$data['affiliate_card'] = (bool)$this->config->get('affiliate_card');
+$data['affiliate_yandex'] = (bool)$this->config->get('affiliate_yandex');
+$data['affiliate_webmoney_wmr'] = (bool)$this->config->get('affiliate_webmoney_wmr');    
+$data['affiliate_webmoney_wmz'] = (bool)$this->config->get('affiliate_webmoney_wmz');
+$data['affiliate_webmoney_wmu'] = (bool)$this->config->get('affiliate_webmoney_wmu');
+$data['affiliate_webmoney_wme'] = (bool)$this->config->get('affiliate_webmoney_wme');
+$data['affiliate_webmoney_wmy'] = (bool)$this->config->get('affiliate_webmoney_wmy');
+$data['affiliate_webmoney_wmb'] = (bool)$this->config->get('affiliate_webmoney_wmb');
+$data['affiliate_webmoney_wmg'] = (bool)$this->config->get('affiliate_webmoney_wmg');
+$data['affiliate_alert_pay'] = (bool)$this->config->get('affiliate_alert_pay');
+$data['affiliate_moneybookers'] = (bool)$this->config->get('affiliate_moneybookers');
+$data['affiliate_liqpay'] = (bool)$this->config->get('affiliate_liqpay');
+$data['affiliate_sage_pay'] = (bool)$this->config->get('affiliate_sage_pay');
+$data['affiliate_two_checkout'] = (bool)$this->config->get('affiliate_two_checkout');
+$data['affiliate_google_wallet'] = (bool)$this->config->get('affiliate_google_wallet');
+      
+if (isset($this->request->post['qiwi'])) {
+  $data['qiwi'] = $this->request->post['qiwi'];
+} elseif (!empty($affiliate_info)) { 
+  $data['qiwi'] = $affiliate_info['qiwi'];
+} else {
+  $data['qiwi'] = '';
+}
+if (isset($this->request->post['card'])) {
+  $data['card'] = $this->request->post['card'];
+} elseif (!empty($affiliate_info)) { 
+  $data['card'] = $affiliate_info['card'];
+} else {
+  $data['card'] = '';
+}  
+if (isset($this->request->post['yandex'])) {
+  $data['yandex'] = $this->request->post['yandex'];
+} elseif (!empty($affiliate_info)) { 
+  $data['yandex'] = $affiliate_info['yandex'];
+} else {
+  $data['yandex'] = '';
+}      
+if (isset($this->request->post['webmoney_wmr'])) {
+  $data['webmoney_wmr'] = $this->request->post['webmoney_wmr'];
+} elseif (!empty($affiliate_info)) { 
+  $data['webmoney_wmr'] = $affiliate_info['webmoney_wmr'];
+} else {
+  $data['webmoney_wmr'] = '';
+}
+if (isset($this->request->post['webmoney_wmz'])) {
+  $data['webmoney_wmz'] = $this->request->post['webmoney_wmz'];
+} elseif (!empty($affiliate_info)) { 
+  $data['webmoney_wmz'] = $affiliate_info['webmoney_wmz'];
+} else {
+  $data['webmoney_wmz'] = '';
+}
+if (isset($this->request->post['webmoney_wmu'])) {
+  $data['webmoney_wmu'] = $this->request->post['webmoney_wmu'];
+} elseif (!empty($affiliate_info)) { 
+  $data['webmoney_wmu'] = $affiliate_info['webmoney_wmu'];
+} else {
+  $data['webmoney_wmu'] = '';
+}
+if (isset($this->request->post['webmoney_wme'])) {
+  $data['webmoney_wme'] = $this->request->post['webmoney_wme'];
+} elseif (!empty($affiliate_info)) { 
+  $data['webmoney_wme'] = $affiliate_info['webmoney_wme'];
+} else {
+  $data['webmoney_wme'] = '';
+}
+if (isset($this->request->post['webmoney_wmy'])) {
+  $data['webmoney_wmy'] = $this->request->post['webmoney_wmy'];
+} elseif (!empty($affiliate_info)) { 
+  $data['webmoney_wmy'] = $affiliate_info['webmoney_wmy'];
+} else {
+  $data['webmoney_wmy'] = '';
+}
+if (isset($this->request->post['webmoney_wmb'])) {
+  $data['webmoney_wmb'] = $this->request->post['webmoney_wmb'];
+} elseif (!empty($affiliate_info)) { 
+  $data['webmoney_wmb'] = $affiliate_info['webmoney_wmb'];
+} else {
+  $data['webmoney_wmb'] = '';
+}
+if (isset($this->request->post['webmoney_wmg'])) {
+  $data['webmoney_wmg'] = $this->request->post['webmoney_wmg'];
+} elseif (!empty($affiliate_info)) { 
+  $data['webmoney_wmg'] = $affiliate_info['webmoney_wmg'];
+} else {
+  $data['webmoney_wmg'] = '';
+}
+if (isset($this->request->post['alert_pay'])) {
+  $data['alert_pay'] = $this->request->post['alert_pay'];
+} elseif (!empty($affiliate_info)) { 
+  $data['alert_pay'] = $affiliate_info['alert_pay'];
+} else {
+  $data['alert_pay'] = '';
+}
+
+if (isset($this->request->post['moneybookers'])) {
+  $data['moneybookers'] = $this->request->post['moneybookers'];
+} elseif (!empty($affiliate_info)) { 
+  $data['moneybookers'] = $affiliate_info['moneybookers'];
+} else {
+  $data['moneybookers'] = '';
+}
+
+if (isset($this->request->post['liqpay'])) {
+  $data['liqpay'] = $this->request->post['liqpay'];
+} elseif (!empty($affiliate_info)) { 
+  $data['liqpay'] = $affiliate_info['liqpay'];
+} else {
+  $data['liqpay'] = '';
+}
+
+if (isset($this->request->post['sage_pay'])) {
+  $data['sage_pay'] = $this->request->post['sage_pay'];
+} elseif (!empty($affiliate_info)) { 
+  $data['sage_pay'] = $affiliate_info['sage_pay'];
+} else {
+  $data['sage_pay'] = '';
+}
+
+if (isset($this->request->post['two_checkout'])) {
+  $data['two_checkout'] = $this->request->post['two_checkout'];
+} elseif (!empty($affiliate_info)) { 
+  $data['two_checkout'] = $affiliate_info['two_checkout'];
+} else {
+  $data['two_checkout'] = '';
+}
+
+if (isset($this->request->post['google_wallet'])) {
+  $data['google_wallet'] = $this->request->post['google_wallet'];
+} elseif (!empty($affiliate_info)) { 
+  $data['google_wallet'] = $affiliate_info['google_wallet'];
+} else {
+  $data['google_wallet'] = '';
+}
+      
 		$data['token'] = $this->session->data['token'];
 
 		if (isset($this->request->get['affiliate_id'])) {
@@ -1032,9 +1288,16 @@ class ControllerMarketingAffiliate extends Controller {
 		if (isset($this->request->post['payment'])) {
 			$data['payment'] = $this->request->post['payment'];
 		} elseif (!empty($affiliate_info)) {
-			$data['payment'] = $affiliate_info['payment'];
+			
+$this->load->model('module/affiliate');
+$data['payment'] = $this->model_module_affiliate->getPaymentAffiliate($affiliate_info);
+$data['info_payment'] = $this->language->get('text_'.$data['payment']);
+      
 		} else {
-			$data['payment'] = 'cheque';
+			
+$this->load->model('module/affiliate');
+$data['payment'] = $this->model_module_affiliate->getPaymentAffiliate();
+      
 		}
 
 		if (isset($this->request->post['cheque'])) {
@@ -1259,6 +1522,9 @@ class ControllerMarketingAffiliate extends Controller {
 
 		$data['text_no_results'] = $this->language->get('text_no_results');
 		$data['text_balance'] = $this->language->get('text_balance');
+
+$data['request_payment'] = $this->currency->format($this->model_marketing_affiliate->getTransactionTotal($this->request->get['affiliate_id']), $this->config->get('config_currency'));
+      
 
 		$data['column_date_added'] = $this->language->get('column_date_added');
 		$data['column_description'] = $this->language->get('column_description');

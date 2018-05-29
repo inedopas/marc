@@ -27,6 +27,140 @@ class ControllerMarketingCoupon extends Controller {
 			
 	private $error = array();
 
+    
+  public function inserttracking() {
+      $this->language->load('marketing/coupon');
+
+      $this->document->setTitle($this->language->get('heading_title'));
+    
+    $this->load->model('marketing/coupon');
+    
+      if ($this->request->server['REQUEST_METHOD'] == 'POST') {
+      $this->load->model('module/affiliate');
+      $this->model_module_affiliate->addTrackingCoupon($this->request->post);
+      $this->session->data['success'] = $this->language->get('text_success');
+
+      $url = '';
+
+      if (isset($this->request->get['sort'])) {
+        $url .= '&sort=' . $this->request->get['sort'];
+      }
+
+      if (isset($this->request->get['order'])) {
+        $url .= '&order=' . $this->request->get['order'];
+      }
+      
+      if (isset($this->request->get['page'])) {
+        $url .= '&page=' . $this->request->get['page'];
+      }
+            
+      $this->response->redirect($this->url->link('marketing/coupon', 'token=' . $this->session->data['token'] . $url, 'SSL'));
+      }
+    
+      $this->getFormTracking();
+    }
+
+    private function getFormTracking() {
+      $data['heading_title'] = $this->language->get('heading_title');
+
+      $data['text_enabled'] = $this->language->get('text_enabled');
+      $data['text_disabled'] = $this->language->get('text_disabled');
+      $data['text_yes'] = $this->language->get('text_yes');
+      $data['text_no'] = $this->language->get('text_no');
+      $data['text_percent'] = $this->language->get('text_percent');
+      $data['text_amount'] = $this->language->get('text_amount');
+  
+    $data['entry_discount'] = $this->language->get('entry_discount');
+    $data['entry_type'] = $this->language->get('entry_type');
+    $data['entry_total'] = $this->language->get('entry_total');
+    $data['entry_product'] = $this->language->get('entry_product');
+
+      $data['button_save'] = $this->language->get('button_save');
+      $data['button_cancel'] = $this->language->get('button_cancel');
+
+    $data['tab_general'] = $this->language->get('tab_general');
+    $data['tab_coupon_history'] = $this->language->get('tab_coupon_history');
+
+    $data['token'] = $this->session->data['token'];
+  
+    if (isset($this->request->get['coupon_id'])) {
+      $data['coupon_id'] = $this->request->get['coupon_id'];
+    } else {
+      $data['coupon_id'] = 0;
+    }
+        
+     if (isset($this->error['warning'])) {
+      $data['error_warning'] = $this->error['warning'];
+    } else {
+      $data['error_warning'] = '';
+    }  
+
+    $url = '';
+      
+    if (isset($this->request->get['page'])) {
+      $url .= '&page=' . $this->request->get['page'];
+    }
+
+    if (isset($this->request->get['sort'])) {
+      $url .= '&sort=' . $this->request->get['sort'];
+    }
+
+    if (isset($this->request->get['order'])) {
+      $url .= '&order=' . $this->request->get['order'];
+    }
+
+      $data['breadcrumbs'] = array();
+
+       $data['breadcrumbs'][] = array(
+           'text'      => $this->language->get('text_home'),
+      'href'      => $this->url->link('common/home', 'token=' . $this->session->data['token'], 'SSL'),
+          'separator' => false
+       );
+
+       $data['breadcrumbs'][] = array(
+           'text'      => $this->language->get('heading_title'),
+      'href'      => $this->url->link('marketing/coupon', 'token=' . $this->session->data['token'] . $url, 'SSL'),
+          'separator' => ' :: '
+       );
+                
+    $data['action'] = $this->url->link('marketing/coupon/inserttracking', 'token=' . $this->session->data['token'] . $url, 'SSL');
+    
+    $data['cancel'] = $this->url->link('marketing/coupon', 'token=' . $this->session->data['token'] . $url, 'SSL');
+      
+    if (isset($this->request->get['coupon_id']) && (!$this->request->server['REQUEST_METHOD'] != 'POST')) {
+          $coupon_info = $this->model_marketing_coupon->getCoupon($this->request->get['coupon_id']);
+      }     
+    
+      if (isset($this->request->post['type'])) {
+          $data['type'] = $this->request->post['type'];
+      } elseif (!empty($coupon_info)) {
+      $data['type'] = $coupon_info['type'];
+    } else {
+          $data['type'] = '';
+      }
+    
+      if (isset($this->request->post['discount'])) {
+          $data['discount'] = $this->request->post['discount'];
+      } elseif (!empty($coupon_info)) {
+      $data['discount'] = $coupon_info['discount'];
+    } else {
+          $data['discount'] = '';
+      }
+
+      if (isset($this->request->post['total'])) {
+          $data['total'] = $this->request->post['total'];
+      } elseif (!empty($coupon_info)) {
+      $data['total'] = $coupon_info['total'];
+    } else {
+          $data['total'] = '';
+      }
+    $data['header'] = $this->load->controller('common/header');
+    $data['column_left'] = $this->load->controller('common/column_left');
+    $data['footer'] = $this->load->controller('common/footer');
+
+    $this->response->setOutput($this->load->view('sale/coupon_tracking.tpl', $data));    
+    }
+      
 	public function index() {
 
 		if ((int)$this->config->get('aqe_status') && (int)$this->config->get('aqe_marketing_coupons_status')) {
@@ -139,6 +273,10 @@ class ControllerMarketingCoupon extends Controller {
 		if (isset($this->request->post['selected']) && $this->validateDelete()) {
 			foreach ($this->request->post['selected'] as $coupon_id) {
 				$this->model_marketing_coupon->deleteCoupon($coupon_id);
+
+$this->load->model('module/affiliate');
+$this->model_module_affiliate->dellTrackingCoupon($coupon_id);
+      
 			}
 
 			$this->session->data['success'] = $this->language->get('text_success');
@@ -268,6 +406,10 @@ class ControllerMarketingCoupon extends Controller {
 		$data['column_date_end'] = $this->language->get('column_date_end');
 		$data['column_status'] = $this->language->get('column_status');
 		$data['column_action'] = $this->language->get('column_action');
+
+$data['button_insert_tracking'] = $this->language->get('button_insert_tracking');
+$data['inserttracking'] = $this->url->link('marketing/coupon/inserttracking', 'token=' . $this->session->data['token'] . $url, 'SSL');
+      
 
 		$data['button_add'] = $this->language->get('button_add');
 		$data['button_edit'] = $this->language->get('button_edit');
@@ -637,7 +779,13 @@ class ControllerMarketingCoupon extends Controller {
 		}
 
 		if ((utf8_strlen($this->request->post['code']) < 3) || (utf8_strlen($this->request->post['code']) > 10)) {
-			$this->error['code'] = $this->language->get('error_code');
+			
+$this->load->model('module/affiliate');
+if($this->model_module_affiliate->isAffilateCoupon($this->request->get['coupon_id'])){
+  $this->error['code'] = $this->language->get('error_code');
+} 
+$this->load->model('marketing/coupon');
+      
 		}
 
 		$coupon_info = $this->model_marketing_coupon->getCouponByCode($this->request->post['code']);

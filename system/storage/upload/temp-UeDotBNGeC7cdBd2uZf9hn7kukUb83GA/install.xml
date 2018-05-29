@@ -1,0 +1,22 @@
+<modification>
+  <code>affiliatemmm_simple</code>
+  <name>affiliatemmm_simple</name>
+  <version>4.0.2</version>
+  <author>NeitrinoZull</author>
+	<link>http://partnerkaprog.ru/</link>
+	<file path="catalog/controller/checkout/simplecheckout.php">
+        <operation>
+            <search>
+			<![CDATA[
+				$this->children
+			]]>
+            </search>
+            <add position="before" offset="1">
+			<![CDATA[
+				$this->load->model('module/statisticsmyaffiliate');
+				$this->model_module_statisticsmyaffiliate->isAffiliate();
+			]]>
+            </add>
+        </operation>
+    </file>
+</modification>

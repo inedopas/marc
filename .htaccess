@@ -7,7 +7,7 @@ RewriteCond %{HTTP:WSR-HTTPS} 1
 RewriteRule .* - [E=HTTPS:on]
 </IfModule>
 # 1.To use URL Alias you need to be running apache with mod_rewrite enabled.
-php_value memory_limit 64M
+php_value memory_limit 128M
 # 2. In your opencart directory rename htaccess.txt to .htaccess.
 
 # For any support issues please visit: http://www.opencart.com

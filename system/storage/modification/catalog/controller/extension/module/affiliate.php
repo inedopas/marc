@@ -8,6 +8,12 @@ class ControllerExtensionModuleAffiliate extends Controller {
         $data['statisticsmyaffiliate'] = $this->url->link('affiliate/statisticsmyaffiliate', '', 'SSL');
       
 
+        $data['text_statistics'] = $this->language->get('text_statistics');
+        $data['text_orderpayment'] = $this->language->get('text_orderpayment');
+        $data['statistics'] = $this->url->link('affiliate/statistics', '', 'SSL');
+        $data['orderpayment'] = $this->url->link('affiliate/orderpayment', '', 'SSL');
+      
+
 		$data['heading_title'] = $this->language->get('heading_title');
 
 		$data['text_register'] = $this->language->get('text_register');

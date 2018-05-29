@@ -4,6 +4,15 @@ $_['text_my_statisticsmyaffiliate']    = 'Статистика моих парт
 $_['text_statisticsmyaffiliate'] = 'Статистика моих партнеров';
 $_['statisticsmyaffiliate'] = 'Посмотреть статистику моих партнеров';
 			
+
+$_['text_orderpayment']    = 'Заказать выплату';
+$_['text_statistics'] = 'Посмотреть статистику';
+$_['text_my_orderpayment'] = 'Заказать выплату';
+$_['text_my_statistics'] = 'Статистика';
+$_['text_balance'] = '<b>Баланс: %s</b>';
+$_['text_percentage'] = '<b>Комиссия: %s %s</b>';
+$_['text_name_affiliate'] = '<b>%s %s</b>';
+			
 // Heading
 $_['heading_title']        = 'Партнерcкий раздел';
 

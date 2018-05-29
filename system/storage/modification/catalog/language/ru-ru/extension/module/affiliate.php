@@ -2,6 +2,10 @@
 
 				$_['text_statisticsmyaffiliate'] = 'Мои Партнеры';
 			
+
+				$_['text_statistics'] = 'Статистика';
+				$_['text_orderpayment'] = 'Заказать выплату';
+			
 // Heading
 $_['heading_title']    = 'Кабинета партнера';
 

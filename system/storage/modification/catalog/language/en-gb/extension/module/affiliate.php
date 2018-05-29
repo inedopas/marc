@@ -2,6 +2,10 @@
 
 				$_['text_statisticsmyaffiliate'] = 'My Partners';
 			
+
+				$_['text_statistics'] = 'Your Statistics';
+				$_['text_orderpayment'] = 'Order Payment';
+			
 // Heading
 $_['heading_title']    = 'Affiliate';
 

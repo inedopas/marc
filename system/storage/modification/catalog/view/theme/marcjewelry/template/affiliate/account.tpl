@@ -9,6 +9,12 @@ include('catalog/view/theme/' . $config->get($config->get('config_theme') . '_di
   <li><a href="<?php echo $password; ?>"><?php echo $text_password; ?></a></li>
   <li><a href="<?php echo $payment; ?>"><?php echo $text_payment; ?></a></li>
 </ul>
+
+<h2><?php echo $text_my_orderpayment; ?></h2>
+<ul class="list-unstyled">
+  <li><a href="<?php echo $orderpayment; ?>"><?php echo $text_orderpayment; ?></a></li>
+</ul>
+      
 <h2><?php echo $text_my_tracking; ?></h2>
 <ul class="list-unstyled">
   <li><a href="<?php echo $tracking; ?>"><?php echo $text_tracking; ?></a></li>
@@ -24,6 +30,12 @@ include('catalog/view/theme/' . $config->get($config->get('config_theme') . '_di
       <li><a href="<?php echo $statisticsmyaffiliate; ?>"><?php echo $text_statisticsmyaffiliate; ?></a></li>
   </ul>
 <?php } ?>
+      
+
+  <h2><?php echo $text_my_statistics; ?></h2>
+    <ul class="list-unstyled">
+      <li><a href="<?php echo $statistics; ?>"><?php echo $text_statistics; ?></a></li>
+  </ul>
       
   
 <?php include('catalog/view/theme/' . $config->get($config->get('config_theme') . '_directory') . '/template/new_elements/wrapper_bottom.tpl'); ?>
