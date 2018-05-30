@@ -1,1 +1,25 @@
 system/storge/cache
+.htaccess
+.idea/
+/config.php
+admin/config.php
+
+demo1_1511345482.zip
+
+!index.html
+image/
+download/
+image/data/
+image/cache/
+system/cache/
+system/modification/
+system/logs/
+
+system/storage/
+
+# vQmod log files
+vqmod/logs/*
+# vQmod cache files
+vqmod/vqcache/*
+vqmod/checked.cache
+vqmod/mods.cache
