@@ -135,6 +135,7 @@ function colorListRollover() {
 }
 </script>
 
+<script src="catalog/view/javascript/jquery/jquery.geoip-module.js" type="text/javascript"></script>
 <!--BOF Product Series-->
 			<style>	
 				.pds a, .pds a:hover, .pds a:visited
@@ -184,7 +185,6 @@ function colorListRollover() {
 				}
 			</script>
 			<!--EOF Product Series-->
-<script src="catalog/view/javascript/jquery/jquery.geoip-module.js" type="text/javascript"></script>
 </head>
 <body class="<?php echo $class; ?>">
 <nav id="top">
