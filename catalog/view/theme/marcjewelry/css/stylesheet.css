@@ -22046,3 +22046,55 @@ body[class*="product-category-"].show-vertical-megamenu-category-page #main .fix
 	height: 0;
 	border-color: transparent transparent #ffffff transparent;
 }
+
+/* Anton style 01.06 */
+.quantity {
+    position: relative;
+}
+
+span#q_up, span#q_down {
+    font-size: 25px;
+}
+
+span#q_up:hover, span#q_down:hover {
+    transform: scale(1.5);
+    cursor: pointer;
+}
+
+.quantity {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.quantity input {
+    margin: 0 5px 0 5px;
+}
+
+.radio span:hover {
+    cursor: pointer;
+}
+
+input#howtosize.button {
+    background: none !important;
+    border: none !important;
+    color:black !important;
+}
+
+input#howtosize.button:hover {
+    text-decoration: underline;
+    cursor: help;
+    
+}
+
+a.button.btn-default.button-product-question {
+    float:right;
+    width: 220px;
+    text-align: center;
+}
+
+.price_true {
+    position: relative;
+    bottom: 10px;
+}
+

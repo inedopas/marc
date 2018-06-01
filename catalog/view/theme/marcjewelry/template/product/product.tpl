@@ -250,18 +250,40 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
                               <div class="radio <?php if($theme_options->get( 'product_page_radio_style' ) == 1) { echo 'radio-type-button2'; } ?>">
 
 
-                                  <span <?php if ($option_value['image']) { echo 'style="padding: 5px 2px 0px"'; } ?>>
+                                  <span <?php if ($option_value['image']) { echo 'style="padding: 5px 2px 0px"'; } ?> >
                                  <?php if (!$option_value['image']) { ?><?php } ?>
-                                <span id="opt-name" class="opt"><?php echo $option_value['name']; ?></span>
+                                 
+                                <span id="opt-name" class="opt"><?php echo $option_value['name']; ?>
+                                
+                                </span>
                                  <div class="hidden">
-                                 <?php if ($option_value['special']) { ?><span id='opt-special' class="opt"><?php echo $special . " ₽"; ?></span><?php } else { ?><span id="opt-price" class="opt" style="background-color:#eeeeee;padding:2px 0px 3px 0px;color:#4e636d;border-radius: 9px;"><?php echo $option_value['price'] . " ₽"; ?></span><?php } ?>
-                                 <?php if ($option_value['weight'] > 0) { ?><span id="opt-weight" class="opt"><?php echo $option_value['weight']; ?> гр.</span><?php } ?><span id="opt-quantity" class="opt" style="background-color:#eeeeee;padding:2px 0px 3px 0px;color:#4e636d;border-radius: 9px;"><?php echo $option_value['quantity']; ?> шт.</span>
+                                 <?php if ($option_value['special']) { ?>
+                                 
+                                 <span id='opt-special' class="opt"><?php echo $special . " ₽"; ?>
+                                    
+                                    </span><?php } else { ?>
+                                    
+                                     <span id="opt-price" class="opt" style="background-color:#eeeeee;padding:2px 0px 3px 0px;color:#4e636d;border-radius: 9px;"><?php echo $option_value['price'] . " ₽"; ?>
+                                     
+                                     </span><?php } ?>
+                                 <?php if ($option_value['weight'] > 0) { ?>
+                                 <span id="opt-weight" class="opt"><?php echo $option_value['weight']; ?> гр.
+                                 
+                                 </span><?php } ?><span id="opt-quantity" class="opt" style="background-color:#eeeeee;padding:2px 0px 3px 0px;color:#4e636d;border-radius: 9px;"><?php echo $option_value['quantity']; ?> шт.
+                                 
+                                 </span>
                                   <?php if ($option_value['image']) { ?>
+                                  
                                   <img src="<?php echo $option_value['image']; ?>" alt="<?php echo $option_value['name'] . ($option_value['price'] ? ' ' . $option_value['price_prefix'] . $option_value['price'] : ''); ?>"  style="border-radius: 100px;-webkit-border-radius: 100px;-moz-border-radius: 100px" class="img-thumbnail" />
                                   <?php } ?>
-                                  <span class="hidden"><?php if ($option_value['special']) { ?>(<?php echo $option_value['price_prefix']; ?><?php echo $option_value['special']; ?>)<?php } elseif ($option_value['price']) { ?><?php } ?></span>
+                                  
+                                  <span class="hidden"><?php if ($option_value['special']) { ?>(<?php echo $option_value['price_prefix']; ?><?php echo $option_value['special']; ?>)<?php } elseif ($option_value['price']) { ?><?php } ?>
+                                  
+                                  </span>
                                   <?php if($theme_options->get( 'product_page_radio_style' ) != 1) { ?>
-                                  <?php } ?></span>
+                                  <?php } ?>
+                                  
+                                  </span>
                                   </div>
                                 </label>
                               </div>
@@ -290,7 +312,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 														</td>
 														<td > </td>
 
-														</></tr></thead>
+                            </></tr></thead>
 <tr>
 <td>
 <?php if ($price) { ?>
@@ -329,16 +351,20 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 </td>
 
 <td align="center" width="30px"><div class="quantity">
-		<span id="q_up"><i class="fa fa-angle-up"></i></span>
+		<span id="q_up">+</span>
 	<input type="text" name="quantity" id="quantity_wanted" size="2" value="<?php echo $minimum; ?>" />
-	<span id="q_down"><i class="fa fa-angle-down"></i></span>
+	<span id="q_down">-</span>
 		</div>
 		 <?php echo $option_value['weight']; ?>гр
  </td>
+ 
 <td>
   <input style="width:220px; height:30px; float:right" type="button" value="<?php echo $button_cart; ?>" id="button-cart" rel="<?php echo $product_id; ?>" data-loading-text="<?php echo $text_loading; ?>" class="button" /> 
+  
+  
   </td>
-				</tr>
+		
+		</tr>
 
 <tr>
 <td id="baton" colspan="3">
