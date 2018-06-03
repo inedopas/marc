@@ -7,6 +7,8 @@ $product_page = true;
 include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_directory').'/template/new_elements/wrapper_top.tpl'); ?>
 		<script type="text/javascript" >
 			$(document).ready(function() {
+			$('.fr1').children().addClass("active");
+
 			$('#q_down').click(function () {
 			var $input = $(this).parent().parent().find('#quantity_wanted');
 			var count = parseInt($input.val()) - 1;
@@ -244,45 +246,46 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 
 
                             <div style="display:inline-block" class="control-label"><b style="16px"> <?php echo $option['name']; ?> </b></label></div> <input  style="width:220px; height:30px; float:right;" type="hidden" data-toggle="modal" id="howtosize" data-target="#how-to-size" value="Как узнать размер?" class="button"/>
-                            <div class="col-md-12 col-xs-12" style="display:block; width:'100%'; margin-top:10px;" id="input-option<?php echo $option['product_option_id']; ?>" >
+                            <div class="col-md-12 col-xs-12" style="display:block;; margin-top:10px;" id="input-option<?php echo $option['product_option_id']; ?>" >
                             	<div class="">
-                              <?php foreach ($option['product_option_value'] as $option_value) { ?>
-                              <div class="radio <?php if($theme_options->get( 'product_page_radio_style' ) == 1) { echo 'radio-type-button2'; } ?>">
+															<?php $nopt=0;  ?>
+                              <?php foreach ($option['product_option_value'] as $option_value) { $nopt+=1; ?>
+                              <div class="radio <?php if($theme_options->get( 'product_page_radio_style' ) == 1) { echo 'radio-type-button2'." fr".$nopt; } ?>">
 
 
                                   <span <?php if ($option_value['image']) { echo 'style="padding: 5px 2px 0px"'; } ?> >
                                  <?php if (!$option_value['image']) { ?><?php } ?>
-                                 
+
                                 <span id="opt-name" class="opt"><?php echo $option_value['name']; ?>
-                                
+
                                 </span>
                                  <div class="hidden">
                                  <?php if ($option_value['special']) { ?>
-                                 
+
                                  <span id='opt-special' class="opt"><?php echo $special . " ₽"; ?>
-                                    
+
                                     </span><?php } else { ?>
-                                    
+
                                      <span id="opt-price" class="opt" style="background-color:#eeeeee;padding:2px 0px 3px 0px;color:#4e636d;border-radius: 9px;"><?php echo $option_value['price'] . " ₽"; ?>
-                                     
+
                                      </span><?php } ?>
                                  <?php if ($option_value['weight'] > 0) { ?>
                                  <span id="opt-weight" class="opt"><?php echo $option_value['weight']; ?> гр.
-                                 
+
                                  </span><?php } ?><span id="opt-quantity" class="opt" style="background-color:#eeeeee;padding:2px 0px 3px 0px;color:#4e636d;border-radius: 9px;"><?php echo $option_value['quantity']; ?> шт.
-                                 
+
                                  </span>
                                   <?php if ($option_value['image']) { ?>
-                                  
+
                                   <img src="<?php echo $option_value['image']; ?>" alt="<?php echo $option_value['name'] . ($option_value['price'] ? ' ' . $option_value['price_prefix'] . $option_value['price'] : ''); ?>"  style="border-radius: 100px;-webkit-border-radius: 100px;-moz-border-radius: 100px" class="img-thumbnail" />
                                   <?php } ?>
-                                  
+
                                   <span class="hidden"><?php if ($option_value['special']) { ?>(<?php echo $option_value['price_prefix']; ?><?php echo $option_value['special']; ?>)<?php } elseif ($option_value['price']) { ?><?php } ?>
-                                  
+
                                   </span>
                                   <?php if($theme_options->get( 'product_page_radio_style' ) != 1) { ?>
                                   <?php } ?>
-                                  
+
                                   </span>
                                   </div>
                                 </label>
@@ -303,8 +306,13 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
                                              $(tableId + '.opt-name').text(optName);
                                              $(tableId + '.opt-weight').text(optWeight);
                                              $(tableId + '.opt-quantity').text(optQuantity);
+																						 $('#wes').text(optWeight);
                                         });
                                    });
+
+
+
+
                               </script>
                               <?php } ?>
                             </div>
@@ -314,13 +322,14 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 
                             </></tr></thead>
 <tr>
-<td>
+<td >
+<div style="margin-top:15px" id="topartner"> </div>
 <?php if ($price) { ?>
 
 
 
 
- <div class="price">
+ <div id="partner" class="price">
 	 <span class="textprice">Цена</span>
 
 	 <?php if (!$special) { ?>
@@ -348,6 +357,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
  </div>
  <?php } ?>
 
+
 </td>
 
 <td align="center" width="30px"><div class="quantity">
@@ -355,21 +365,31 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 	<input type="text" name="quantity" id="quantity_wanted" size="2" value="<?php echo $minimum; ?>" />
 	<span id="q_down">-</span>
 		</div>
-		 <?php echo $option_value['weight']; ?>гр
+		 <div id="wes"><?php echo $option_value['weight'];?>гр </div>
  </td>
- 
-<td>
-  <input style="width:220px; height:30px; float:right" type="button" value="<?php echo $button_cart; ?>" id="button-cart" rel="<?php echo $product_id; ?>" data-loading-text="<?php echo $text_loading; ?>" class="button" /> 
-  
-  
-  </td>
-		
+
+ <td>
+   <input style="width:200px; height:30px; margin-left:5px; padding:0" type="button" value="<?php echo $button_cart; ?>" id="button-cart" rel="<?php echo $product_id; ?>" data-loading-text="<?php echo $text_loading; ?>" class="button" /> <br />
+ 	<input id="toclick" style="width:200px; height:30px;margin-left:5px; padding:0" type="button" value="Купить в один клик" class="button" />
+ 	 <input type="hidden" id="mainclick" style="visible:none!important" class="button-product-question" />
+
+ 	<script> toclick.onclick = function(event) {    mainclick.click();	  } 	</script>
+   </td>
+	<td>
+
+		<a onclick="wishlist.add('<?php echo $product_id; ?>');"><?php if($theme_options->get( 'add_to_wishlist_text', $config->get( 'config_language_id' ) ) != '') { echo $theme_options->get( 'add_to_wishlist_text', $config->get( 'config_language_id' ) ); } else { echo '<img src="/image/l.png"
+  width="30px" height="30px" alt="like">'; } ?></a>
+		<a onclick="compare.add('<?php echo $product_id; ?>');"><?php if($theme_options->get( 'add_to_compare_text', $config->get( 'config_language_id' ) ) != '') { echo $theme_options->get( 'add_to_compare_text', $config->get( 'config_language_id' ) ); } else { echo '<img src="/image/c.png"
+  width="30px" height="30px" alt="compare">'; } ?></a>
+
+
+	  </td>
 		</tr>
 
 <tr>
 <td id="baton" colspan="3">
 
-
+<span style="text-transform: inherit"> Отправить друзьям: </span>
 <div style="display:inline-block" class="pluso" data-background="transparent" data-options="small,round,line,horizontal,nocounter,theme=04" data-services="vkontakte,odnoklassniki,facebook,twitter,google,moimir,email,print" data-user="1366104031"></div>
 <?php if ($review_status) { ?>
 <div class="" style="display:inline-block">
@@ -381,7 +401,7 @@ include('catalog/view/theme/'.$config->get($config->get('config_theme') . '_dire
 		if(isset($wyniki[1][0])) { echo $wyniki[1][0]; } else { echo 0; } ?></span>
 	</span>
 	<?php } ?>
-	<div style="margin-left:20px"class="rating"><i class="fa fa-star<?php if($rating >= 1) { echo ' active'; } ?>"></i><i class="fa fa-star<?php if($rating >= 2) { echo ' active'; } ?>"></i><i class="fa fa-star<?php if($rating >= 3) { echo ' active'; } ?>"></i><i class="fa fa-star<?php if($rating >= 4) { echo ' active'; } ?>"></i><i class="fa fa-star<?php if($rating >= 5) { echo ' active'; } ?>"></i>&nbsp;&nbsp;&nbsp;<a onclick="$('a[href=\'#tab-review\']').trigger('click'); $('html, body').animate({scrollTop:$('#tab-review').offset().top}, '500', 'swing');"></a><a onclick="$('a[href=\'#tab-review\']').trigger('click'); $('html, body').animate({scrollTop:$('#tab-review').offset().top}, '500', 'swing');">Написать отзыв</a></div>
+	<div>&nbsp;&nbsp;&nbsp;<a onclick="$('a[href=\'#tab-review\']').trigger('click'); $('html, body').animate({scrollTop:$('#tab-review').offset().top}, '500', 'swing');"></a><a onclick="$('a[href=\'#tab-review\']').trigger('click'); $('html, body').animate({scrollTop:$('#tab-review').offset().top}, '500', 'swing');"> <div style="margin-left:20px"class="rating"><i class="fa fa-star<?php if($rating >= 1) { echo ' active'; } ?>"></i><i class="fa fa-star<?php if($rating >= 2) { echo ' active'; } ?>"></i><i class="fa fa-star<?php if($rating >= 3) { echo ' active'; } ?>"></i><i class="fa fa-star<?php if($rating >= 4) { echo ' active'; } ?>"></i><i class="fa fa-star<?php if($rating >= 5) { echo ' active'; } ?>"></i></div></a></div>
 	<?php if($theme_options->get( 'product_social_share' ) != '0') { ?>
 	<div class="share">
 		<!-- AddThis Button BEGIN -->
@@ -398,11 +418,11 @@ h.appendChild(s);
 		<!-- AddThis Button END -->
 	</div>
 	<?php } ?>
-</div>
+</>
 <?php } ?>
 
-<script type="text/javascript">$(".geoip-module").appendTo("#geopa");</script>
-<div style="display:block"><div id="geopa"></div> </div>
+
+
 
 </td>
 
@@ -413,6 +433,25 @@ h.appendChild(s);
 
 </td>
 	</tr>
+
+	<tr>
+	<td id="geop" >
+	<script type="text/javascript">$(".geoip-module").appendTo("#geopa");</script>
+	<div id="geopa"></div>
+
+
+	</td>
+
+	<td colspan="3">
+<div id="totop"></div>
+	</td>
+	<td>
+
+	</td>
+		</tr>
+
+
+
 <tr>
 <td colspan="3">
 <div itemscope itemtype="http://schema.org/Offer">
@@ -590,7 +629,29 @@ echo '<div id="'.$id.'" class="tab-content">'.$tab['content'].'</div>';
  <i class="fa fa-star" data-value="4"></i>
  <i class="fa fa-star" data-value="5"></i>
 </div>
+
 <script type="text/javascript">
+var fromp = $('#fromp').html(),
+totop = $('#totop').html();
+$('#fromp').html('');
+$('#totop').html(fromp + '<br>' +totop);
+</script>
+
+<script type="text/javascript">
+var partner = $('#partner').html(),
+topartner = $('#topartner').html();
+$('#partner').html('');
+$('#topartner').html(partner + '<br>' +topartner);
+$(".button-product-question").addClass("hidden");
+</script>
+
+
+
+
+<script type="text/javascript">
+
+$(".radio-type-button").click();
+
  $(document).ready(function() {
 	 $('.set-rating i').hover(function(){
 			 var rate = $(this).data('value');
@@ -884,7 +945,7 @@ $('#recurring-description').html(json['success']);
                             <tr class="opt-value">
                                 <!--   <td option="14" class="opt-name"></td>-->
                                 <td option="11" class="opt-name"></td>
-                                <td option="11" class="opt-weight"></td>
+                                <td option="11" class="opt-weight">  </td>
                                 <td id="<?php echo $tab;?>" option="11" class="opt-quantity"></td>
                                 <td class="opt-price"></td>
                             </tr>
@@ -998,8 +1059,7 @@ $('#recurring-description').html(json['success']);
 			     <div class="clearfix"></div>
 
 
-<script type="text/javascript"><!--
-
+<script type="text/javascript">
 
 $(document).ready(function(){
 var text= document.getElementById("title-page").innerHTML;

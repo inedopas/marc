@@ -28,7 +28,23 @@
 
 
 
-
+.zone{
+  text-decoration: none!important;
+  color: black!important;
+  text-decoration:underline;
+}
+#button-quote{
+     text-transform: inherit;
+     color: black!important;
+     background:none!important;
+     color:inherit;
+     border:none;
+     padding:0!important;
+     font: inherit;
+     /*border is optional*/
+     border-bottom:1px solid #444;
+     cursor: pointer;
+}
 .b-popup-howsize {
   max-width: 460px;
   font-size: 16px;
@@ -9418,8 +9434,8 @@ table.form {
 
 .htabs {
 	z-index: 2;
-	text-align: center;
-	margin: 0px -15px;
+	text-align: left;
+	margin: 0px -10px;
 	/*padding: 44px 0px 0px 0px; */
 	position: relative;
 }
@@ -9474,8 +9490,8 @@ table.form {
 	     }
 
 	.htabs a {
-		margin: 0px 15px;
-		padding: 10px 0px;
+		margin: 0px 10px;
+		/*padding: 10px 0px;*/
 		font-size: 20px;
 		color: #808080;
 		font-weight: 500;
@@ -22084,7 +22100,7 @@ input#howtosize.button {
 input#howtosize.button:hover {
     text-decoration: underline;
     cursor: help;
-    
+
 }
 
 a.button.btn-default.button-product-question {
@@ -22097,4 +22113,3 @@ a.button.btn-default.button-product-question {
     position: relative;
     bottom: 10px;
 }
-
